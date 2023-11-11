@@ -191,24 +191,24 @@ public class Tank{
         return false;
     }
     
-    public void caidaTanque(GraphicsContext gc, Terreno terrain, int tipoTerreno) { 
+    public void caidaTanque(GraphicsContext gc, Terreno terreno, int tipoTerreno) { 
         float contador[]={0};
         AnimationTimer animation;
         animation = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 ListaJugadores listaJugador = ListaJugadores.getInstance();
-                if (!estaSobreDuna(terrain)) {
+                if (!estaSobreDuna(terreno)) {
                     if (tipoTerreno == 0) {
-                        terrain.terreno_nieve(gc, 0.0, 100, 1,terrain);
+                        terreno.terreno_nieve(gc, 0.0, 100, 1,terreno);
                         
                     }
                     if (tipoTerreno == 1) {
-                        terrain.terreno_desierto(gc, 0.0, 100, 1,terrain);
+                        terreno.terreno_desierto(gc, 0.0, 100, 1,terreno);
                         
                     }
                     if (tipoTerreno == 2) {
-                        terrain.terreno_aram(gc, 0.0, 100, 1, terrain);
+                        terreno.terreno_aram(gc, 0.0, 100, 1, terreno);
                         
                     }
                     contador[0] +=1.0;
@@ -220,8 +220,8 @@ public class Tank{
                     
                 } else {
                     this.stop();
-                    listaJugador.getJugador1().getTanque().crearHitbox(gc,terrain);
-                    listaJugador.getJugador2().getTanque().crearHitbox(gc,terrain);
+                    listaJugador.getJugador1().getTanque().crearHitbox(gc,terreno);
+                    listaJugador.getJugador2().getTanque().crearHitbox(gc,terreno);
                     listaJugador.getJugador1().getTanque().dibujarTanque(gc);
                     listaJugador.getJugador2().getTanque().dibujarTanque(gc);
                     

@@ -1,4 +1,3 @@
-
 package terreno;
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,12 +8,13 @@ public class Terreno{
     public int pixel;
     public int[][]dunas;
     public int [][] explosion;
-    int radio=0;
+    public int radio=0;
+    private int contador=0;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
-    Jugador jugador1;
-    Jugador jugador2;
+    ListaJugadores listJugador=ListaJugadores.getInstance();
+    
 
 
     public Terreno(int alto, int ancho, int pixel,Jugador jugador1, Jugador jugador2,GraphicsContext gc ) {
@@ -22,8 +22,10 @@ public class Terreno{
         this.matriz=new int[alto][ancho];
         this.dunas=new int[alto][ancho];
         this.explosion=new int[alto][ancho];
-        this.jugador1=jugador1;
-        this.jugador2 = jugador2;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
     }
 
     public void iniciar() {//inicializamos todas las matrices usadas en el juego
@@ -56,7 +58,7 @@ public class Terreno{
 
     }
 
-    public void terreno_nieve(GraphicsContext gc, Double angulo, int vida, int validar) {//terreno nevado
+    public void terreno_nieve(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno) {//terreno nevado
         int alto = 400;
         int ancho = 300;
         int escala = this.pixel;
@@ -113,13 +115,16 @@ public class Terreno{
                 }
             }
         }
-        jugador1.creaTanque(gc,matriz,vida,validar);
-        jugador2.creaTanque(gc,matriz,vida,validar);
-        jugador1.getTanque().modificarCañon(gc,angulo,1);
-        jugador2.getTanque().modificarCañon(gc,angulo,2);
+        if(contador==0){
+            listJugador.getJugador1().creaTanque(gc,vida,validar,terreno);
+            listJugador.getJugador2().creaTanque(gc,vida,validar,terreno);
+            listJugador.getJugador1().getTanque().modificarCañon(gc, angulo, 1);
+            listJugador.getJugador2().getTanque().modificarCañon(gc, angulo, 2);
+        }
+        contador++;
     }
 
-    public void terreno_desierto(GraphicsContext gc, Double angulo, int vida, int validar) {//terreno desertico
+    public void terreno_desierto(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno) {//terreno desertico
         int alto = 400;
         int ancho = 300;
         int escala = this.pixel;
@@ -165,14 +170,16 @@ public class Terreno{
                 }
             }
         }
-
-        jugador1.creaTanque(gc,matriz,vida,validar);
-        jugador2.creaTanque(gc,matriz,vida,validar);
-        jugador1.getTanque().modificarCañon(gc,angulo,1);
-        jugador2.getTanque().modificarCañon(gc,angulo,2);
+        if(contador==0){
+            listJugador.getJugador1().creaTanque(gc,vida,validar,terreno);
+            listJugador.getJugador2().creaTanque(gc,vida,validar,terreno);
+            listJugador.getJugador1().getTanque().modificarCañon(gc, angulo, 1);
+            listJugador.getJugador2().getTanque().modificarCañon(gc, angulo, 2);
+        }
+        contador++;
     }
 
-    public void terreno_aram(GraphicsContext gc, Double angulo, int vida, int validar) {//terreno de bosque
+    public void terreno_aram(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno) {//terreno de bosque
         int alto = 400;
         int ancho = 300;
         int escala = this.pixel;
@@ -249,15 +256,14 @@ public class Terreno{
                 }
             }
         }
-        jugador1.creaTanque(gc,matriz,vida,validar);
-        jugador2.creaTanque(gc,matriz,vida,validar);
-        jugador1.getTanque().modificarCañon(gc,angulo,1);
-        jugador2.getTanque().modificarCañon(gc,angulo,2);
+        if(contador==0){
+            listJugador.getJugador1().creaTanque(gc,vida,validar,terreno);
+            listJugador.getJugador2().creaTanque(gc,vida,validar,terreno);
+            listJugador.getJugador1().getTanque().modificarCañon(gc, angulo, 1);
+            listJugador.getJugador2().getTanque().modificarCañon(gc, angulo, 2);
+        }
+        contador++;
     }
-
-
-
-
 
     public int colision_terreno(GraphicsContext gc, Bala bala, int dunas[][], int matriz[][], int tipo) {
         int x = (int) bala.ejeX / pixel;//traspasamos la posicion x a relacion escala de la matriz y no de los pixeles
@@ -302,10 +308,4 @@ public class Terreno{
         }
         return 0;
     }
-    
-    
-    
-    
-    
-   
-}
+}  

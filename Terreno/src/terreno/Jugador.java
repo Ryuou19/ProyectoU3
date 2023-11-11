@@ -54,13 +54,12 @@ public class Jugador {
         
     }
     
-    public void creaTanque(GraphicsContext gc, int[][] matriz, int vida, int validar){
+    public void creaTanque(GraphicsContext gc,  int vida, int validar, Terreno terreno){
         if(validar==0){//verifica si se crea desde un terreno completamente nuevo o solo de un cambio de turno
             this.random=rand.nextInt(4);      
         }
         Tank tanque = new Tank(color, jugador);
-        tanque.agregarTanque(gc,this.random, matriz,vida);
+        tanque.agregarTanque(gc,this.random,vida,terreno);
         this.tanque=tanque;
     }
 }
-

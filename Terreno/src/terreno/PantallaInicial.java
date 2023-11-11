@@ -44,7 +44,7 @@ public class PantallaInicial extends Application {
         Pane panel = new Pane();//panel de la interfaz inicial
         
         //imagen tanque inicial con sus propiedades y estilo
-        Image imagen = new Image(getClass().getResource("tanque menu.gif").toExternalForm());
+        Image imagen = new Image(getClass().getResource("./img/tanque menu.gif").toExternalForm());
         ImageView imageView = new ImageView(imagen);
         imageView.setLayoutX(440); 
         imageView.setLayoutY(270); 
@@ -54,7 +54,7 @@ public class PantallaInicial extends Application {
         imageView.setFitHeight(nuevoAlto);
         
         //titulo inicial con gif  
-        imagen=new Image(getClass().getResource("text.gif").toExternalForm());
+        imagen=new Image(getClass().getResource("./img/text.gif").toExternalForm());
         ImageView titulo = new ImageView(imagen);
         titulo.setLayoutX(390); 
         titulo.setLayoutY(150); 

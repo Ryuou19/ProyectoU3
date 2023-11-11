@@ -216,8 +216,7 @@ public class Tank{
                     contador[0] +=1.0;
                     posicionY += gravedad;
                     listaJugador.getJugador1().getTanque().dibuarTanque(gc);
-                    listaJugador.getJugador2().getTanque().dibuarTanque(gc);
-                    System.out.println("posicion cambiante -> "+posicionY);
+                    listaJugador.getJugador2().getTanque().dibuarTanque(gc);                   
 
                     
                 } else {
@@ -226,11 +225,8 @@ public class Tank{
                     listaJugador.getJugador2().getTanque().crearHitbox(gc,terrain);
                     listaJugador.getJugador1().getTanque().dibuarTanque(gc);
                     listaJugador.getJugador2().getTanque().dibuarTanque(gc);
-                    
-                    System.out.println("cañon anters "+cañonY);
-                    modificarCañon(gc, angulo, jugadorTanque);
-                    
-                    System.out.println("altura"+contador[0]);
+                                      
+                    modificarCañon(gc, angulo, jugadorTanque);                   
                     if(jugadorTanque==1)
                     {
                         listaJugador.getJugador1().getTanque().setPosicion1(posicionY);

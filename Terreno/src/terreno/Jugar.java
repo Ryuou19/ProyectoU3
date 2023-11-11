@@ -166,7 +166,7 @@ public class Jugar extends Application {
         alturaLabel.setText(" ");           
     }
     public void impacto_jugador1(int danio){
-        int nuevavida1 = listJugador.getJugador1().getTanque().ajustar_vida(vidatanque1, danio);
+        int nuevavida1 = listJugador.getJugador1().getTanque().ajustar_vida(vidatanque1, 100);//RECORDAR CAMBIARLO (DANIO)
         vidatanque1 = nuevavida1;
         interfaz.textovida1.setText(nuevavida1+"");
         interfaz.boxtanque1.setVisible(false);
@@ -177,12 +177,15 @@ public class Jugar extends Application {
         if(vidatanque1<=0){
             System.out.println("HA GANADO EL JUGADOR 2!!");
             reiniciar_partida();
+            Tienda escenaTienda = new Tienda();
+            escenaTienda.inicializarInterfaz(stage);
+            stage.show();
             rondas--;System.out.println("Rondas="+rondas);
         }
     }
     
     public void impacto_jugador2(int danio){
-        int nuevavida2 = listJugador.getJugador2().getTanque().ajustar_vida(vidatanque2, danio);
+        int nuevavida2 = listJugador.getJugador2().getTanque().ajustar_vida(vidatanque2, 100);///RECORDAR CAMBIARLO (DANIO)
         vidatanque2 = nuevavida2;
         interfaz.textovida2.setText(nuevavida2+"");
         interfaz.boxtanque2.setVisible(false);
@@ -193,6 +196,9 @@ public class Jugar extends Application {
         if(vidatanque2<=0){
             System.out.println("HA GANADO EL JUGADOR 1!!");
             reiniciar_partida();
+            Tienda escenaTienda = new Tienda();
+            escenaTienda.inicializarInterfaz(stage);
+            stage.show();
             rondas--;
             rondas--;System.out.println("Rondas="+rondas);
         }

@@ -270,7 +270,7 @@ public class Jugar extends Application {
                             double tiempoAnterior = System.nanoTime() / 1e6;//valor que ajusta la velocidad de ejecucion del trayecto de la bala
                             @Override
                             public void handle(long now){
-                                nuevaBala.dibujo(gc);
+                                nuevaBala.dibujo(gc,balaAux.getDanio());
                                 //double tiempoActual = System.nanoTime() / 1e9*5;
                                 double deltaTiempo = 0.1;
                                 nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,boxdistancia,boxaltura,cañonY,cañonX);
@@ -305,17 +305,17 @@ public class Jugar extends Application {
                             //double tiempoAnterior = System.nanoTime() / relacion;
                             @Override
                             public void handle(long now){
-                                nuevaBala.dibujo(gc);
+                                nuevaBala.dibujo(gc,nuevaBala.getDanio());
                                 //double tiempoActual = System.nanoTime() / relacion;
                                 double deltaTiempo = 0.1;
                                 nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,boxdistancia,boxaltura,cañonY,cañonX);//posicionar la bala en un tiempo determinado
                                 //tiempoAnterior = tiempoActual;
                                 victoria=terrain.colision_terreno(gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);//revisa donde colisiono la bala
                                 if(victoria==1){
-                                    impacto_jugador1(balaAux.getDanio());//impacto dependiendo del daño de la bala
+                                    impacto_jugador1(nuevaBala.getDanio());//impacto dependiendo del daño de la bala
                                 }
                                 else if(victoria==2){
-                                    impacto_jugador2(balaAux.getDanio());//impacto dependiendo del daño de la bala
+                                    impacto_jugador2(nuevaBala.getDanio());//impacto dependiendo del daño de la bala
                                 }
                                 if (nuevaBala.eliminar()) {
                                     colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)                                                                      
@@ -586,21 +586,21 @@ public class Jugar extends Application {
             cañonY = jugador1.getTanque().getCañonY();
             if(tipo==1)
             {
-                nuevaBala = new Proyectil60mm((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,30);
+                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,30);
                 balaAux = nuevaBala;
                 jugador1.setCantidad60(jugador1.getCantidad60()-1);
 
             }
             if(tipo==2)
             {
-                nuevaBala = new Proyectil80mm((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,40);
+                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,40);
                 balaAux = nuevaBala;
                 jugador1.setCantidad80(jugador1.getCantidad80()-1);
 
             }
             if(tipo==3){
             {
-                nuevaBala = new Proyectil105mm((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,50);
+                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,50);
                 balaAux = nuevaBala;
                 jugador1.setCantidad105(jugador1.getCantidad105()-1);
             }
@@ -612,21 +612,21 @@ public class Jugar extends Application {
             angulo = 180 - angulo;
             if(tipo==1)
             {
-                nuevaBala = new Proyectil60mm((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,30);
+                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,30);
                 balaAux = nuevaBala;
                     jugador2.setCantidad60(jugador2.getCantidad60()-1);
 
             }
             if(tipo==2)
             {
-                nuevaBala = new Proyectil80mm((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,40);
+                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,40);
                 balaAux = nuevaBala;
                 jugador2.setCantidad80(jugador2.getCantidad80()-1);
 
             }
             if(tipo==3)
             {
-                nuevaBala = new Proyectil105mm((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,50);
+                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,50);
                 balaAux = nuevaBala;
                 jugador2.setCantidad105(jugador2.getCantidad105()-1);
 

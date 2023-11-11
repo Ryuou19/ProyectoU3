@@ -59,7 +59,7 @@ public class Jugador {
             this.random=rand.nextInt(4);      
         }
         Tank tanque = new Tank(color, jugador);
-        tanque.agregarTanque(gc,this.random, terreno.matriz,vida);
+        tanque.agregarTanque(gc,this.random, vida,terreno);
         this.tanque=tanque;
     }
 }

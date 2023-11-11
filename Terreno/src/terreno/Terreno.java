@@ -17,7 +17,7 @@ public class Terreno{
     
 
 
-    public Terreno(int alto, int ancho, int pixel,Jugador jugador1, Jugador jugador2,GraphicsContext gc ) {
+    public Terreno(int alto, int ancho, int pixel,GraphicsContext gc ) {
         this.pixel=pixel;
         this.matriz=new int[alto][ancho];
         this.dunas=new int[alto][ancho];

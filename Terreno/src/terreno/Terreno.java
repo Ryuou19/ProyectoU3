@@ -303,7 +303,7 @@ public class Terreno{
                 }
             }
         }
-        if (x > 399 || x < 0 || y > 300 || y < 0) {
+        if (x > 399 || x < 0 ) {
             bala.marcar();
         }
         return 0;

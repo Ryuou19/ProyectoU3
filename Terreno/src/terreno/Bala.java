@@ -27,7 +27,7 @@ public class Bala {
 
 
     
-    public Bala(int x, int y, int radiojugador, double anguloLanzamiento, double velocidadLanzamiento,int contador, int danio) {
+    public Bala(int x, int y, int radiojugador, double anguloLanzamiento, double velocidadLanzamiento,int contador, int danio, Jugador jugador) {
         this.radiojugador = radiojugador;
         this.anguloLanzamiento = Math.toRadians(anguloLanzamiento); 
         this.velocidadLanzamiento = velocidadLanzamiento;   
@@ -39,11 +39,30 @@ public class Bala {
         this.velocidadY = velocidadLanzamiento * Math.sin(this.anguloLanzamiento);
         this.contador = contador;
         this.danio=danio;
+        if(danio==30){
+            jugador.setCantidad60(jugador.getCantidad60()-1);
+        }
+        if(danio==40){
+            jugador.setCantidad80(jugador.getCantidad80()-1);
+        }
+        if(danio==50){
+            jugador.setCantidad60(jugador.getCantidad105()-1);
+        }
+        
+        
 
     }
 
-    public void dibujo(GraphicsContext gc) {
-        gc.setFill(Color.BLACK);
+    public void dibujo(GraphicsContext gc, int tipo){
+        if(tipo==30){
+            gc.setFill(Color.GREEN);
+        }
+        if(tipo==40){
+            gc.setFill(Color.BLUE);
+        }
+        if(tipo==50){
+            gc.setFill(Color.RED);
+        }
         gc.fillOval(ejeX , ejeY, 2 * radiojugador, 2 * radiojugador);
     }
     

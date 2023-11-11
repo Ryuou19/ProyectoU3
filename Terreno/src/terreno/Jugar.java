@@ -24,7 +24,6 @@ import java.util.Random;
 import javafx.stage.Popup;
 
 public class Jugar extends Application {  
-    Bala balaAux = null;
     static Random random = new Random();
     private int turno = 1;
     double angulo;
@@ -40,6 +39,7 @@ public class Jugar extends Application {
     int tipo=0;//tipo de bala seleccionada
     public Label textodistancia;//distancia maxima mostrada en la interfaz a traves de la variable distancia
     public Label textoaltura;//altura maxima mostrada en la interfaz a traves de la variable altura
+    double deltaTiempo = 0.1;
     public StackPane root = new StackPane();
     public Scene scene = new Scene(root, 1200, 700);
     public Canvas canvas = new Canvas(1200, 900);
@@ -270,77 +270,45 @@ public class Jugar extends Application {
                     return;
                 }
                 angulo = -Double.parseDouble(anguloTexto);
-                velocidad = Double.parseDouble(velocidadTexto);
-                if (turno == 1) {                                       
+                velocidad = Double.parseDouble(velocidadTexto);                                     
                     Bala nuevaBala = crear_bala();//creamos nueva bala con el tipo seleciconado
                     //comprobamos si la bala esta vacia
                     if(nuevaBala==null){
                         System.out.println("no quedan mas balas ");
                     }
                     else{
-                        new AnimationTimer() {
-                            //double tiempoAnterior = System.nanoTime() / 1e9*5;//valor que ajusta la velocidad de ejecucion del trayecto de la bala
+                        new AnimationTimer() {                          
                             @Override
                             public void handle(long now){
-                                nuevaBala.dibujo(gc);
-                                //double tiempoActual = System.nanoTime() / 1e9*5;
-                                double deltaTiempo = 0.1;
-                                nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,boxdistancia,boxaltura,listJugador.getJugador1().getTanque().getCañonY(),listJugador.getJugador1().getTanque().getCañonX());
-                                //tiempoAnterior = tiempoActual;
+                                nuevaBala.dibujo(gc,nuevaBala.getDanio());
+                                if(turno==1){
+                                    nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,boxdistancia,boxaltura,listJugador.getJugador1().getTanque().getCañonY(),listJugador.getJugador1().getTanque().getCañonX());
+                                }
+                                if(turno==2){
+                                    nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,boxdistancia,boxaltura,listJugador.getJugador2().getTanque().getCañonY(),listJugador.getJugador2().getTanque().getCañonX());
+                                }                             
                                 victoria=terrain.colision_terreno(gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);
                                 if(victoria==1){
-                                    impacto_jugador1(balaAux.getDanio());
+                                    impacto_jugador1(nuevaBala.getDanio());
                                 }
                                 else if(victoria==2){
-                                    impacto_jugador2(balaAux.getDanio());
+                                    impacto_jugador2(nuevaBala.getDanio());
                                 }
                                 if (nuevaBala.eliminar()) {
                                     colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)  
-                                    turno=2;//cambia turno
+                                    if(turno==1){
+                                        turno=2;//cambia turno
+                                    }
+                                    else if(turno==2){
+                                        turno=1;//cambia turno
+                                    }                                   
                                     stop();
                                     animacionCaida();
                                 }
                             }
                         }.start();
                         boxcantidadbalas.setVisible(false);
-                    }
-                }               
-                else if (turno == 2) {                            
-                    Bala nuevaBala = crear_bala();
-                    //comprobamos si la bala esta vacia
-                    if(nuevaBala==null){
-                        System.out.println("no quedan mas balas ");
-                    }
-                    else
-                    {
-                        new AnimationTimer() {
-                            //double relacion=1e9*5;//valor que ajusta la velocidad de ejecucion del trayecto de la bala, para acercarlo a una parabola(con viento)
-                            //double tiempoAnterior = System.nanoTime() / relacion;
-                            @Override
-                            public void handle(long now){
-                                nuevaBala.dibujo(gc);
-                                //double tiempoActual = System.nanoTime() / relacion;
-                                double deltaTiempo = 0.1;
-                                nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,boxdistancia,boxaltura,listJugador.getJugador2().getTanque().getCañonY(),listJugador.getJugador2().getTanque().getCañonX());//posicionar la bala en un tiempo determinado
-                                //tiempoAnterior = tiempoActual;
-                                victoria=terrain.colision_terreno(gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);//revisa donde colisiono la bala
-                                if(victoria==1){
-                                    impacto_jugador1(balaAux.getDanio());//impacto dependiendo del daño de la bala
-                                }
-                                else if(victoria==2){
-                                    impacto_jugador2(balaAux.getDanio());//impacto dependiendo del daño de la bala
-                                }
-                                if (nuevaBala.eliminar()) {
-                                    colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)                                                                      
-                                    turno=1;//cambia turno
-                                    stop();
-                                    animacionCaida();
-                                    
-                                }
-                            }
-                        }.start();
-                    }
-                }
+                    }        
                 entradaangulo.setText("");
                 entradavelocidad.setText("");
             }
@@ -605,56 +573,28 @@ public class Jugar extends Application {
     }    
     public Bala crear_bala(){
         Bala nuevaBala = null;
+        int danio=0;
+        if(tipo==1){
+            danio=30;
+        }
+        if(tipo==2){
+            danio=40;
+        }
+        if(tipo==3){
+            danio=50;
+        }
+        
         if(turno==1){
             cañonX = listJugador.getJugador1().getTanque().getCañonX();
             cañonY = listJugador.getJugador1().getTanque().getCañonY();
-            if(tipo==1)
-            {
-                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,30);
-                balaAux = nuevaBala;
-                listJugador.getJugador1().setCantidad60(listJugador.getJugador1().getCantidad60()-1);
-
-            }
-            if(tipo==2)
-            {
-                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,40);
-                balaAux = nuevaBala;
-                listJugador.getJugador1().setCantidad80(listJugador.getJugador1().getCantidad80()-1);
-
-            }
-            if(tipo==3){
-            {
-                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,50);
-                balaAux = nuevaBala;
-                listJugador.getJugador1().setCantidad105(listJugador.getJugador1().getCantidad105()-1);
-            }
+            nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,danio,listJugador.getJugador1());
         }
-        }
+        
         if(turno==2){
             cañonX = listJugador.getJugador2().getTanque().getCañonX();
             cañonY = listJugador.getJugador2().getTanque().getCañonY();
             angulo = 180 - angulo;
-            if(tipo==1)
-            {
-                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,30);
-                balaAux = nuevaBala;
-                    listJugador.getJugador2().setCantidad60(listJugador.getJugador2().getCantidad60()-1);
-
-            }
-            if(tipo==2)
-            {
-                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,40);
-                balaAux = nuevaBala;
-                listJugador.getJugador2().setCantidad80(listJugador.getJugador2().getCantidad80()-1);
-
-            }
-            if(tipo==3)
-            {
-                nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,50);
-                balaAux = nuevaBala;
-                listJugador.getJugador2().setCantidad105(listJugador.getJugador2().getCantidad105()-1);
-
-            }
+            nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,danio,listJugador.getJugador2());                                 
         }
         return nuevaBala;
     }
@@ -726,8 +666,7 @@ public class Jugar extends Application {
         if(tanque==2){
             impacto_jugador2(area);;//realiza el impacto y el ajuste de la vida del tanque1
         }
-        reiniciar_matriz(terrain.explosion);//reinicia la matriz de explosion para que asi no guarde valores de explosiones anteriores
-        
+        reiniciar_matriz(terrain.explosion);//reinicia la matriz de explosion para que asi no guarde valores de explosiones anteriores     
     }
     
     public void reiniciar_matriz(int explosion[][]) {
@@ -738,46 +677,8 @@ public class Jugar extends Application {
         }
     }
     
-    
-    ///Esta parte de codigo fue la que intentamos usar para la caida, pero no nos dio el tiempo suficiente:(
-    
-    /*public void revisar_caida(Jugador jugador1,Jugador jugador2){
-        contador=0;
-        int tanque=0;
-        for(int i=0;i<terrain.matriz.length/2;i++){
-            for (int j=0;j<terrain.matriz[i].length;j++){
-                if(terrain.matriz[i][j]==4 && terrain.dunas[i][j+1]==-1 || 
-                    terrain.matriz[i][j]==4 && terrain.dunas[i][j+1]==0){
-                    gc.setFill(Color.BLACK  );
-                    gc.fillOval(i * 3,j * 3, 3, 3);     
-                    contador++;
-                }
-                
-                if(i==200){
-                    contador=0;
-                    tanque=1;
-                }
-            }
-        }
-        if(contador==40){
-            gc.setFill(Color.BLACK  );
-            gc.fillOval(300,300, 30, 30);
-            if(tanque==0){
-                jugador1.getTanque().setBajada(30);
-                System.out.println("bajada= "+jugador1.getTanque().getBajada());
-
-            }
-            if(tanque==1){
-                jugador2.getTanque().setBajada(30);
-                System.out.println("bajada= "+jugador2.getTanque().getBajada());
-            }
-
-        }
-        System.out.println("Contador actual= "+contador);                     
-    }*/
-    public void animacionCaida()
-    {
-            listJugador.getJugador1().getTanque().caidaTanque(gc,terrain,terreno_random);
-            listJugador.getJugador2().getTanque().caidaTanque(gc, terrain, terreno_random);
+    public void animacionCaida(){
+        listJugador.getJugador1().getTanque().caidaTanque(gc,terrain,terreno_random);
+        listJugador.getJugador2().getTanque().caidaTanque(gc, terrain, terreno_random);
     }
 }

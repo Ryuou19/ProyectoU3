@@ -49,7 +49,7 @@ public class Jugador {
         return tanque;
     }
   
-    public Jugador(GraphicsContext gc, String color, int jugador,String nombre){
+    public Jugador( String color, int jugador,String nombre){
         this.color = color;
         this.jugador = jugador;
         this.rand=new Random();

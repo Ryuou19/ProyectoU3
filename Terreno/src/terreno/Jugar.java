@@ -27,18 +27,16 @@ public class Jugar extends Application {
     double deltaTiempo = 0.1;
     int rondas=3;
     Stage stage;
-  
+    ListaJugadores listJugador;
     int alto = 400;
     int ancho=300;
     int pixel = 3;
-    
     Interfaz interfaz=new Interfaz();
 
-    Jugador jugador1 = new Jugador(interfaz.gc, "tanque1.png", 1,"Haaland");
-    Jugador jugador2 = new Jugador(interfaz.gc, "tanque2.png", 2, "Beligoool");
+    public Jugar(ListaJugadores listJugador) {
+        this.listJugador = listJugador;
+    }
 
-    ListaJugadores listJugador = ListaJugadores.getInstance();
-    
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     static{
         terreno_random = random.nextInt(3);
@@ -53,13 +51,14 @@ public class Jugar extends Application {
     @Override
     public void start(Stage primaryStage) {
         stage=primaryStage;
-        listJugador.setJugador1(jugador1);
-        listJugador.setJugador2(jugador2);
         interfaz.iniciar_interfaz(stage);
         iniciar_terreno();
                     
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
-            reiniciar_partida();
+            stage.close();
+            Tienda escenaTienda = new Tienda();
+            escenaTienda.inicializarInterfaz(stage, listJugador);
+
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
             reiniciar_partida();
@@ -167,7 +166,7 @@ public class Jugar extends Application {
         alturaLabel.setText(" ");           
     }
     public void impacto_jugador1(int danio){
-        int nuevavida1 = listJugador.getJugador1().getTanque().ajustar_vida(vidatanque1, 100);//RECORDAR CAMBIARLO (DANIO)
+        int nuevavida1 = listJugador.getJugador1().getTanque().ajustar_vida(vidatanque1, danio);
         vidatanque1 = nuevavida1;
         interfaz.textovida1.setText(nuevavida1+"");
         interfaz.boxtanque1.setVisible(false);
@@ -178,15 +177,11 @@ public class Jugar extends Application {
         if(vidatanque1<=0){
             System.out.println("HA GANADO EL JUGADOR 2!!");
             reiniciar_partida();
-            Tienda escenaTienda = new Tienda();
-            escenaTienda.inicializarInterfaz(stage,listJugador);
-            stage.show();
-            rondas--;System.out.println("Rondas="+rondas);
         }
     }
     
     public void impacto_jugador2(int danio){
-        int nuevavida2 = listJugador.getJugador2().getTanque().ajustar_vida(vidatanque2, 100);///RECORDAR CAMBIARLO (DANIO)
+        int nuevavida2 = listJugador.getJugador2().getTanque().ajustar_vida(vidatanque2, danio);
         vidatanque2 = nuevavida2;
         interfaz.textovida2.setText(nuevavida2+"");
         interfaz.boxtanque2.setVisible(false);
@@ -197,11 +192,7 @@ public class Jugar extends Application {
         if(vidatanque2<=0){
             System.out.println("HA GANADO EL JUGADOR 1!!");
             reiniciar_partida();
-            Tienda escenaTienda = new Tienda();
-            escenaTienda.inicializarInterfaz(stage,listJugador);
-            stage.show();
-            rondas--;
-            rondas--;System.out.println("Rondas="+rondas);
+            
         }
     }
     
@@ -435,8 +426,6 @@ public class Jugar extends Application {
     }
     
     public void reiniciar_partida(){
-        Tienda escenaTienda = new Tienda();
-        escenaTienda.inicializarInterfaz(stage, listJugador);
         terrain.setContador(0);
             int nuevoTerreno = random.nextInt(3);         
             while (nuevoTerreno == terreno_random) {

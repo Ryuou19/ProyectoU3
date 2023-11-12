@@ -24,10 +24,10 @@ public class Tienda extends Pane {
     
     public void inicializarInterfaz(Stage primaryStage, ListaJugadores listJugadores) {
         this.primaryStage = new Stage();
-        tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+        tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores,this.primaryStage);
     }
        
-    public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores){
+    public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores,Stage primaryStage){
         primaryStage.setTitle("Tienda de Armas");
         primaryStage.setResizable(false);
         Image fondo = new Image(getClass().getResourceAsStream("./img/fondotienda.jpg"));       
@@ -134,7 +134,7 @@ public class Tienda extends Pane {
             "-fx-border-width: 3px;" +  
             "-fx-background-radius: 0;"  
         );
-        
+        bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         comprarBala60.setOnAction(event -> {            
             System.out.println("Bala 60 comprada");
             jugador.saldo-=1000;
@@ -144,19 +144,19 @@ public class Tienda extends Pane {
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
             
         });
-        
+        bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         comprarBala80.setOnAction(event -> {
-            if(jugador.saldo>=2500){
-                System.out.println("Bala 80 comprada");
-                jugador.saldo-=2500;
-                textSaldoJugador.setText("SALDO = "+jugador.saldo);
-                jugador.setCantidad80(jugador.getCantidad80()+1);
-                textBalas80.setText("BALAS 80mm -- "+String.valueOf(jugador.getCantidad80()));
-                bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
-            }            
+            
+            System.out.println("Bala 80 comprada");
+            jugador.saldo-=2500;
+            textSaldoJugador.setText("SALDO = "+jugador.saldo);
+            jugador.setCantidad80(jugador.getCantidad80()+1);
+            textBalas80.setText("BALAS 80mm -- "+String.valueOf(jugador.getCantidad80()));
+            bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);                      
         });
-        
-        comprarBala105.setOnAction(event -> {            
+        bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);    
+        comprarBala105.setOnAction(event -> {
+                    
             System.out.println("Bala 105 comprada");
             jugador.saldo-=4000;
             textSaldoJugador.setText("SALDO = "+jugador.saldo);
@@ -171,12 +171,14 @@ public class Tienda extends Pane {
             System.out.println("Tamanio lista= "+listJugadores.lista.size());
             if (jugadorActual > listJugadores.lista.size()/2) {
                 primaryStage.close();
+                Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
+                juego.start(new Stage());
                 
             } 
             else {          
                 this.getChildren().clear();
                 primaryStage.hide();
-                tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+                tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores,primaryStage);
             }
         });
         

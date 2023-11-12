@@ -361,8 +361,8 @@ public class Jugar extends Application {
         popup.setY(510+posiciony);
         HBox tipos = new HBox(10);
         tipos.setStyle("-fx-background-color: #C0C0C0;");
+        
         //BOTONES
-
         Button bala1 = new Button("60mm");
         bala1.setStyle("-fx-background-color: " + "Green" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
         Button bala2 = new Button("80mm");

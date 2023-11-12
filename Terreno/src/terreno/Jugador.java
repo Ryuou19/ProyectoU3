@@ -9,6 +9,7 @@ public class Jugador {
 
     String color = "";
     public int jugador;
+    String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
     int cantidad105= 3;
     int cantidad80=10;
@@ -48,12 +49,13 @@ public class Jugador {
         return tanque;
     }
   
-    public Jugador(GraphicsContext gc, String color, int jugador){
+    public Jugador(GraphicsContext gc, String color, int jugador,String nombre){
         this.color = color;
         this.jugador = jugador;
         this.rand=new Random();
         this.random=rand.nextInt(4);
         this.saldo=10000;
+        this.nombre=nombre;
         
     }
     

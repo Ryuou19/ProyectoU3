@@ -34,11 +34,11 @@ public class Jugar extends Application {
     
     Interfaz interfaz=new Interfaz();
 
-    Jugador jugador1 = new Jugador(interfaz.gc, "tanque1.png", 1);
-    Jugador jugador2 = new Jugador(interfaz.gc, "tanque2.png", 2);
+    Jugador jugador1 = new Jugador(interfaz.gc, "tanque1.png", 1,"Haaland");
+    Jugador jugador2 = new Jugador(interfaz.gc, "tanque2.png", 2, "Beligoool");
 
     ListaJugadores listJugador = ListaJugadores.getInstance();
-
+    
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     static{
         terreno_random = random.nextInt(3);
@@ -53,11 +53,13 @@ public class Jugar extends Application {
     @Override
     public void start(Stage primaryStage) {
         stage=primaryStage;
+        listJugador.setJugador1(jugador1);
+        listJugador.setJugador2(jugador2);
         interfaz.iniciar_interfaz(stage);
         iniciar_terreno();
                     
-        interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion           
-            Platform.exit();
+        interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
+            reiniciar_partida();
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
             reiniciar_partida();
@@ -133,8 +135,7 @@ public class Jugar extends Application {
     } 
     
     public void iniciar_terreno(){//inicializa la matriz del terreno y la dibuja dependiendo de la eleccion random
-        listJugador.setJugador1(jugador1);
-        listJugador.setJugador2(jugador2);
+        
         terrain.iniciar();
         
         validar=0;
@@ -178,7 +179,7 @@ public class Jugar extends Application {
             System.out.println("HA GANADO EL JUGADOR 2!!");
             reiniciar_partida();
             Tienda escenaTienda = new Tienda();
-            escenaTienda.inicializarInterfaz(stage);
+            escenaTienda.inicializarInterfaz(stage,listJugador);
             stage.show();
             rondas--;System.out.println("Rondas="+rondas);
         }
@@ -197,7 +198,7 @@ public class Jugar extends Application {
             System.out.println("HA GANADO EL JUGADOR 1!!");
             reiniciar_partida();
             Tienda escenaTienda = new Tienda();
-            escenaTienda.inicializarInterfaz(stage);
+            escenaTienda.inicializarInterfaz(stage,listJugador);
             stage.show();
             rondas--;
             rondas--;System.out.println("Rondas="+rondas);
@@ -434,6 +435,8 @@ public class Jugar extends Application {
     }
     
     public void reiniciar_partida(){
+        Tienda escenaTienda = new Tienda();
+        escenaTienda.inicializarInterfaz(stage, listJugador);
         terrain.setContador(0);
             int nuevoTerreno = random.nextInt(3);         
             while (nuevoTerreno == terreno_random) {
@@ -446,12 +449,6 @@ public class Jugar extends Application {
             interfaz.boxtanque1.setVisible(true);
             interfaz.boxvida2.setVisible(false);
             interfaz.boxvida1.setVisible(true);
-            listJugador.getJugador1().setCantidad105(3);
-            listJugador.getJugador1().setCantidad80(10);
-            listJugador.getJugador1().setCantidad60(3);
-            listJugador.getJugador2().setCantidad105(3);
-            listJugador.getJugador2().setCantidad80(10);
-            listJugador.getJugador2().setCantidad60(3);
             vidatanque1=100;
             vidatanque2=100;
             interfaz.textovida1.setText(vidatanque1+"");

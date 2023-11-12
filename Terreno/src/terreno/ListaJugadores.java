@@ -1,12 +1,15 @@
 package terreno;
 
+import java.util.ArrayList;
+
 public class ListaJugadores {
     private static ListaJugadores instance;
     
     private Jugador jugador1;
     private Jugador jugador2;
     private Terreno terreno;
-
+    public ArrayList<Jugador> lista= new ArrayList<>();
+    public boolean confirmacion;
     
     private ListaJugadores() 
     {}
@@ -23,16 +26,18 @@ public class ListaJugadores {
         return jugador1;
     }
 
-    public void setJugador1(Jugador jugador1) {
+    public void setJugador1(Jugador jugador1) {      
         this.jugador1 = jugador1;
+        lista.add(jugador1);
     }
 
-    public Jugador getJugador2() {
+    public Jugador getJugador2() {     
         return jugador2;
     }
 
     public void setJugador2(Jugador jugador2) {
         this.jugador2 = jugador2;
+        lista.add(jugador2);
     }  
     
     public Terreno getTerreno() {
@@ -42,4 +47,7 @@ public class ListaJugadores {
     public void setTerreno(Terreno terreno) {
         this.terreno = terreno;
     }
+
+    
+    
 }

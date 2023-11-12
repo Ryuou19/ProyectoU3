@@ -25,17 +25,17 @@ public class Jugar extends Application {
     int vidatanque2=100;//vidas representadas en la interfaz
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.1;
-  
+    int rondas=3;
+    Stage stage;
+    ListaJugadores listJugador;
     int alto = 400;
     int ancho=300;
     int pixel = 3;
-    
     Interfaz interfaz=new Interfaz();
 
-    Jugador jugador1 = new Jugador(interfaz.gc, "tanque1.png", 1);
-    Jugador jugador2 = new Jugador(interfaz.gc, "tanque2.png", 2);
-
-    ListaJugadores listJugador = ListaJugadores.getInstance();
+    public Jugar(ListaJugadores listJugador) {
+        this.listJugador = listJugador;
+    }
 
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     static{
@@ -50,42 +50,24 @@ public class Jugar extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        
-        interfaz.iniciar_interfaz(primaryStage);
-        iniciar_terreno(primaryStage);
+        stage=primaryStage;
+        interfaz.iniciar_interfaz(stage);
+        iniciar_terreno();
                     
-        interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion           
-            Platform.exit();
+        interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
+            stage.close();
+            Tienda escenaTienda = new Tienda();
+            escenaTienda.inicializarInterfaz(stage, listJugador);
+
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
-            terrain.setContador(0);
-            int nuevoTerreno = random.nextInt(3);         
-            while (nuevoTerreno == terreno_random) {
-                nuevoTerreno = random.nextInt(3);
-            }            
-            terreno_random = nuevoTerreno;
-            iniciar_terreno(primaryStage);
-            turno=1;
-            interfaz.boxtanque2.setVisible(false);
-            interfaz.boxtanque1.setVisible(true);
-            interfaz.boxvida2.setVisible(false);
-            interfaz.boxvida1.setVisible(true);
-            listJugador.getJugador1().setCantidad105(3);
-            listJugador.getJugador1().setCantidad80(10);
-            listJugador.getJugador1().setCantidad60(3);
-            listJugador.getJugador2().setCantidad105(3);
-            listJugador.getJugador2().setCantidad80(10);
-            listJugador.getJugador2().setCantidad60(3);
-            vidatanque1=100;
-            vidatanque2=100;
-            interfaz.textovida1.setText(vidatanque1+"");
-            interfaz.textovida2.setText(vidatanque2+"");
+            reiniciar_partida();
         });
         
         tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
         
         interfaz.balas.setOnAction(e -> {            
-            elegir_bala(primaryStage);   
+            elegir_bala();   
         });
                
         interfaz.disparar.setOnAction(event ->{         
@@ -151,9 +133,8 @@ public class Jugar extends Application {
         );
     } 
     
-    public void iniciar_terreno(Stage primaryStage){//inicializa la matriz del terreno y la dibuja dependiendo de la eleccion random
-        listJugador.setJugador1(jugador1);
-        listJugador.setJugador2(jugador2);
+    public void iniciar_terreno(){//inicializa la matriz del terreno y la dibuja dependiendo de la eleccion random
+        
         terrain.iniciar();
         
         validar=0;
@@ -169,11 +150,11 @@ public class Jugar extends Application {
             terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain);
             animacionCaida();
         }
-        primaryStage.show();
-        System.out.println("posicion del tanque1 x e y -> x"+listJugador.getJugador1().getTanque().getCañonX()+"y"+listJugador.getJugador1().getTanque().getCañonY());
+        stage.show();
+        /*System.out.println("posicion del tanque1 x e y -> x"+listJugador.getJugador1().getTanque().getCañonX()+"y"+listJugador.getJugador1().getTanque().getCañonY());
         System.out.println("posicion del cañon x e y -> x"+listJugador.getJugador1().getTanque().getPosicionX()+"y"+listJugador.getJugador1().getTanque().getPosicionY());
         System.out.println("posicion del tanque2 x e y -> x"+listJugador.getJugador2().getTanque().getCañonX()+"y"+listJugador.getJugador2().getTanque().getCañonY());
-        System.out.println("posicion del cañon x e y -> x"+listJugador.getJugador2().getTanque().getPosicionX()+"y"+listJugador.getJugador2().getTanque().getPosicionY());
+        System.out.println("posicion del cañon x e y -> x"+listJugador.getJugador2().getTanque().getPosicionX()+"y"+listJugador.getJugador2().getTanque().getPosicionY());*/
         validar=1;
     }
     
@@ -195,7 +176,7 @@ public class Jugar extends Application {
         interfaz.boxcantidadbalas.setVisible(false);
         if(vidatanque1<=0){
             System.out.println("HA GANADO EL JUGADOR 2!!");
-            Platform.exit(); 
+            reiniciar_partida();
         }
     }
     
@@ -210,7 +191,8 @@ public class Jugar extends Application {
         interfaz.boxcantidadbalas.setVisible(false);
         if(vidatanque2<=0){
             System.out.println("HA GANADO EL JUGADOR 1!!");
-            Platform.exit(); 
+            reiniciar_partida();
+            
         }
     }
     
@@ -365,7 +347,7 @@ public class Jugar extends Application {
         listJugador.getJugador2().getTanque().caidaTanque(interfaz.gc, terrain, terreno_random);
     }
     
-    public void elegir_bala(Stage primaryStage){
+    public void elegir_bala(){
         interfaz.balas.setDisable(true);
             interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
             interfaz.boxcantidadbalas.setVisible(true);
@@ -440,7 +422,26 @@ public class Jugar extends Application {
             
             tipos.getChildren().addAll(bala1,bala2,bala3);   
             ventana.getContent().add(tipos);           
-            ventana.show(primaryStage);
+            ventana.show(stage);
+    }
+    
+    public void reiniciar_partida(){
+        terrain.setContador(0);
+            int nuevoTerreno = random.nextInt(3);         
+            while (nuevoTerreno == terreno_random) {
+                nuevoTerreno = random.nextInt(3);
+            }            
+            terreno_random = nuevoTerreno;
+            iniciar_terreno();
+            turno=1;
+            interfaz.boxtanque2.setVisible(false);
+            interfaz.boxtanque1.setVisible(true);
+            interfaz.boxvida2.setVisible(false);
+            interfaz.boxvida1.setVisible(true);
+            vidatanque1=100;
+            vidatanque2=100;
+            interfaz.textovida1.setText(vidatanque1+"");
+            interfaz.textovida2.setText(vidatanque2+"");
     }
     public static int getRandom(){
         return terreno_random;

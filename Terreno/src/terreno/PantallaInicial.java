@@ -32,6 +32,9 @@ public class PantallaInicial extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    ListaJugadores list=ListaJugadores.getInstance();
+    Jugador j1=new Jugador("tanque1.png", 1,"Haaland");
+    Jugador j2 = new Jugador("tanque2.png", 2, "Beligoool");
     String musicPath;//ruta de musica
     AudioInputStream audioInput;//audio del sistema
     float volume;//volumen
@@ -39,12 +42,14 @@ public class PantallaInicial extends Application {
     FloatControl control;//para controlar la musica
     @Override
     public void start(Stage primaryStage) {
+        list.setJugador1(j1);
+        list.setJugador2(j2);
         primaryStage.setTitle("!TANK WAR!");
         musica(); 
         Pane panel = new Pane();//panel de la interfaz inicial
         
         //imagen tanque inicial con sus propiedades y estilo
-        Image imagen = new Image(getClass().getResource("tanque menu.gif").toExternalForm());
+        Image imagen = new Image(getClass().getResource("./img/tanque menu.gif").toExternalForm());
         ImageView imageView = new ImageView(imagen);
         imageView.setLayoutX(440); 
         imageView.setLayoutY(270); 
@@ -54,7 +59,7 @@ public class PantallaInicial extends Application {
         imageView.setFitHeight(nuevoAlto);
         
         //titulo inicial con gif  
-        imagen=new Image(getClass().getResource("text.gif").toExternalForm());
+        imagen=new Image(getClass().getResource("./img/text.gif").toExternalForm());
         ImageView titulo = new ImageView(imagen);
         titulo.setLayoutX(390); 
         titulo.setLayoutY(150); 
@@ -87,7 +92,7 @@ public class PantallaInicial extends Application {
             volume -= 6.0f;//al comenzar a jugar, se baja un poco el volumen
             control.setValue(volume);
             primaryStage.close();
-            Jugar juego = new Jugar();//inicia el proceso de jugar
+            Jugar juego = new Jugar(list);//inicia el proceso de jugar
             juego.start(new Stage());
         });
         

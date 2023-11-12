@@ -41,12 +41,12 @@ public class Interfaz {
 
     //TANQUE 1
     HBox boxtanque1 = new HBox();
-    Image tanque1 = new Image(getClass().getResourceAsStream("tanque1.png"));
+    Image tanque1 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
     ImageView imagentanque1 = new ImageView(tanque1);
 
     //TANQUE 2
     HBox boxtanque2 = new HBox();
-    Image tanque2 = new Image(getClass().getResourceAsStream("tanque2.png"));
+    Image tanque2 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
     ImageView imagentanque2 = new ImageView(tanque2);
 
     //DISPARO

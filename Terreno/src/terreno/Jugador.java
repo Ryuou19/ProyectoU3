@@ -9,10 +9,13 @@ public class Jugador {
 
     String color = "";
     public int jugador;
-    //BALAS DE CADA JUGADOR
+    String nombre="";
+    //BALAS INICIALES DE CADA JUGADOR
     int cantidad105= 3;
     int cantidad80=10;
     int cantidad60 =3;
+    //SALDO DE CADA JUGADOR
+    int saldo;
 
     public int getCantidad105() {
         return cantidad105;
@@ -46,11 +49,13 @@ public class Jugador {
         return tanque;
     }
   
-    public Jugador(GraphicsContext gc, String color, int jugador){
+    public Jugador( String color, int jugador,String nombre){
         this.color = color;
         this.jugador = jugador;
         this.rand=new Random();
         this.random=rand.nextInt(4);
+        this.saldo=10000;
+        this.nombre=nombre;
         
     }
     
@@ -61,5 +66,10 @@ public class Jugador {
         Tank tanque = new Tank(color, jugador);
         tanque.agregarTanque(gc,this.random,vida,terreno);
         this.tanque=tanque;
+    }
+    
+    public void agregar_saldo(int cantidad){
+        this.saldo+=cantidad;
+        System.out.println("Saldo disponible= "+this.saldo);
     }
 }

@@ -1,6 +1,8 @@
-
 package terreno;
 
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,8 +13,20 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Timer;
 
 public class MenuOpciones {
+    String musicPath;//ruta de musica
+    AudioInputStream audioInput;//audio del sistema
+    float volume;//volumen
+    Clip clip;//reproductor
+    FloatControl control;//para controlar la musica
     private final String[] resolucion = {"800x800", "900x900", "1200x900"};
     private final String[] jugadores = {"2", "3","4","5","6"}; 
     private final String[] rondas = {"1","2","3","4","5","6","7","8",
@@ -43,6 +57,7 @@ public class MenuOpciones {
     public void start(Stage stage,  Scene escena, ListaJugadores list){
         
         stage.setTitle("Menu Opciones");
+        musica();
         Pane panel = new Pane();
         panel.setPrefSize(500, 650);
         
@@ -55,11 +70,12 @@ public class MenuOpciones {
         imageView.setFitWidth(500);
         imageView.setFitHeight(650);       
         panel.getChildren().add(imageView);
-       
+              
         escena.setRoot(panel);
         stage.setWidth(500);
-        stage.setHeight(650);
+        stage.setHeight(630);
         stage.setX(400); stage.setY(60);
+        
         
         //VOLVER MENU PRINCIPAAL
         Button volverMenu = new Button("Volver al Menú Principal");
@@ -285,12 +301,13 @@ public class MenuOpciones {
         volverMenu.setOnAction(e -> {
             PantallaInicial inicio= new PantallaInicial(resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);
             inicio.start(stage);
-            
+            volume=-80.0f;
+            control.setValue(volume);
         });
         
-        panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno, menu_cantidad,texto_IA,volver);
-              
-               
+        panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
+        texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno,
+        menu_cantidad,texto_IA,volver);                 
         stage.setScene(escena);
         stage.show();
     }
@@ -332,4 +349,36 @@ public class MenuOpciones {
         }
         return opcion;
     }
+    
+    public void musica(){
+        musicPath = "src/terreno/music/musicaMenuOpciones.wav";
+        try{
+            audioInput = AudioSystem.getAudioInputStream(new File(musicPath));
+            clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            //control de volumen
+            control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            //volumen (rango: -80.0 a 6.0206)     
+            volume = 0.0f;            
+            control.setValue(volume);
+            
+            Timer timer = new Timer(0, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    clip.start();
+                }
+            });
+            
+            timer.setRepeats(false);
+            timer.start();
+        //manejo de exepciones
+        }catch(UnsupportedAudioFileException e){
+            System.out.println(e.toString());
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }  
 }

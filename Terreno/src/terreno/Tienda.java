@@ -20,6 +20,20 @@ public class Tienda extends Pane {
     DropShadow dropShadow = new DropShadow();
     int jugadorActual = 0;
     private Stage primaryStage;
+    int resolucion;
+    int jugadores;
+    int rondas;
+    int entorno;
+    int cantidad;
+
+    public Tienda(int resolucion, int jugadores, int rondas, int entorno, int cantidad) {
+        this.resolucion = resolucion;
+        this.jugadores = jugadores;
+        this.rondas = rondas;
+        this.entorno = entorno;
+        this.cantidad = cantidad;
+    }
+    
     
     
     public void inicializarInterfaz(Stage primaryStage, ListaJugadores listJugadores) {
@@ -49,7 +63,7 @@ public class Tienda extends Pane {
         boxNombre.setLayoutY(10);
         
         HBox boxImagenJugador=new HBox();
-        String imagen="./img/"+jugador.color;
+        String imagen=jugador.color;
         Image tanque1 = new Image(getClass().getResourceAsStream(imagen));
         ImageView imagentanque1 = new ImageView(tanque1);
         imagentanque1.setFitWidth(150);
@@ -169,9 +183,9 @@ public class Tienda extends Pane {
             jugadorActual++; 
             System.out.println("JugadorActual= "+jugadorActual);
             System.out.println("Tamanio lista= "+listJugadores.lista.size());
-            if (jugadorActual > listJugadores.lista.size()/2) {
+            if (jugadorActual >= 2/*listJugadores.lista.size()/2*/) {
                 primaryStage.close();
-                Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
+                Jugar juego = new Jugar(listJugadores,resolucion,rondas,jugadores,cantidad,entorno);//inicia el proceso de jugar
                 juego.start(new Stage());
                 
             } 
@@ -204,5 +218,8 @@ public class Tienda extends Pane {
     }
     
 }
+
+
+
 
 

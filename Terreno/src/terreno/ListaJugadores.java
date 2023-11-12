@@ -6,6 +6,8 @@ public class ListaJugadores {
     private static ListaJugadores instance;    
     private Jugador jugador1;
     private Jugador jugador2;
+    private Jugador jugador3;
+    private Jugador jugador4;
     private Terreno terreno;
     public ArrayList<Jugador> lista= new ArrayList<>();
     
@@ -45,7 +47,24 @@ public class ListaJugadores {
     public void setTerreno(Terreno terreno) {
         this.terreno = terreno;
     }
+    
+    public Jugador getJugador3() {     
+        return jugador3;
+    }
 
+    public void setJugador3(Jugador jugador3) {
+        this.jugador3 = jugador3;
+        lista.add(jugador3);
+    } 
+    
+    public Jugador getJugador4() {     
+        return jugador4;
+    }
+
+    public void setJugador4(Jugador jugador4) {
+        this.jugador4 = jugador4;
+        lista.add(jugador4);
+    }  
     
     
 }

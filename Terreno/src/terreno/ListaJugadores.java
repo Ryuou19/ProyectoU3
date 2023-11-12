@@ -3,13 +3,11 @@ package terreno;
 import java.util.ArrayList;
 
 public class ListaJugadores {
-    private static ListaJugadores instance;
-    
+    private static ListaJugadores instance;    
     private Jugador jugador1;
     private Jugador jugador2;
     private Terreno terreno;
     public ArrayList<Jugador> lista= new ArrayList<>();
-    public boolean confirmacion;
     
     private ListaJugadores() 
     {}

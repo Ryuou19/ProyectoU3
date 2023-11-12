@@ -47,7 +47,7 @@ public class PantallaInicial extends Application {
         primaryStage.setTitle("!TANK WAR!");
         musica(); 
         Pane panel = new Pane();//panel de la interfaz inicial
-        
+        Scene scene = new Scene(panel, 1200, 700);
         //imagen tanque inicial con sus propiedades y estilo
         Image imagen = new Image(getClass().getResource("./img/tanque menu.gif").toExternalForm());
         ImageView imageView = new ImageView(imagen);
@@ -88,6 +88,22 @@ public class PantallaInicial extends Application {
             "-fx-background-radius: 0;" 
         );//estilo del boton
         
+        //boton opciones
+        HBox boxopciones=new HBox();
+        Button opciones = new Button("OPCIONES");  
+        opciones.setFont(font);
+        boxopciones.getChildren().add(opciones);
+        opciones.setLayoutX(518);
+        opciones.setLayoutY(580);
+        opciones.setStyle(
+            "-fx-background-color: #000000; " + 
+            "-fx-text-fill: #FFFFFF;" + 
+            "-fx-border-color: #FF0000;" + 
+            "-fx-border-width: 3px;" +  
+            "-fx-background-radius: 0;" 
+        );
+        
+        
         comenzar.setOnAction(e -> {         
             volume -= 6.0f;//al comenzar a jugar, se baja un poco el volumen
             control.setValue(volume);
@@ -96,9 +112,13 @@ public class PantallaInicial extends Application {
             juego.start(new Stage());
         });
         
+        opciones.setOnAction(e -> {                                     
+            MenuOpciones options = new MenuOpciones();
+            options.start(primaryStage, scene);
+        });
+        
         //se añade todo al panel
-        panel.getChildren().addAll(marco,comenzar,imageView, titulo);    
-        Scene scene = new Scene(panel, 1200, 700);
+        panel.getChildren().addAll(marco,comenzar,imageView, titulo,opciones);    
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), panel);//fade blanco inicial
         fadeTransition.setFromValue(0); 
         fadeTransition.setToValue(1); 

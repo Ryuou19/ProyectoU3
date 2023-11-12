@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.util.Random;
+import javafx.beans.value.ChangeListener;
 import javafx.stage.Popup;
 
 public class Jugar extends Application {  
@@ -51,6 +52,7 @@ public class Jugar extends Application {
     @Override
     public void start(Stage primaryStage) {
         stage=primaryStage;
+        stage.setResizable(false);
         interfaz.iniciar_interfaz(stage);
         iniciar_terreno();
                     
@@ -349,80 +351,96 @@ public class Jugar extends Application {
     
     public void elegir_bala(){
         interfaz.balas.setDisable(true);
-            interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
-            interfaz.boxcantidadbalas.setVisible(true);
+        interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
+        interfaz.boxcantidadbalas.setVisible(true);
+        int posicionx=-20;
+        int posiciony=80;
+        //VENTANA
+        Popup popup = new Popup();
+        popup.setX(572+posicionx);
+        popup.setY(510+posiciony);
+        HBox tipos = new HBox(10);
+        tipos.setStyle("-fx-background-color: #C0C0C0;");
+        //BOTONES
+
+        Button bala1 = new Button("60mm");
+        bala1.setStyle("-fx-background-color: " + "Green" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
+        Button bala2 = new Button("80mm");
+        bala2.setStyle("-fx-background-color: " + "Blue" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");;
+        Button bala3 = new Button("105mm");
+        bala3.setStyle("-fx-background-color: " + "Red" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");    
+
+        bala1.setOnAction(event -> {//escoge bala 1
+            if(turno==1){
+                String int_string = Integer.toString(listJugador.getJugador1().getCantidad60());
+                interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
+
+            }
+            else{
+                String int_string = Integer.toString(listJugador.getJugador2().getCantidad60());
+                interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
+            }
+            interfaz.textcantidad.setStyle("-fx-text-fill: green;");
+            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #008000;");
+            tipo=1;//ajusta el tipo
+            popup.hide();
+            interfaz.balas.setDisable(false);
+            interfaz.disparar.setDisable(false);
+        });
             
-            //VENTANA
-            Popup ventana = new Popup();//popup que muestra las balas a elegir
-            HBox tipos = new HBox(10);
-            tipos.setStyle("-fx-background-color: #C0C0C0;");
-            //BOTONES
+        bala2.setOnAction(event -> {//escoge bala 2
+            if(turno==1){
+                String int_string = Integer.toString(listJugador.getJugador1().getCantidad80());
+                interfaz.textcantidad.setText(int_string);//lo mismo de bala1
+
+            }
+            else{
+                String int_string = Integer.toString(listJugador.getJugador2().getCantidad80());
+                interfaz.textcantidad.setText(int_string);//lo mismo de bala1
+            }
+            interfaz.textcantidad.setStyle("-fx-text-fill: blue;");
+            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #0000FF;");
+            tipo=2;//ajusta el tipo
+            popup.hide();
+            interfaz.balas.setDisable(false);
+            interfaz.disparar.setDisable(false);
+        });
             
-            Button bala1 = new Button("60mm");
-            bala1.setStyle("-fx-background-color: " + "Green" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
-            Button bala2 = new Button("80mm");
-            bala2.setStyle("-fx-background-color: " + "Blue" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");;
-            Button bala3 = new Button("105mm");
-            bala3.setStyle("-fx-background-color: " + "Red" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");    
-                       
-            bala1.setOnAction(event -> {//escoge bala 1
-                if(turno==1){
-                    String int_string = Integer.toString(listJugador.getJugador1().getCantidad60());
-                    interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
-                    
-                }
-                else{
-                    String int_string = Integer.toString(listJugador.getJugador2().getCantidad60());
-                    interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
-                }
-                interfaz.textcantidad.setStyle("-fx-text-fill: green;");
-                interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #008000;");
-                tipo=1;//ajusta el tipo
-                ventana.hide();
-                interfaz.balas.setDisable(false);
-                interfaz.disparar.setDisable(false);
-            });
+        bala3.setOnAction(event -> {//escoge bala 3
+            if(turno==1){
+                String int_string = Integer.toString(listJugador.getJugador1().getCantidad105());
+                interfaz.textcantidad.setText(int_string);
+            }
+            else{
+                String int_string = Integer.toString(listJugador.getJugador2().getCantidad105());
+                interfaz.textcantidad.setText(int_string);
+            }
+            interfaz.textcantidad.setStyle("-fx-text-fill: red;");
+            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #FF0000;");
+            tipo=3;//ajusta el tipo
+            popup.hide(); 
+            interfaz.balas.setDisable(false);
+            interfaz.disparar.setDisable(false);
+        });
+        ChangeListener<Number> stagePositionListenerX = (obs, oldValue, newValue) -> {
+            double x = stage.getX() + 500+posicionx;
+            double y = stage.getY() + 500+posiciony;
+            popup.setX(x);
+            popup.setY(y);
+        };
+
+        ChangeListener<Number> stagePositionListenerY = (obs, oldValue, newValue) -> {
+            double x = stage.getX() + 500+posicionx;
+            double y = stage.getY() + 500+posiciony;
+            popup.setX(x);
+            popup.setY(y);
+        };
+        stage.xProperty().addListener(stagePositionListenerX);
+        stage.yProperty().addListener(stagePositionListenerY);
             
-            bala2.setOnAction(event -> {//escoge bala 2
-                if(turno==1){
-                    String int_string = Integer.toString(listJugador.getJugador1().getCantidad80());
-                    interfaz.textcantidad.setText(int_string);//lo mismo de bala1
-                    
-                }
-                else{
-                    String int_string = Integer.toString(listJugador.getJugador2().getCantidad80());
-                    interfaz.textcantidad.setText(int_string);//lo mismo de bala1
-                }
-                interfaz.textcantidad.setStyle("-fx-text-fill: blue;");
-                interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #0000FF;");
-                tipo=2;//ajusta el tipo
-                ventana.hide();
-                interfaz.balas.setDisable(false);
-                interfaz.disparar.setDisable(false);
-            });
-            
-            bala3.setOnAction(event -> {//escoge bala 3
-                if(turno==1){
-                    String int_string = Integer.toString(listJugador.getJugador1().getCantidad105());
-                    interfaz.textcantidad.setText(int_string);
-                }
-                else{
-                    String int_string = Integer.toString(listJugador.getJugador2().getCantidad105());
-                    interfaz.textcantidad.setText(int_string);
-                }
-                interfaz.textcantidad.setStyle("-fx-text-fill: red;");
-                interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #FF0000;");
-                tipo=3;//ajusta el tipo
-                ventana.hide(); 
-                interfaz.balas.setDisable(false);
-                interfaz.disparar.setDisable(false);
-            });
-            ventana.setX(705);
-            ventana.setY(690);
-            
-            tipos.getChildren().addAll(bala1,bala2,bala3);   
-            ventana.getContent().add(tipos);           
-            ventana.show(stage);
+        tipos.getChildren().addAll(bala1,bala2,bala3);   
+        popup.getContent().add(tipos);           
+        popup.show(stage);
     }
     
     public void reiniciar_partida(){

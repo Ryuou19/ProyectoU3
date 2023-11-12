@@ -29,6 +29,9 @@ import java.awt.event.ActionListener;
 
 public class PantallaInicial extends Application {
      
+    
+    
+    
     public static void main(String[] args) {
         launch(args);
     }
@@ -40,11 +43,33 @@ public class PantallaInicial extends Application {
     float volume;//volumen
     Clip clip;//reproductor
     FloatControl control;//para controlar la musica
-    @Override
+    int resolucion_def;
+    int jugadores_def;
+    int rondas_def;
+    int entorno_def;
+    int cantidad_def;
+
+    public PantallaInicial() {
+    }
+      
+    public PantallaInicial(int resolucion_def, int rondas_def, int jugadores_def, int cantidad_def, int entorno_def) {
+        this.resolucion_def = resolucion_def;
+        this.jugadores_def = jugadores_def;
+        this.rondas_def = rondas_def;
+        this.entorno_def = entorno_def;
+        this.cantidad_def = cantidad_def;
+    }
+    
+    
+    
+    @Override   
     public void start(Stage primaryStage) {
         list.setJugador1(j1);
         list.setJugador2(j2);
         primaryStage.setTitle("!TANK WAR!");
+        primaryStage.setWidth(1200);
+        primaryStage.setHeight(800);
+        primaryStage.setX(80); primaryStage.setY(20);
         musica(); 
         Pane panel = new Pane();//panel de la interfaz inicial
         Scene scene = new Scene(panel, 1200, 700);
@@ -112,9 +137,11 @@ public class PantallaInicial extends Application {
             juego.start(new Stage());
         });
         
-        opciones.setOnAction(e -> {                                     
+        opciones.setOnAction(e -> {
             MenuOpciones options = new MenuOpciones();
-            options.start(primaryStage, scene);
+            options.start(primaryStage, scene,list);
+            volume=-80.0f;
+            control.setValue(volume);
         });
         
         //se añade todo al panel

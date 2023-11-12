@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class MenuOpciones {
     private final String[] resolucion = {"800x800", "900x900", "1200x900"};
     private final String[] jugadores = {"2", "3","4","5","6"}; 
-    private final String[] rondas = {"2","3","4","5","6","7","8",
+    private final String[] rondas = {"1","2","3","4","5","6","7","8",
     "9","10","11","12","13","14",
     "15","16","17","18","19","20"};
     private final String[] entorno={"Ninguno","Gravedad","Viento"};
@@ -33,9 +33,15 @@ public class MenuOpciones {
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
     Font font = Font.font("Serif", FontWeight.NORMAL, 24);
+    int resolucion_def;
+    int jugadores_def;
+    int rondas_def;
+    int entorno_def;
+    int cantidad_def;
     
     
-    public void start(Stage stage,  Scene escena){
+    public void start(Stage stage,  Scene escena, ListaJugadores list){
+        
         stage.setTitle("Menu Opciones");
         Pane panel = new Pane();
         panel.setPrefSize(500, 650);
@@ -53,7 +59,7 @@ public class MenuOpciones {
         escena.setRoot(panel);
         stage.setWidth(500);
         stage.setHeight(650);
-        stage.setX(370); stage.setY(60);
+        stage.setX(400); stage.setY(60);
         
         //VOLVER MENU PRINCIPAAL
         Button volverMenu = new Button("Volver al Menú Principal");
@@ -71,13 +77,19 @@ public class MenuOpciones {
         flecha_derecha1.setMinWidth(50);
         flecha_derecha1.setMinHeight(50);
         flecha_derecha1.setStyle(estilo_botones);
-        flecha_derecha1.setOnAction(e -> cambiarOpcion(1,resolucion,opcion_resolucion));
+        flecha_derecha1.setOnAction(e -> {
+            resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,resolucion_def);
+            System.out.println("Actual = "+resolucion_def);
+        });
         
         Button flecha_izquierda1 = new Button("<");
         flecha_izquierda1.setMinWidth(50); 
         flecha_izquierda1.setMinHeight(50); 
         flecha_izquierda1.setStyle(estilo_botones);
-        flecha_izquierda1.setOnAction(e -> cambiarOpcion(-1,resolucion,opcion_resolucion));
+        flecha_izquierda1.setOnAction(e -> {
+            resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,resolucion_def);
+            System.out.println("Actual = "+resolucion_def);
+        });
         
         HBox menu_resoluciones = new HBox();
         menu_resoluciones.getChildren().addAll(flecha_izquierda1,opcion_resolucion, flecha_derecha1);
@@ -106,13 +118,19 @@ public class MenuOpciones {
         flecha_derecha2.setMinWidth(50);
         flecha_derecha2.setMinHeight(50);
         flecha_derecha2.setStyle(estilo_botones);
-        flecha_derecha2.setOnAction(e -> cambiarOpcion(1,rondas,opcion_rondas));
+        flecha_derecha2.setOnAction(e -> {
+            rondas_def=cambiarOpcion(1,rondas,opcion_rondas,rondas_def);
+            System.out.println("Actual = "+rondas_def);
+        });
         
         Button flecha_izquierda2 = new Button("<");
         flecha_izquierda2.setMinWidth(50);
         flecha_izquierda2.setMinHeight(50);
         flecha_izquierda2.setStyle(estilo_botones);
-        flecha_izquierda2.setOnAction(e -> cambiarOpcion(-1,rondas,opcion_rondas));
+        flecha_izquierda2.setOnAction(e -> {
+            rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,rondas_def);
+            System.out.println("Actual = "+rondas_def);
+        });
         
         HBox menu_rondas = new HBox();
         menu_rondas.getChildren().addAll(flecha_izquierda2,opcion_rondas, flecha_derecha2);
@@ -142,13 +160,19 @@ public class MenuOpciones {
         flecha_derecha3.setMinWidth(50);
         flecha_derecha3.setMinHeight(50);
         flecha_derecha3.setStyle(estilo_botones);
-        flecha_derecha3.setOnAction(e -> cambiarOpcion(1,jugadores,opcion_jugadores));
+        flecha_derecha3.setOnAction(e -> {
+            jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,jugadores_def);
+            System.out.println("Actual = "+jugadores_def);
+        });
         
         Button flecha_izquierda3 = new Button("<");
         flecha_izquierda3.setMinWidth(50);
         flecha_izquierda3.setMinHeight(50);
         flecha_izquierda3.setStyle(estilo_botones);
-        flecha_izquierda3.setOnAction(e -> cambiarOpcion(-1,jugadores,opcion_jugadores));
+        flecha_izquierda3.setOnAction(e -> {
+            jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,jugadores_def);
+            System.out.println("Actual = "+jugadores_def);
+        });
         
         HBox menu_jugadores = new HBox();
         menu_jugadores.getChildren().addAll(flecha_izquierda3,opcion_jugadores, flecha_derecha3);
@@ -178,13 +202,19 @@ public class MenuOpciones {
         flecha_derecha5.setMinWidth(50); 
         flecha_derecha5.setMinHeight(50);
         flecha_derecha5.setStyle(estilo_botones);
-        flecha_derecha5.setOnAction(e -> cambiarOpcion(1,cantidad,opcion_cantidad));
+        flecha_derecha5.setOnAction(e -> {         
+            cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,cantidad_def);
+            System.out.println("Actual = "+cantidad_def); 
+        });
         
         Button flecha_izquierda5 = new Button("<");
         flecha_izquierda5.setMinWidth(50); 
         flecha_izquierda5.setMinHeight(50);
         flecha_izquierda5.setStyle(estilo_botones);
-        flecha_izquierda5.setOnAction(e -> cambiarOpcion(-1,cantidad,opcion_cantidad));
+        flecha_izquierda5.setOnAction(e -> {         
+            cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,cantidad_def);
+            System.out.println("Actual = "+cantidad_def); 
+        });
              
         HBox menu_cantidad = new HBox();
         menu_cantidad.getChildren().addAll(flecha_izquierda5,opcion_cantidad, flecha_derecha5);
@@ -212,13 +242,19 @@ public class MenuOpciones {
         flecha_derecha4.setMinWidth(50); 
         flecha_derecha4.setMinHeight(50);
         flecha_derecha4.setStyle(estilo_botones);
-        flecha_derecha4.setOnAction(e -> cambiarOpcion(1,entorno,opcion_entorno));
+        flecha_derecha4.setOnAction(e -> {
+            entorno_def=cambiarOpcion(1,entorno,opcion_entorno,entorno_def);
+            System.out.println("Actual = "+entorno_def);    
+        });
         
         Button flecha_izquierda4 = new Button("<");
         flecha_izquierda4.setMinWidth(50);
         flecha_izquierda4.setMinHeight(50);
         flecha_izquierda4.setStyle(estilo_botones);
-        flecha_izquierda4.setOnAction(e -> cambiarOpcion(-1,entorno,opcion_entorno));
+        flecha_izquierda4.setOnAction(e -> {
+            entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,entorno_def);
+            System.out.println("Actual = "+entorno_def);      
+        });
         
         HBox menu_entorno = new HBox();
         menu_entorno.getChildren().addAll(flecha_izquierda4,opcion_entorno, flecha_derecha4);
@@ -241,11 +277,16 @@ public class MenuOpciones {
         //VOLVER
         HBox volver=new HBox();
         volver.getChildren().add(volverMenu);
-        volver.setLayoutX(150);
-        volver.setLayoutY(550);
+        volver.setLayoutX(110);
+        volver.setLayoutY(520);
         /////////////////////////////////////////////////
         //VOLVER
         
+        volverMenu.setOnAction(e -> {
+            PantallaInicial inicio= new PantallaInicial(resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);
+            inicio.start(stage);
+            
+        });
         
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno, menu_cantidad,texto_IA,volver);
               
@@ -255,12 +296,40 @@ public class MenuOpciones {
     }
     
     
-    private void cambiarOpcion(int desplazamiento, String[] tipo, Button opcion) {
+    private int cambiarOpcion(int desplazamiento, String[] tipo, Button opcion, int var_opcion) {
         opcionActual = (opcionActual + desplazamiento) % tipo.length;
         if(opcionActual<0){
             opcionActual=tipo.length-1;
-        }
-        
+        }       
         opcion.setText(tipo[opcionActual]);
+        var_opcion=opcion_def(tipo,opcionActual,var_opcion);
+        return var_opcion;
     }   
+    
+    private int opcion_def(String[] tipo, int opcionActual, int opcion){
+        String opcion_str;
+        for (int i=0;i<tipo.length;i++){
+            if(i==opcionActual){
+                System.out.println("Opcion Actual= "+opcionActual);
+                if(tipo[i].length()>2){
+                    opcion_str=tipo[i];
+                    System.out.println("ELECCION STR= "+opcion_str);
+                    if(opcion_str.equals("800x800")||opcion_str.equals("Ninguno")){
+                        opcion=0;
+                    }
+                    if(opcion_str.equals("900x900")||opcion_str.equals("Gravedad")){
+                        opcion=1;
+                    }
+                    if(opcion_str.equals("1200x900")||opcion_str.equals("Viento")){
+                        opcion=2;
+                    }              
+                }
+                else{
+                    opcion=Integer.parseInt(tipo[i]);
+                    System.out.println("ELECCION= "+opcion);
+                }               
+            }         
+        }
+        return opcion;
+    }
 }

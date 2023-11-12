@@ -17,14 +17,24 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+ 
+
 
 public class Interfaz {
+    
+    int alto=400;
+    int ancho=300;
+
+    public Interfaz(int alto, int ancho) {
+        this.alto = alto;
+        this.ancho = ancho;
+    }
+    
+    
+    
     public Label textodistancia;//distancia maxima mostrada en la interfaz a traves de la variable distancia
     public Label textoaltura;//altura maxima mostrada en la interfaz a traves de la variable altura
-    public StackPane root = new StackPane();
-    public Scene scene = new Scene(root, 1200, 700);
-    public Canvas canvas = new Canvas(1200, 900);
-    public GraphicsContext gc = canvas.getGraphicsContext2D();
+    
 
     //ANGULO
     HBox boxangulo = new HBox();
@@ -87,8 +97,14 @@ public class Interfaz {
     //CANTIDAD BALAS
     HBox boxcantidadbalas=new HBox();
     Label textcantidad= new Label("");
+    GraphicsContext gc;
     
-    public void iniciar_interfaz(Stage primaryStage){//inicia todo lo visual e interactivo de la interfaz de juego    
+    public void iniciar_interfaz(Stage primaryStage, int alto, int ancho){//inicia todo lo visual e interactivo de la interfaz de juego    
+        StackPane root = new StackPane();
+        Scene scene = new Scene(root, alto*3, 700);
+        Canvas canvas = new Canvas(alto*3, ancho*3);
+        GraphicsContext newgc = canvas.getGraphicsContext2D();
+        gc=newgc;
         primaryStage.setScene(scene);
         Pane canvasPane = new Pane();
         canvasPane.setPrefSize(1200, 900);

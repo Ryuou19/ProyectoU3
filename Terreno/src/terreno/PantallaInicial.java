@@ -1,4 +1,3 @@
-
 package terreno;
 
 import java.io.File;
@@ -36,18 +35,18 @@ public class PantallaInicial extends Application {
         launch(args);
     }
     ListaJugadores list=ListaJugadores.getInstance();
-    Jugador j1=new Jugador("tanque1.png", 1,"Haaland");
-    Jugador j2 = new Jugador("tanque2.png", 2, "Beligoool");
+    Jugador j1=new Jugador("./img/tanque1.png", 1,"Haaland");
+    Jugador j2 = new Jugador("./img/tanque2.png", 2, "Beligoool");
     String musicPath;//ruta de musica
     AudioInputStream audioInput;//audio del sistema
     float volume;//volumen
     Clip clip;//reproductor
     FloatControl control;//para controlar la musica
-    int resolucion_def;
-    int jugadores_def;
-    int rondas_def;
-    int entorno_def;
-    int cantidad_def;
+    int resolucion_def=2;
+    int jugadores_def=2;
+    int rondas_def=1;
+    int entorno_def=0;
+    int cantidad_def=0;
 
     public PantallaInicial() {
     }
@@ -67,6 +66,8 @@ public class PantallaInicial extends Application {
         list.setJugador1(j1);
         list.setJugador2(j2);
         primaryStage.setTitle("!TANK WAR!");
+        Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
+        primaryStage.getIcons().add(icono); 
         primaryStage.setWidth(1200);
         primaryStage.setHeight(800);
         primaryStage.setX(80); primaryStage.setY(20);
@@ -133,7 +134,7 @@ public class PantallaInicial extends Application {
             volume -= 6.0f;//al comenzar a jugar, se baja un poco el volumen
             control.setValue(volume);
             primaryStage.close();
-            Jugar juego = new Jugar(list);//inicia el proceso de jugar
+            Jugar juego = new Jugar(list,resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);//inicia el proceso de jugar
             juego.start(new Stage());
         });
         

@@ -2,7 +2,6 @@ package terreno;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -26,23 +25,31 @@ public class Jugar extends Application {
     int vidatanque2=100;//vidas representadas en la interfaz
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.1;
-    int rondas=3;
+    int resolucion;
+    int jugadores;
+    int rondas;
+    int entorno;
+    int cantidad;
     Stage stage;
     ListaJugadores listJugador;
     int alto = 400;
     int ancho=300;
+    Interfaz interfaz=new Interfaz(alto,ancho);
     int pixel = 3;
-    Interfaz interfaz=new Interfaz();
 
-    public Jugar(ListaJugadores listJugador) {
+    public Jugar(ListaJugadores listJugador,int resolucion, int rondas, int jugadores, int cantidad,int entorno) {
+        this.resolucion = resolucion;
+        this.jugadores = jugadores;
+        this.rondas = rondas;
+        this.entorno = entorno;
+        this.cantidad = cantidad;
         this.listJugador = listJugador;
     }
-
+          
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     static{
         terreno_random = random.nextInt(3);
     }
-    
     Terreno terrain = new Terreno(alto,ancho, pixel,interfaz.gc);
     
     public static void main(String[] args) {
@@ -53,12 +60,15 @@ public class Jugar extends Application {
     public void start(Stage primaryStage) {
         stage=primaryStage;
         stage.setResizable(false);
-        interfaz.iniciar_interfaz(stage);
+        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
+        interfaz=new Interfaz(1200,900);
+        
+        interfaz.iniciar_interfaz(stage,alto,ancho);
         iniciar_terreno();
                     
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
             stage.close();
-            Tienda escenaTienda = new Tienda();
+            Tienda escenaTienda = new Tienda(resolucion,rondas,jugadores,cantidad,entorno);
             escenaTienda.inicializarInterfaz(stage, listJugador);
 
         });
@@ -463,5 +473,41 @@ public class Jugar extends Application {
     }
     public static int getRandom(){
         return terreno_random;
+    }
+    
+    public void definir_opciones(int resolucion_def, int rondas_def, int jugadores_def, int cantidad_def, int entorno_def){
+        //Resolucion
+        if(resolucion_def==0){
+            alto=267;
+            ancho=267;
+        }
+        if(resolucion_def==1){
+            alto=300;
+            ancho=300;
+        }
+        if(resolucion_def==2){
+            alto=400;
+            ancho=300;
+        }
+        //Rondas
+        rondas=rondas_def;
+        //Jugadores
+        if (listJugador.lista.size()<3){
+            Jugador j3 = new Jugador("./img/tanque1.png", 3, "De Bruyne");
+            listJugador.setJugador3(j3);
+        }
+        if (listJugador.lista.size()<4){
+            Jugador j3 = new Jugador("./img/tanque1.png", 3, "De Bruyne");
+            listJugador.setJugador3(j3);
+            Jugador j4 = new Jugador("./img/tanque2.png", 4, "CR7");
+            listJugador.setJugador4(j4);
+        }
+        //AHI MAS ADELANTE SE AGREGAN EL RESTO DE JUGADORES, PROVISORIO HASTA QUE SE PUEDAN CREAR DE FORMA GENERICA
+        
+        //Cantidad
+        //SE AGREGARA CUANDO NOS METAMOS CON LAS IA'S
+        
+        //Entorno
+        //SE AGREGARA CUANDO TRABAJEMOS LOS ENTORNOS
     }
 }

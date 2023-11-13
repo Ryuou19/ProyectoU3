@@ -184,7 +184,9 @@ public class Tienda extends Pane {
             System.out.println("JugadorActual= "+jugadorActual);
             System.out.println("Tamanio lista= "+listJugadores.lista.size());
             if (jugadorActual >= 2/*listJugadores.lista.size()/2*/) {
-                primaryStage.close();
+                rondas++;
+                System.out.println("Rondas="+rondas);
+                primaryStage.close();           
                 Jugar juego = new Jugar(listJugadores,resolucion,rondas,jugadores,cantidad,entorno);//inicia el proceso de jugar
                 juego.start(new Stage());
                 

@@ -44,6 +44,7 @@ public class Jugar extends Application {
         this.entorno = entorno;
         this.cantidad = cantidad;
         this.listJugador = listJugador;
+        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
     }
           
     private static int terreno_random;//variable que guarda la seleccion random del terreno
@@ -59,17 +60,23 @@ public class Jugar extends Application {
     @Override
     public void start(Stage primaryStage) {
         stage=primaryStage;
+        if(rondas<0){
+            stage.close();
+        }
         stage.setResizable(false);
-        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
+        
         interfaz=new Interfaz(1200,900);
         
         interfaz.iniciar_interfaz(stage,alto,ancho);
         iniciar_terreno();
                     
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
-            stage.close();
+            stage.close(); 
+            
             Tienda escenaTienda = new Tienda(resolucion,rondas,jugadores,cantidad,entorno);
             escenaTienda.inicializarInterfaz(stage, listJugador);
+            rondas++;
+            System.out.println("Rondas="+rondas);
 
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida

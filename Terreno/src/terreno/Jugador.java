@@ -16,7 +16,7 @@ public class Jugador {
     int cantidad60 =3;
     //SALDO DE CADA JUGADOR
     int saldo;
-
+    //hola
     public int getCantidad105() {
         return cantidad105;
     }

@@ -520,9 +520,11 @@ public class Jugar extends Application {
     }
     void definifirPosicion()
     {
-        int posicion_inicial=60;
+        int largo = (alto*pixel);
+        int mitad_mapa=largo/2;
+        int posicion_inicial=random.nextInt(0,mitad_mapa);
         listJugador.getJugador1().posicionInicalX=posicion_inicial;
-        int posicion_inicial2=300;
+        int posicion_inicial2=random.nextInt(mitad_mapa,largo);
         listJugador.getJugador2().posicionInicalX=posicion_inicial2;
     }
 }

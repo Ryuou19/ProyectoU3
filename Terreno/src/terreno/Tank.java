@@ -181,10 +181,19 @@ public class Tank{
                         listaJugador.getJugador1().getTanque().setPosicion1(posicionY);
                         listaJugador.getJugador1().getTanque().setPosicion0(posicionX);
                         listaJugador.getJugador1().getTanque().setCañonY(cañonY);
-                        if(contador[0]>dañoAltura)
-                        {   // a ajustar vida se le da la vida actual del tanque, y se le pasa la cantiadad que conto el contador *2 
-                            listaJugador.getJugador1().getTanque().ajustar_vida(listaJugador.getJugador1().getTanque().vida, (int)(contador[0]*0.5));
+                        if(listaJugador.getJugador1().primeraInstanciaTanque==1)
+                        {
+                            listaJugador.getJugador1().primeraInstanciaTanque++;
                         }
+                        else
+                        {
+                            
+                            if(contador[0]>dañoAltura)
+                            {   // a ajustar vida se le da la vida actual del tanque, y se le pasa la cantiadad que conto el contador *2 
+                                listaJugador.getJugador1().getTanque().ajustar_vida(listaJugador.getJugador1().getTanque().vida, (int)(contador[0]*0.5));
+                            }
+                        }
+
                         
                     }
                     if(jugadorTanque==2)
@@ -192,9 +201,17 @@ public class Tank{
                         listaJugador.getJugador2().getTanque().setPosicion1(posicionY);
                         listaJugador.getJugador2().getTanque().setPosicion0(posicionX);
                         listaJugador.getJugador2().getTanque().setCañonY(cañonY);
-                        if(contador[0]>dañoAltura)
-                        {   // a ajustar vida se le da la vida actual del tanque, y se le pasa la cantiadad que conto el contador *2 
-                            listaJugador.getJugador2().getTanque().ajustar_vida(listaJugador.getJugador2().getTanque().vida,(int) (contador[0]*0.5));
+                        if(listaJugador.getJugador2().primeraInstanciaTanque==1)
+                        {
+                            listaJugador.getJugador2().primeraInstanciaTanque++;
+                        }
+                        else
+                        {
+                            
+                            if(contador[0]>dañoAltura)
+                            {   // a ajustar vida se le da la vida actual del tanque, y se le pasa la cantiadad que conto el contador *2 
+                                listaJugador.getJugador2().getTanque().ajustar_vida(listaJugador.getJugador2().getTanque().vida, (int)(contador[0]*0.5));
+                            }
                         }
                         
                     }

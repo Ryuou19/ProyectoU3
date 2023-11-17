@@ -16,6 +16,8 @@ public class Jugador {
     int cantidad60 =3;
     //SALDO DE CADA JUGADOR
     int saldo;
+    int posicionInicalX;
+    int posicionInicialY=200;
     //hola
     public int getCantidad105() {
         return cantidad105;
@@ -64,7 +66,7 @@ public class Jugador {
             this.random=rand.nextInt(4);      
         }
         Tank tanque = new Tank(color, jugador);
-        tanque.agregarTanque(gc,this.random,vida,terreno);
+        tanque.agregarTanque(gc,this.random,vida,terreno,posicionInicalX,posicionInicialY);
         this.tanque=tanque;
     }
     

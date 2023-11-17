@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;// import usado para dibujar hitbox con el fin d
 
 public class Tank{
     public int posicionX;
-    public int posicionY;
+    public int posicionY=300;
     public String color;
     public int jugadorTanque;
     private double angulo;
@@ -92,60 +92,9 @@ public class Tank{
         gc.restore();
     }
        
-    public void agregarTanque(GraphicsContext gc, int ran,int vida,Terreno terreno) {
-        int opcion = Jugar.getRandom();//opcion escogida de todas las posiciones posibles randomicamente
-        int[][] positions = null;
-        int x1, x2, x3, x4;//valores x de cada posicion de los tanques
-        int y1, y2, y3, y4;//valores y de cada posicion de los tanques
-        if(opcion == 0){
-            if(jugadorTanque == 1){
-                x1=120;x2=60;x3=210;x4=268;
-                y1=530;y2=500;y3=480;y4=390;
-                positions = new int[][]{{x1, x2, x3, x4},{y1, y2, y3,y4}};//se guardan en una matriz para mejor manejo
-            }
-            if(jugadorTanque == 2){
-                x1=842; x2=1020; x3=750; x4=647;
-                y1=580; y2=230; y3=370;y4=207;
-                positions = new int[][]{{x1, x2, x3, x4},{y1, y2, y3,y4}};//mismo proceso
-            }
-
-        }
-        if(opcion == 1){
-            if(jugadorTanque == 1){
-                x1=275;x2=370;x3=230;x4=230;
-                y1=150;y2=335;y3=115;y4=115;
-                positions = new int[][]{{x1, x2, x3, x4},{y1, y2, y3,y4}};
-            }
-            if(jugadorTanque == 2){
-                x1=837;x2=1070;x3=750;x4=990;
-                y1=280;y2=420;y3=350;y4=505;
-                positions = new int[][]{{x1, x2, x3, x4},{y1, y2, y3,y4}};
-            }
-
-        }
-        if(opcion == 2){
-            if(jugadorTanque == 1){
-                x1=120; x2=60; x3=175; x4=50;
-                y1=335; y2=380; y3=360; y4=400;
-                positions = new int[][]{{x1, x2, x3, x4},{y1, y2, y3,y4}};
-            }
-            if(jugadorTanque == 2){
-                x1=900;x2=1020;x3=1110;x4=695;
-                y1=580; y2=300; y3=220; y4=207;
-                positions = new int[][]{{x1, x2, x3, x4},{y1, y2, y3,y4}};
-            }
-
-        }
-        if (positions != null) {
-            int[] x = positions[0];
-            int[] y = positions[1];
-            
-            posicionX = x[ran] + 6;//valores para ajustarse al canvas y terreno
-            posicionY = y[ran] + 13;//valores para ajustarse al canvas y terreno
-            crearHitbox(gc,terreno);
-        }               
-       
-          
+    public void agregarTanque(GraphicsContext gc, int ran,int vida,Terreno terreno,int posicionX, int posicionY) {
+      this.posicionX= posicionX;
+      this.posicionY = posicionY;
     }
     //cambio--------------------------------------------------------------------------------------------------------    
     private void crearHitbox( GraphicsContext gc, Terreno terreno) {

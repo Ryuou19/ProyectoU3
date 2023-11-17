@@ -155,6 +155,7 @@ public class Jugar extends Application {
     public void iniciar_terreno(){//inicializa la matriz del terreno y la dibuja dependiendo de la eleccion random
         
         terrain.iniciar();
+        definifirPosicion();
         
         validar=0;
         if(terreno_random == 0) {
@@ -516,5 +517,12 @@ public class Jugar extends Application {
         
         //Entorno
         //SE AGREGARA CUANDO TRABAJEMOS LOS ENTORNOS
+    }
+    void definifirPosicion()
+    {
+        int posicion_inicial=60;
+        listJugador.getJugador1().posicionInicalX=posicion_inicial;
+        int posicion_inicial2=300;
+        listJugador.getJugador2().posicionInicalX=posicion_inicial2;
     }
 }

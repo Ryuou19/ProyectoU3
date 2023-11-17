@@ -3,7 +3,6 @@ package terreno;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.Timer; 
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
@@ -27,13 +25,7 @@ import java.awt.event.ActionListener;
 
 
 public class PantallaInicial extends Application {
-     
-    
-    
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
+           
     ListaJugadores list=ListaJugadores.getInstance();
     int cantidadJugadores=2;
     String musicPath;//ruta de musica
@@ -47,8 +39,10 @@ public class PantallaInicial extends Application {
     int entorno_def=0;
     int cantidad_def=0;
     Pane panel = new Pane();
-    Scene scene = new Scene(panel, 500, 500);
-    
+    Scene scene = new Scene(panel, 1500, 900);
+    MenuOpciones options = new MenuOpciones();
+    Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
+    int validar=0;
     public PantallaInicial() {
     }
       
@@ -59,19 +53,25 @@ public class PantallaInicial extends Application {
         this.entorno_def = entorno_def;
         this.cantidad_def = cantidad_def;
     }
-
     
-    
+    public static void main(String[] args) {
+        launch(args);
+    }
+      
     @Override   
     public void start(Stage primaryStage) {
+     
+        
+        
         primaryStage.setFullScreen(true);
-        primaryStage.setTitle("!TANK WAR!");
-        Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
+        primaryStage.setX(-10);
+        primaryStage.setY(0);
         primaryStage.getIcons().add(icono); 
-        primaryStage.setWidth(1200);
+        primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
-       
-        musica(); 
+        
+        musicPath = "src/terreno/music/BAIXO-SLOWED.wav";
+        musica(musicPath); 
         
         
         //imagen tanque inicial con sus propiedades y estilo
@@ -133,15 +133,23 @@ public class PantallaInicial extends Application {
             Jugar juego = new Jugar(list,resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);//inicia el proceso de jugar
             //list.instanciarJugadores(cantidadJugadores);
             juego.start(primaryStage,scene);
-            volume -= 6.0f;//al comenzar a jugar, se baja un poco el volumen
+            volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen
             control.setValue(volume);
         });
         
         opciones.setOnAction(e -> {
-            MenuOpciones options = new MenuOpciones();
-            options.start(primaryStage, scene,list);
-            volume=-80.0f;
-            control.setValue(volume);
+            if(validar==0){
+                options.start(primaryStage,list,scene);
+                validar=1;
+            }
+            if(validar==1){
+                detenerMusica();
+                options.mostrar(primaryStage);
+                //volume=-20.0f;
+                //control.setValue(volume);
+            }
+            
+            
         });
         
         //se añade todo al panel
@@ -177,20 +185,18 @@ public class PantallaInicial extends Application {
         primaryStage.show();
     }
     //funcion que procesa la musica
-    public void musica(){
-        musicPath = "src/terreno/music/BAIXO-SLOWED.wav";
+    public void musica(String musica){     
         try{
-            audioInput = AudioSystem.getAudioInputStream(new File(musicPath));
+            audioInput = AudioSystem.getAudioInputStream(new File(musica));
             clip = AudioSystem.getClip();
             clip.open(audioInput);
             //control de volumen
             control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
             //volumen (rango: -80.0 a 6.0206)     
             volume = -20.0f;            
             control.setValue(volume);
             
-            Timer timer = new Timer(1200, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
+            Timer timer = new Timer(0, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     clip.start();
@@ -209,11 +215,19 @@ public class PantallaInicial extends Application {
         }
     }  
     
-    public void volver(Stage stage){
-        stage.setTitle("Menu Opciones");
-        stage.setScene(scene);
-        
-        musica();
+    public void mostrar_inicio(Stage stage){
+        stage.setTitle("!TANK WAR!");
+        stage.getIcons().add(icono);
+        stage.setScene(scene);  
+        detenerMusica();
+        musicPath="src/terreno/music/BAIXO-SLOWED.wav";                
+        musica(musicPath);
     }
     
+    
+    public void detenerMusica() {
+        if (clip != null && clip.isOpen()) {
+            clip.stop();
+        }
+    }
 }

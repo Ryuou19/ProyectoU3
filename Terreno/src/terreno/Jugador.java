@@ -52,13 +52,22 @@ public class Jugador {
         return tanque;
     }
   
-    public Jugador( String color, int jugador,String nombre){
-        this.color = color;
+    public Jugador(int jugador,String nombre){
+        
         this.jugador = jugador;
         this.rand=new Random();
         this.random=rand.nextInt(4);
         this.saldo=10000;
         this.nombre=nombre;
+        //de esta forma no pasamos como parametro la imagenes haciendo mas facil la inicializacion de la clase en la pantalla de inizicio 
+        if (jugador==1)
+        {
+            this.color="./img/tanque1.png";
+        }
+        if(jugador==2)
+        {
+            this.color="./img/tanque2.png";
+        }
         
     }
     

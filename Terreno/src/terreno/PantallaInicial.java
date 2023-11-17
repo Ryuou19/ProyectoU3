@@ -35,8 +35,7 @@ public class PantallaInicial extends Application {
         launch(args);
     }
     ListaJugadores list=ListaJugadores.getInstance();
-    Jugador j1=new Jugador("./img/tanque1.png", 1,"Haaland");
-    Jugador j2 = new Jugador("./img/tanque2.png", 2, "Beligoool");
+    int cantidadJugadores=2;
     String musicPath;//ruta de musica
     AudioInputStream audioInput;//audio del sistema
     float volume;//volumen
@@ -58,13 +57,12 @@ public class PantallaInicial extends Application {
         this.entorno_def = entorno_def;
         this.cantidad_def = cantidad_def;
     }
-    
+
     
     
     @Override   
     public void start(Stage primaryStage) {
-        list.setJugador1(j1);
-        list.setJugador2(j2);
+        
         primaryStage.setTitle("!TANK WAR!");
         Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
         primaryStage.getIcons().add(icono); 
@@ -135,6 +133,7 @@ public class PantallaInicial extends Application {
             control.setValue(volume);
             primaryStage.close();
             Jugar juego = new Jugar(list,resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);//inicia el proceso de jugar
+            list.instanciarJugadores(cantidadJugadores);
             juego.start(new Stage());
         });
         

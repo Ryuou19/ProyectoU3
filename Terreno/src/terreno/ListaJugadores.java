@@ -1,6 +1,7 @@
 package terreno;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListaJugadores {
     private static ListaJugadores instance;    
@@ -10,6 +11,8 @@ public class ListaJugadores {
     private Jugador jugador4;
     private Terreno terreno;
     public ArrayList<Jugador> lista= new ArrayList<>();
+    public ArrayList<Integer> turnosDisponibles;
+    public int indiceActual;
     
     private ListaJugadores() 
     {}
@@ -65,6 +68,29 @@ public class ListaJugadores {
         this.jugador4 = jugador4;
         lista.add(jugador4);
     }  
-    
+    public ArrayList<Jugador> getLista(){
+        return lista;
+    }
+    public void instanciarJugadores(int cantidadJugadores)
+    {
+        for(int i=0;i<cantidadJugadores;i++)
+        {
+            Jugador aux = new Jugador(i,"Juan");
+            lista.add(aux);
+        }
+    }
+     public void generarAleatorio() {
+        if (turnosDisponibles.isEmpty()) {
+            // Si todos los jugadores han sido seleccionados, reiniciar la lista
+            for (int i = 0; i < lista.size(); i++) {
+                turnosDisponibles.add(i);
+            }
+            Collections.shuffle(turnosDisponibles);
+        }
+        indiceActual = turnosDisponibles.remove(0);
+    }
+    public Jugador getJugadorActual() {
+        return lista.get(indiceActual);
+    }
     
 }

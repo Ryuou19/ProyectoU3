@@ -1,5 +1,8 @@
 package terreno;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.control.Button;
@@ -89,7 +92,8 @@ public class Jugar extends Application {
             elegir_bala();   
         });
                
-        interfaz.disparar.setOnAction(event ->{         
+        interfaz.disparar.setOnAction(event ->{
+                
                 //cambio--------------------------------------------------------------------------------
                 if (comprobarMunicion(tipo)) {//verifica si quedan balas del tipo seleccionado
                     System.out.println("no quedan balas de ese tipo");
@@ -501,13 +505,13 @@ public class Jugar extends Application {
         rondas=rondas_def;
         //Jugadores
         if (listJugador.lista.size()<3){
-            Jugador j3 = new Jugador("./img/tanque1.png", 3, "De Bruyne");
+            Jugador j3 = new Jugador( 3, "De Bruyne");
             listJugador.setJugador3(j3);
         }
         if (listJugador.lista.size()<4){
-            Jugador j3 = new Jugador("./img/tanque1.png", 3, "De Bruyne");
+            Jugador j3 = new Jugador( 3, "De Bruyne");
             listJugador.setJugador3(j3);
-            Jugador j4 = new Jugador("./img/tanque2.png", 4, "CR7");
+            Jugador j4 = new Jugador( 4, "CR7");
             listJugador.setJugador4(j4);
         }
         //AHI MAS ADELANTE SE AGREGAN EL RESTO DE JUGADORES, PROVISORIO HASTA QUE SE PUEDAN CREAR DE FORMA GENERICA
@@ -527,4 +531,5 @@ public class Jugar extends Application {
         int posicion_inicial2=random.nextInt(mitad_mapa,largo);
         listJugador.getJugador2().posicionInicalX=posicion_inicial2;
     }
+
 }

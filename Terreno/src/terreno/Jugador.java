@@ -16,7 +16,7 @@ public class Jugador {
     int cantidad60 =3;
     //SALDO DE CADA JUGADOR
     int saldo;
-    int posicionInicalX;
+    int posicionInicalX=0;
     int posicionInicialY=200;
     int primeraInstanciaTanque;
     //hola

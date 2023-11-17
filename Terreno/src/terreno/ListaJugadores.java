@@ -76,6 +76,12 @@ public class ListaJugadores {
         for(int i=0;i<cantidadJugadores;i++)
         {
             Jugador aux = new Jugador(i,"Juan");
+            if(i==0){
+                instance.setJugador1(aux);
+            }
+            if(i==1){
+                instance.setJugador2(aux);
+            }
             lista.add(aux);
         }
     }

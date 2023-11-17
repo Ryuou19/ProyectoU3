@@ -527,8 +527,10 @@ public class Jugar extends Application {
         int largo = (alto*pixel);
         int mitad_mapa=largo/2;
         int posicion_inicial=random.nextInt(0,mitad_mapa);
+        System.out.println("Posicion inicial1= "+posicion_inicial);
         listJugador.getJugador1().posicionInicalX=posicion_inicial;
         int posicion_inicial2=random.nextInt(mitad_mapa,largo);
+        System.out.println("Posicion inicial2= "+posicion_inicial2);
         listJugador.getJugador2().posicionInicalX=posicion_inicial2;
     }
 

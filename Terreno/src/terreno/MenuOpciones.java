@@ -55,11 +55,10 @@ public class MenuOpciones {
     
     
     public void start(Stage stage,  Scene escena, ListaJugadores list){
-        
         stage.setTitle("Menu Opciones");
         musica();
         Pane panel = new Pane();
-        panel.setPrefSize(500, 650);
+        panel.setPrefSize(1500, 900);
         
         Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));
         stage.getIcons().add(icono); 
@@ -67,14 +66,15 @@ public class MenuOpciones {
         Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg"));       
         ImageView imageView = new ImageView(fondo);   
         imageView.setPreserveRatio(false);
-        imageView.setFitWidth(500);
-        imageView.setFitHeight(650);       
+        imageView.setFitWidth(1380);
+        imageView.setFitHeight(780);       
         panel.getChildren().add(imageView);
-              
+          
+        
         escena.setRoot(panel);
-        stage.setWidth(500);
+        /*stage.setWidth(500);
         stage.setHeight(630);
-        stage.setX(400); stage.setY(60);
+        stage.setX(400); stage.setY(60);*/
         
         
         //VOLVER MENU PRINCIPAAL
@@ -299,8 +299,8 @@ public class MenuOpciones {
         //VOLVER
         
         volverMenu.setOnAction(e -> {
-            PantallaInicial inicio= new PantallaInicial(resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);
-            inicio.start(stage);
+            PantallaInicial inicio=new PantallaInicial();
+            inicio.volver(stage);
             volume=-80.0f;
             control.setValue(volume);
         });

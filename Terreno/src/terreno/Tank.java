@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;// import usado para dibujar hitbox con el fin d
 
 
 public class Tank{
+    Globales c=new Globales();
     public int posicionX;
     public int posicionY=300;
     public String color;
@@ -151,15 +152,15 @@ public class Tank{
                 ListaJugadores listaJugador = ListaJugadores.getInstance();
                 if (!estaSobreDuna(terrain)) {
                     if (tipoTerreno == 0) {
-                        terrain.terreno_nieve(gc, 0.0, 100, 1,terrain);
+                        terrain.terreno_nieve(gc, 0.0, 100, 1,terrain,c.alto_resolucion,c.ancho_resolucion);
                         
                     }
                     if (tipoTerreno == 1) {
-                        terrain.terreno_desierto(gc, 0.0, 100, 1,terrain);
+                        terrain.terreno_desierto(gc, 0.0, 100, 1,terrain,c.alto_resolucion,c.ancho_resolucion);
                         
                     }
                     if (tipoTerreno == 2) {
-                        terrain.terreno_aram(gc, 0.0, 100, 1, terrain);
+                        terrain.terreno_aram(gc, 0.0, 100, 1, terrain,c.alto_resolucion,c.ancho_resolucion);
                         
                     }
                     contador[0] +=1.0;

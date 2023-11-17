@@ -10,10 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.util.Random;
+import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Scene;
 import javafx.stage.Popup;
 
-public class Jugar extends Application {  
+public class Jugar  {  
     static Random random = new Random();
     private int turno = 1;
     double angulo;
@@ -35,7 +37,7 @@ public class Jugar extends Application {
     int cantidad;
     Stage stage;
     ListaJugadores listJugador;
-    int alto = 400;
+    int alto = 500;
     int ancho=300;
     Interfaz interfaz=new Interfaz(alto,ancho);
     int pixel = 3;
@@ -47,7 +49,7 @@ public class Jugar extends Application {
         this.entorno = entorno;
         this.cantidad = cantidad;
         this.listJugador = listJugador;
-        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
+        
     }
           
     private static int terreno_random;//variable que guarda la seleccion random del terreno
@@ -57,20 +59,21 @@ public class Jugar extends Application {
     Terreno terrain = new Terreno(alto,ancho, pixel,interfaz.gc);
     
     public static void main(String[] args) {
+        
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+   
+    public void start(Stage primaryStage, Scene scene) {
         stage=primaryStage;
         if(rondas<0){
             stage.close();
         }
         stage.setResizable(false);
-        
-        interfaz=new Interfaz(1200,900);
-        
-        interfaz.iniciar_interfaz(stage,alto,ancho);
+        listJugador.instanciarJugadores(2);
+        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
+            
+        interfaz.iniciar_interfaz(stage,scene);
         iniciar_terreno();
                     
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
@@ -163,15 +166,15 @@ public class Jugar extends Application {
         
         validar=0;
         if(terreno_random == 0) {
-            terrain.terreno_nieve(interfaz.gc, 0.0, 100,validar, terrain);
+            terrain.terreno_nieve(interfaz.gc, 0.0, 100,validar, terrain,alto,ancho);
             animacionCaida();
         }
         if(terreno_random == 1) {
-            terrain.terreno_desierto(interfaz.gc, 0.0, 100,validar,terrain);
+            terrain.terreno_desierto(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
             animacionCaida();
         }
         if(terreno_random == 2) {
-            terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain);
+            terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
             animacionCaida();
         }
         stage.show();
@@ -224,13 +227,13 @@ public class Jugar extends Application {
         calcular_explosion();
         if (turno==1){
             if(terreno_random == 0) {
-                terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque1,validar,terrain);
+                terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
             }
             if(terreno_random == 1) {
-                terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque1,validar,terrain);
+                terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
             }
             if(terreno_random == 2) {
-                terrain.terreno_aram(interfaz.gc, 0.0, vidatanque1,validar,terrain);
+                terrain.terreno_aram(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
             }
             interfaz.disparar.setDisable(false);
             interfaz.boxtanque1.setVisible(false);
@@ -242,13 +245,13 @@ public class Jugar extends Application {
             }
         if(turno==2){
             if(terreno_random == 0) {
-                terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque2,validar,terrain);
+                terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque2,validar,terrain,alto,ancho);
             }
             if(terreno_random == 1) {
-                terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque2,validar,terrain);
+                terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque2,validar,terrain,alto,ancho);
             }
             if(terreno_random == 2) {
-                terrain.terreno_aram(interfaz.gc, 0.0, vidatanque2,validar,terrain);
+                terrain.terreno_aram(interfaz.gc, 0.0, vidatanque2,validar,terrain,alto,ancho);
             }
             interfaz.disparar.setDisable(false);
             interfaz.boxtanque2.setVisible(false);
@@ -498,7 +501,7 @@ public class Jugar extends Application {
             ancho=300;
         }
         if(resolucion_def==2){
-            alto=400;
+            alto=500;
             ancho=300;
         }
         //Rondas
@@ -526,10 +529,10 @@ public class Jugar extends Application {
     {
         int largo = (alto*pixel);
         int mitad_mapa=largo/2;
-        int posicion_inicial=random.nextInt(0,mitad_mapa);
+        int posicion_inicial=random.nextInt(0,mitad_mapa-200);
         System.out.println("Posicion inicial1= "+posicion_inicial);
         listJugador.getJugador1().posicionInicalX=posicion_inicial;
-        int posicion_inicial2=random.nextInt(mitad_mapa,largo);
+        int posicion_inicial2=random.nextInt(mitad_mapa-200,largo-200);
         System.out.println("Posicion inicial2= "+posicion_inicial2);
         listJugador.getJugador2().posicionInicalX=posicion_inicial2;
     }

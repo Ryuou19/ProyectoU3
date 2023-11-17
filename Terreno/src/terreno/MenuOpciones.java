@@ -22,6 +22,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Timer;
 
 public class MenuOpciones {
+    
     String musicPath;//ruta de musica
     AudioInputStream audioInput;//audio del sistema
     float volume;//volumen
@@ -52,29 +53,29 @@ public class MenuOpciones {
     int rondas_def;
     int entorno_def;
     int cantidad_def;
+    Pane panel = new Pane();
+    Scene escena=new Scene(panel,1500,900);
+    Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
+    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg"));     
+
+    public MenuOpciones() {
+    }  
     
-    
-    public void start(Stage stage,  Scene escena, ListaJugadores list){
+    public void start(Stage stage, ListaJugadores list,Scene scene){
+        PantallaInicial inicio=new PantallaInicial();
+        stage.setFullScreen(true);
+        inicio.scene=scene;
         
-        stage.setTitle("Menu Opciones");
-        musica();
-        Pane panel = new Pane();
-        panel.setPrefSize(500, 650);
-        
-        Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));
-        stage.getIcons().add(icono); 
-              
-        Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg"));       
+        panel.setPrefSize(1500, 900);       
         ImageView imageView = new ImageView(fondo);   
         imageView.setPreserveRatio(false);
-        imageView.setFitWidth(500);
-        imageView.setFitHeight(650);       
-        panel.getChildren().add(imageView);
-              
+        imageView.setFitWidth(1380);
+        imageView.setFitHeight(780);       
+        panel.getChildren().add(imageView);              
         escena.setRoot(panel);
-        stage.setWidth(500);
+        /*stage.setWidth(500);
         stage.setHeight(630);
-        stage.setX(400); stage.setY(60);
+        stage.setX(400); stage.setY(60);*/
         
         
         //VOLVER MENU PRINCIPAAL
@@ -299,16 +300,15 @@ public class MenuOpciones {
         //VOLVER
         
         volverMenu.setOnAction(e -> {
-            PantallaInicial inicio= new PantallaInicial(resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);
-            inicio.start(stage);
-            volume=-80.0f;
-            control.setValue(volume);
+            detenerMusica();
+            inicio.mostrar_inicio(stage);
+            
         });
         
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
         texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno,
         menu_cantidad,texto_IA,volver);                 
-        stage.setScene(escena);
+        stage.setFullScreen(true);  
         stage.show();
     }
     
@@ -350,17 +350,28 @@ public class MenuOpciones {
         return opcion;
     }
     
-    public void musica(){
-        musicPath = "src/terreno/music/musicaMenuOpciones.wav";
+    public void mostrar(Stage stage){
+        detenerMusica();
+        stage.setTitle("Menu Opciones");
+        stage.getIcons().add(icono);
+        stage.setScene(escena); 
+        musicPath="src/terreno/music/musicaMenuOpciones.wav";   
+        detenerMusica();
+        musica(musicPath);
+    }
+    
+    
+    
+    public void musica(String musica){
         try{
-            audioInput = AudioSystem.getAudioInputStream(new File(musicPath));
+            audioInput = AudioSystem.getAudioInputStream(new File(musica));
             clip = AudioSystem.getClip();
             clip.open(audioInput);
             //control de volumen
             control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
             //volumen (rango: -80.0 a 6.0206)     
-            volume = 0.0f;            
+            volume = -20.0f;            
             control.setValue(volume);
             
             Timer timer = new Timer(0, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
@@ -381,4 +392,10 @@ public class MenuOpciones {
             throw new RuntimeException(e);
         }
     }  
+    
+    public void detenerMusica() {
+        if (clip != null && clip.isOpen()) {
+            clip.stop();
+        }
+}
 }

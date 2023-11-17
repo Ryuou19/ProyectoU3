@@ -47,20 +47,19 @@ public class Terreno{
     }
     public void agregarImagenDeFondo(GraphicsContext gc) {//agregamos las imagenes de fondo
         if (Jugar.getRandom() == 0) {
-            gc.drawImage(nieve, 0, 0, 400 * pixel, 320 * pixel);
+            gc.drawImage(nieve, 0, 0, 500 * pixel, 320 * pixel);
         }
         if (Jugar.getRandom() == 1) {
-            gc.drawImage(desierto, 0, 0, 400 * pixel, 320 * pixel);
+            gc.drawImage(desierto, 0, 0, 500 * pixel, 320 * pixel);
         }
         if (Jugar.getRandom() == 2) {
-            gc.drawImage(lol, 0, 0, 400 * pixel, 320 * pixel);
+            gc.drawImage(lol, 0, 0, 500 * pixel, 320 * pixel);
         }
 
     }
 
-    public void terreno_nieve(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno) {//terreno nevado
-        int alto = 400;
-        int ancho = 300;
+    public void terreno_nieve(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho) {//terreno nevado
+        
         int escala = this.pixel;
         double nivel_mar = 0.5;
         double amplitud = 0.15;
@@ -124,9 +123,8 @@ public class Terreno{
         contador++;
     }
 
-    public void terreno_desierto(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno) {//terreno desertico
-        int alto = 400;
-        int ancho = 300;
+    public void terreno_desierto(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho) {//terreno desertico
+     
         int escala = this.pixel;
         double nivel_mar = 0.5;
         double frecuencia1 = 0.05;
@@ -179,9 +177,8 @@ public class Terreno{
         contador++;
     }
 
-    public void terreno_aram(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno) {//terreno de bosque
-        int alto = 400;
-        int ancho = 300;
+    public void terreno_aram(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho) {//terreno de bosque
+       
         int escala = this.pixel;
         double nivel_mar = 0.5;
         double amplitud = 0.17;

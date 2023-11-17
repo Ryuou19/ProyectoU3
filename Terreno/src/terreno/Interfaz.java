@@ -22,12 +22,12 @@ import javafx.stage.Stage;
 
 public class Interfaz {
     
-    int alto=400;
-    int ancho=300;
+    int alto;
+    int ancho;
 
     public Interfaz(int alto, int ancho) {
-        this.alto = alto;
-        this.ancho = ancho;
+        this.alto = alto*3;
+        this.ancho = ancho*3;
     }
     
     
@@ -99,19 +99,20 @@ public class Interfaz {
     Label textcantidad= new Label("");
     GraphicsContext gc;
     
-    public void iniciar_interfaz(Stage primaryStage, int alto, int ancho){//inicia todo lo visual e interactivo de la interfaz de juego    
-        StackPane root = new StackPane();
-        Scene scene = new Scene(root, alto*3, 700);
-        Canvas canvas = new Canvas(alto*3, ancho*3);
+    public void iniciar_interfaz(Stage primaryStage, Scene escena){//inicia todo lo visual e interactivo de la interfaz de juego         
+        Pane canvasPane = new Pane();
+        canvasPane.setPrefSize(alto, ancho);       
+        
+        
+        Canvas canvas = new Canvas(alto, ancho);
         GraphicsContext newgc = canvas.getGraphicsContext2D();
         gc=newgc;
-        primaryStage.setScene(scene);
-        Pane canvasPane = new Pane();
-        canvasPane.setPrefSize(1200, 900);
-        root.getChildren().add(canvasPane);
-        canvasPane.getChildren().add(canvas);
-        int mover=25;
         
+        escena.setRoot(canvasPane);
+        canvasPane.getChildren().add(canvas);
+        primaryStage.setScene(escena);
+        int mover=25;
+           
         //ANGULO
         boxangulo.setSpacing(10);
         text1.setFont(Font.font("Arial", FontWeight.BOLD, 20));

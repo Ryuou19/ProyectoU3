@@ -3,7 +3,6 @@ package terreno;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.Timer; 
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
@@ -27,13 +25,7 @@ import java.awt.event.ActionListener;
 
 
 public class PantallaInicial extends Application {
-     
-    
-    
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
+           
     ListaJugadores list=ListaJugadores.getInstance();
     int cantidadJugadores=2;
     String musicPath;//ruta de musica
@@ -46,7 +38,11 @@ public class PantallaInicial extends Application {
     int rondas_def=1;
     int entorno_def=0;
     int cantidad_def=0;
-
+    Pane panel = new Pane();
+    Scene scene = new Scene(panel, 1500, 900);
+    MenuOpciones options = new MenuOpciones();
+    Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
+    int validar=0;
     public PantallaInicial() {
     }
       
@@ -57,28 +53,33 @@ public class PantallaInicial extends Application {
         this.entorno_def = entorno_def;
         this.cantidad_def = cantidad_def;
     }
-
     
-    
+    public static void main(String[] args) {
+        launch(args);
+    }
+      
     @Override   
     public void start(Stage primaryStage) {
+     
         
-        primaryStage.setTitle("!TANK WAR!");
-        Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
+        
+        primaryStage.setFullScreen(true);
+        primaryStage.setX(-10);
+        primaryStage.setY(0);
         primaryStage.getIcons().add(icono); 
-        primaryStage.setWidth(1200);
+        primaryStage.setWidth(1500);
         primaryStage.setHeight(800);
-        primaryStage.setX(80); primaryStage.setY(20);
-        musica(); 
-        Pane panel = new Pane();//panel de la interfaz inicial
-        Scene scene = new Scene(panel, 1200, 700);
+        
+        musicPath = "src/terreno/music/BAIXO-SLOWED.wav";
+        musica(musicPath); 
+        
+        
         //imagen tanque inicial con sus propiedades y estilo
         Image imagen = new Image(getClass().getResource("./img/tanque menu.gif").toExternalForm());
         ImageView imageView = new ImageView(imagen);
-        imageView.setLayoutX(440); 
-        imageView.setLayoutY(270); 
-        double nuevoAncho = 300; 
-        double nuevoAlto = 200;  
+        
+        double nuevoAncho = 450; 
+        double nuevoAlto = 300;  
         imageView.setFitWidth(nuevoAncho);
         imageView.setFitHeight(nuevoAlto);
         
@@ -87,19 +88,19 @@ public class PantallaInicial extends Application {
         ImageView titulo = new ImageView(imagen);
         titulo.setLayoutX(390); 
         titulo.setLayoutY(150); 
-        nuevoAncho=400;
-        nuevoAlto=100;
+        nuevoAncho=600;
+        nuevoAlto=150;
         titulo.setFitWidth(nuevoAncho);
         titulo.setFitHeight(nuevoAlto);
         
         //fondo
-        Rectangle marco = new Rectangle(1200, 700);  
+        Rectangle marco = new Rectangle(1600, 800);  
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
         
         //boton comenzar
         HBox boxcomenzar=new HBox();
         Button comenzar = new Button("!!!JUGAR!!!");  
-        Font font = Font.font("Serif", FontWeight.NORMAL, 24);//fuente para el texto del boton
+        Font font = Font.font("Serif", FontWeight.NORMAL, 29);//fuente para el texto del boton
         comenzar.setFont(font);
         boxcomenzar.getChildren().add(comenzar);
         comenzar.setLayoutX(510);
@@ -129,46 +130,73 @@ public class PantallaInicial extends Application {
         
         
         comenzar.setOnAction(e -> {         
-            volume -= 6.0f;//al comenzar a jugar, se baja un poco el volumen
-            control.setValue(volume);
-            primaryStage.close();
             Jugar juego = new Jugar(list,resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);//inicia el proceso de jugar
-            list.instanciarJugadores(cantidadJugadores);
-            juego.start(new Stage());
+            //list.instanciarJugadores(cantidadJugadores);
+            juego.start(primaryStage,scene);
+            volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen
+            control.setValue(volume);
         });
         
         opciones.setOnAction(e -> {
-            MenuOpciones options = new MenuOpciones();
-            options.start(primaryStage, scene,list);
-            volume=-80.0f;
-            control.setValue(volume);
+            if(validar==0){
+                options.start(primaryStage,list,scene);
+                validar=1;
+            }
+            if(validar==1){
+                detenerMusica();
+                options.mostrar(primaryStage);
+                //volume=-20.0f;
+                //control.setValue(volume);
+            }
+            
+            
         });
         
         //se añade todo al panel
         panel.getChildren().addAll(marco,comenzar,imageView, titulo,opciones);    
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), panel);//fade blanco inicial
+        /*FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), panel);//fade blanco inicial
         fadeTransition.setFromValue(0); 
         fadeTransition.setToValue(1); 
-        fadeTransition.play();
+        fadeTransition.play();*/
+        
+       
+        double porcentajeX = 0.34;
+        double porcentajeY = 0.35; 
+        imageView.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
+        imageView.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
+        
+        porcentajeX=0.27;
+        porcentajeY=0.15;
+        titulo.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
+        titulo.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
+     
+        porcentajeX=0.436;
+        porcentajeY=0.76;
+        comenzar.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
+        comenzar.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
+        
+        porcentajeX=0.44;
+        porcentajeY=0.85;
+        opciones.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
+        opciones.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
+        
         
         primaryStage.setScene(scene);
         primaryStage.show();
     }
     //funcion que procesa la musica
-    public void musica(){
-        musicPath = "src/terreno/music/BAIXO-SLOWED.wav";
+    public void musica(String musica){     
         try{
-            audioInput = AudioSystem.getAudioInputStream(new File(musicPath));
+            audioInput = AudioSystem.getAudioInputStream(new File(musica));
             clip = AudioSystem.getClip();
             clip.open(audioInput);
             //control de volumen
             control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
             //volumen (rango: -80.0 a 6.0206)     
             volume = -20.0f;            
             control.setValue(volume);
             
-            Timer timer = new Timer(1200, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
+            Timer timer = new Timer(0, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     clip.start();
@@ -186,4 +214,20 @@ public class PantallaInicial extends Application {
             throw new RuntimeException(e);
         }
     }  
+    
+    public void mostrar_inicio(Stage stage){
+        stage.setTitle("!TANK WAR!");
+        stage.getIcons().add(icono);
+        stage.setScene(scene);  
+        detenerMusica();
+        musicPath="src/terreno/music/BAIXO-SLOWED.wav";                
+        musica(musicPath);
+    }
+    
+    
+    public void detenerMusica() {
+        if (clip != null && clip.isOpen()) {
+            clip.stop();
+        }
+    }
 }

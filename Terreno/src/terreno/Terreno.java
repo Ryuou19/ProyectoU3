@@ -2,6 +2,9 @@ package terreno;
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Terreno{
     public int[][] matriz;
@@ -14,7 +17,9 @@ public class Terreno{
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
     ListaJugadores listJugador=ListaJugadores.getInstance();
-    
+
+
+
 
 
     public Terreno(int alto, int ancho, int pixel,GraphicsContext gc ) {
@@ -22,6 +27,7 @@ public class Terreno{
         this.matriz=new int[alto][ancho];
         this.dunas=new int[alto][ancho];
         this.explosion=new int[alto][ancho];
+
     }
 
     public void setContador(int contador) {
@@ -115,10 +121,7 @@ public class Terreno{
             }
         }
         if(contador==0){
-            listJugador.getJugador1().creaTanque(gc,vida,validar,terreno);
-            listJugador.getJugador2().creaTanque(gc,vida,validar,terreno);
-            listJugador.getJugador1().getTanque().modificarCañon(gc, angulo, 1);
-            listJugador.getJugador2().getTanque().modificarCañon(gc, angulo, 2);
+            colocarTanquesTerreno(gc, angulo, vida, validar, terreno, alto, ancho);
         }
         contador++;
     }
@@ -169,10 +172,7 @@ public class Terreno{
             }
         }
         if(contador==0){
-            listJugador.getJugador1().creaTanque(gc,vida,validar,terreno);
-            listJugador.getJugador2().creaTanque(gc,vida,validar,terreno);
-            listJugador.getJugador1().getTanque().modificarCañon(gc, angulo, 1);
-            listJugador.getJugador2().getTanque().modificarCañon(gc, angulo, 2);
+            colocarTanquesTerreno(gc, angulo, vida, validar, terreno, alto, ancho);
         }
         contador++;
     }
@@ -254,10 +254,7 @@ public class Terreno{
             }
         }
         if(contador==0){
-            listJugador.getJugador1().creaTanque(gc,vida,validar,terreno);
-            listJugador.getJugador2().creaTanque(gc,vida,validar,terreno);
-            listJugador.getJugador1().getTanque().modificarCañon(gc, angulo, 1);
-            listJugador.getJugador2().getTanque().modificarCañon(gc, angulo, 2);
+            colocarTanquesTerreno(gc, angulo, vida, validar, terreno, alto, ancho);
         }
         contador++;
     }
@@ -304,5 +301,18 @@ public class Terreno{
             bala.marcar();
         }
         return 0;
+    }
+    public void colocarTanquesTerreno(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho)
+    {
+        System.out.println("posiciones 1 ->"+listJugador.getLista().get(0).posicionInicalX);
+        System.out.println("posiciones 2->"+listJugador.getLista().get(1).posicionInicalX);
+        ExecutorService executor = Executors.newFixedThreadPool(listJugador.getLista().size());
+        for (Jugador jugador : listJugador.getLista()) {
+                executor.submit(() -> {
+                    jugador.creaTanque(gc, vida, validar, terreno);
+                    jugador.getTanque().modificarCañon(gc,angulo);
+                });
+        }
+        executor.shutdown();
     }
 }  

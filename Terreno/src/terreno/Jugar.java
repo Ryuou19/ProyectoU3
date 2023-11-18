@@ -14,7 +14,9 @@ import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.stage.Popup;
-
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 public class Jugar  {  
     static Random random = new Random();
     private int turno = 1;
@@ -41,6 +43,7 @@ public class Jugar  {
     int ancho=300;
     Interfaz interfaz=new Interfaz(alto,ancho);
     int pixel = 3;
+    int cantidad_jugadores=0;
 
     public Jugar(ListaJugadores listJugador,int resolucion, int rondas, int jugadores, int cantidad,int entorno) {
         this.resolucion = resolucion;
@@ -70,7 +73,13 @@ public class Jugar  {
             stage.close();
         }
         stage.setResizable(false);
-        listJugador.instanciarJugadores(2);
+        listJugador.instanciarJugadores(4);
+        //escogemos altiro el jugador que le tocara
+        listJugador.generarTurnoAleatorio();
+        //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
+
+        cantidad_jugadores=listJugador.getLista().size();
+
         definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
             
         interfaz.iniciar_interfaz(stage,scene);
@@ -147,7 +156,7 @@ public class Jugar  {
                                         turno=1;//cambia turno
                                     }                                   
                                     stop();
-                                    animacionCaida();
+                                    //animacionCaida();
                                 }
                             }
                         }.start();
@@ -167,15 +176,15 @@ public class Jugar  {
         validar=0;
         if(terreno_random == 0) {
             terrain.terreno_nieve(interfaz.gc, 0.0, 100,validar, terrain,alto,ancho);
-            animacionCaida();
+            //animacionCaida();
         }
         if(terreno_random == 1) {
             terrain.terreno_desierto(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
-            animacionCaida();
+            //animacionCaida();
         }
         if(terreno_random == 2) {
             terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
-            animacionCaida();
+            //animacionCaida();
         }
         stage.show();
         /*System.out.println("posicion del tanque1 x e y -> x"+listJugador.getJugador1().getTanque().getCañonX()+"y"+listJugador.getJugador1().getTanque().getCañonY());
@@ -370,9 +379,20 @@ public class Jugar  {
     }
     
     public void animacionCaida(){
-        listJugador.getJugador1().getTanque().caidaTanque(interfaz.gc,terrain,terreno_random);
-        listJugador.getJugador2().getTanque().caidaTanque(interfaz.gc, terrain, terreno_random);
+
+        ExecutorService executor = Executors.newFixedThreadPool(listJugador.getLista().size());
+
+        for (Jugador jugador : listJugador.getLista()) {
+
+            executor.submit(() -> {
+                jugador.getTanque().caidaTanque(interfaz.gc,terrain,terreno_random);
+            });
+        }
+
+        // Una vez enviadas todas las tareas, cierra el Executor para que no acepte nuevas tareas
+        executor.shutdown();
     }
+
     
     public void elegir_bala(){
         interfaz.balas.setDisable(true);
@@ -507,16 +527,7 @@ public class Jugar  {
         //Rondas
         rondas=rondas_def;
         //Jugadores
-        if (listJugador.lista.size()<3){
-            Jugador j3 = new Jugador( 3, "De Bruyne");
-            listJugador.setJugador3(j3);
-        }
-        if (listJugador.lista.size()<4){
-            Jugador j3 = new Jugador( 3, "De Bruyne");
-            listJugador.setJugador3(j3);
-            Jugador j4 = new Jugador( 4, "CR7");
-            listJugador.setJugador4(j4);
-        }
+
         //AHI MAS ADELANTE SE AGREGAN EL RESTO DE JUGADORES, PROVISORIO HASTA QUE SE PUEDAN CREAR DE FORMA GENERICA
         
         //Cantidad
@@ -528,13 +539,16 @@ public class Jugar  {
     void definifirPosicion()
     {
         int largo = (alto*pixel);
-        int mitad_mapa=largo/2;
-        int posicion_inicial=random.nextInt(0,mitad_mapa-200);
-        System.out.println("Posicion inicial1= "+posicion_inicial);
-        listJugador.getJugador1().posicionInicalX=posicion_inicial;
-        int posicion_inicial2=random.nextInt(mitad_mapa-200,largo-200);
-        System.out.println("Posicion inicial2= "+posicion_inicial2);
-        listJugador.getJugador2().posicionInicalX=posicion_inicial2;
+        int ancho_segmento=largo/cantidad_jugadores;
+        for(int i=0;i<cantidad_jugadores;i++)
+        {
+            int min=ancho_segmento*i;
+            int max=ancho_segmento*(i+1)-200;
+            int posicion_inicial=random.nextInt(max-min)+min;
+            listJugador.getLista().get(i).posicionInicalX=posicion_inicial;
+
+        }
+
     }
 
 }

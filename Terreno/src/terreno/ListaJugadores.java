@@ -11,7 +11,7 @@ public class ListaJugadores {
     private Jugador jugador4;
     private Terreno terreno;
     public ArrayList<Jugador> lista= new ArrayList<>();
-    public ArrayList<Integer> turnosDisponibles;
+    public ArrayList<Integer> turnosDisponibles = new ArrayList<>();
     public int indiceActual;
     
     private ListaJugadores() 
@@ -76,18 +76,13 @@ public class ListaJugadores {
         for(int i=0;i<cantidadJugadores;i++)
         {
             Jugador aux = new Jugador(i,"Juan");
-            if(i==0){
-                instance.setJugador1(aux);
-            }
-            if(i==1){
-                instance.setJugador2(aux);
-            }
             lista.add(aux);
         }
+
     }
-     public void generarAleatorio() {
+     public void generarTurnoAleatorio() {
         if (turnosDisponibles.isEmpty()) {
-            // Si todos los jugadores han sido seleccionados, reiniciar la lista
+            // Si todos los jugadores han sido seleccionados, se reiniciar la lista
             for (int i = 0; i < lista.size(); i++) {
                 turnosDisponibles.add(i);
             }

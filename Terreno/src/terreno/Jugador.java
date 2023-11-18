@@ -60,13 +60,25 @@ public class Jugador {
         this.saldo=10000;
         this.nombre=nombre;
         //de esta forma no pasamos como parametro la imagenes haciendo mas facil la inicializacion de la clase en la pantalla de inizicio 
-        if (jugador==1)
+        if (jugador==0)
         {
             this.color="./img/tanque1.png";
         }
-        if(jugador==2)
+        if(jugador==1)
         {
             this.color="./img/tanque2.png";
+        }
+        if(jugador==2)
+        {
+            this.color="./img/tanque1.png";
+        }
+        if(jugador==3)
+        {
+            this.color="./img/tanque2.png";
+        }
+        if(jugador==4)
+        {
+            this.color="./img/tanque1.png";
         }
         
     }

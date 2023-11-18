@@ -4,6 +4,9 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;// import usado para dibujar hitbox con el fin de visualizarla
+import javafx.application.Platform;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class Tank{
@@ -23,6 +26,7 @@ public class Tank{
     int dañoAltura=10;//si cae a mas de 5 pies de altura se hace daño
 
 //----------------------------------------------------
+    ListaJugadores listaJugador = ListaJugadores.getInstance();
     public Tank(String color, int jugador){
         this.color=color;
         this.jugadorTanque = jugador;
@@ -70,7 +74,7 @@ public class Tank{
         this.cañonY = cañonY;
     }
 //-------------------------------------------------------------------------------------------------------- 
-    public void modificarCañon(GraphicsContext gc, double angulo,int jugador){
+    public void modificarCañon(GraphicsContext gc, double angulo){
         this.angulo = angulo;
         int x = posicionX;
         int y = posicionY;
@@ -78,15 +82,10 @@ public class Tank{
         int cx = x + 35;//valor usado para que la bala salga desde fuera de la hitbox del tanque, para que no se suicide de inmediato
         int cy = y + 35;
         double anguloRad = Math.toRadians(angulo);
-        //calcular direccion del cañon de cada jugador,invirtiendo el sentido para el jugador 2
-        if (jugador == 1) {
-            cañonX = (int) (cx + Math.cos(anguloRad) * 2);
-            cañonY = (int) (cy + Math.sin(anguloRad) * 2);
-        } 
-        else if (jugador == 2) {      
-            cañonX = (int) (cx - Math.cos(anguloRad) * 2);
-            cañonY = (int) (cy - Math.sin(anguloRad) * 2);
-        }
+
+        cañonX = (int) (cx + Math.cos(anguloRad) * 2);
+        cañonY = (int) (cy + Math.sin(anguloRad) * 2);
+
         gc.save();
         gc.translate(cañonX, cañonY);
         gc.rotate(angulo);
@@ -96,6 +95,8 @@ public class Tank{
     public void agregarTanque(GraphicsContext gc, int ran,int vida,Terreno terreno,int posicionX, int posicionY) {
       this.posicionX= posicionX;
       this.posicionY = posicionY;
+      funcionesSimultaneas(1,gc,terreno);
+
     }
     //cambio--------------------------------------------------------------------------------------------------------    
     private void crearHitbox( GraphicsContext gc, Terreno terreno) {
@@ -149,7 +150,7 @@ public class Tank{
         animation = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                ListaJugadores listaJugador = ListaJugadores.getInstance();
+
                 if (!estaSobreDuna(terrain)) {
                     if (tipoTerreno == 0) {
                         terrain.terreno_nieve(gc, 0.0, 100, 1,terrain,c.alto_resolucion,c.ancho_resolucion);
@@ -165,57 +166,16 @@ public class Tank{
                     }
                     contador[0] +=1.0;
                     posicionY += gravedad;
-                    listaJugador.getJugador1().getTanque().dibuarTanque(gc);
-                    listaJugador.getJugador2().getTanque().dibuarTanque(gc);                   
+                    //se ejecuta solo el dibujar
+                    //funcionesSimultaneas(1,gc,terrain);
 
-                    
                 } else {
                     this.stop();
-                    listaJugador.getJugador1().getTanque().crearHitbox(gc,terrain);
-                    listaJugador.getJugador2().getTanque().crearHitbox(gc,terrain);
-                    listaJugador.getJugador1().getTanque().dibuarTanque(gc);
-                    listaJugador.getJugador2().getTanque().dibuarTanque(gc);
+                    //se ejecuta
+                    //funcionesSimultaneas(2,gc,terrain);
                                       
-                    modificarCañon(gc, angulo, jugadorTanque);                   
-                    if(jugadorTanque==1)
-                    {
-                        listaJugador.getJugador1().getTanque().setPosicion1(posicionY);
-                        listaJugador.getJugador1().getTanque().setPosicion0(posicionX);
-                        listaJugador.getJugador1().getTanque().setCañonY(cañonY);
-                        if(listaJugador.getJugador1().primeraInstanciaTanque==1)
-                        {
-                            listaJugador.getJugador1().primeraInstanciaTanque++;
-                        }
-                        else
-                        {
-                            
-                            if(contador[0]>dañoAltura)
-                            {   // a ajustar vida se le da la vida actual del tanque, y se le pasa la cantiadad que conto el contador *2 
-                                listaJugador.getJugador1().getTanque().ajustar_vida(listaJugador.getJugador1().getTanque().vida, (int)(contador[0]*0.5));
-                            }
-                        }
+                    modificarCañon(gc, angulo);
 
-                        
-                    }
-                    if(jugadorTanque==2)
-                    {
-                        listaJugador.getJugador2().getTanque().setPosicion1(posicionY);
-                        listaJugador.getJugador2().getTanque().setPosicion0(posicionX);
-                        listaJugador.getJugador2().getTanque().setCañonY(cañonY);
-                        if(listaJugador.getJugador2().primeraInstanciaTanque==1)
-                        {
-                            listaJugador.getJugador2().primeraInstanciaTanque++;
-                        }
-                        else
-                        {
-                            
-                            if(contador[0]>dañoAltura)
-                            {   // a ajustar vida se le da la vida actual del tanque, y se le pasa la cantiadad que conto el contador *2 
-                                listaJugador.getJugador2().getTanque().ajustar_vida(listaJugador.getJugador2().getTanque().vida, (int)(contador[0]*0.5));
-                            }
-                        }
-                        
-                    }
                     
                 }
             }
@@ -232,8 +192,36 @@ public class Tank{
     
     public void dibuarTanque(GraphicsContext gc)
     {
+
            Image tanque = new Image(getClass().getResourceAsStream(color));
            gc.drawImage(tanque, posicionX-7, posicionY-12, 70, 70);
     }
-//hasta a qui termina--------------------------------------------------------------------------------------------------------
+
+    public void funcionesSimultaneas(int num_funcion,GraphicsContext gc, Terreno terrain)
+    {
+        if(num_funcion==1)
+        {
+            ExecutorService executor = Executors.newFixedThreadPool(listaJugador.getLista().size());
+            for (Jugador jugador : listaJugador.getLista()) {
+                executor.submit(() -> {
+                    Platform.runLater(() -> {
+                        jugador.getTanque().dibuarTanque(gc);
+                    });
+                });
+            }
+        }
+        if(num_funcion==2)
+        {
+            ExecutorService executor = Executors.newFixedThreadPool(listaJugador.getLista().size());
+            for (Jugador jugador : listaJugador.getLista()) {
+                executor.submit(() -> {
+                    Platform.runLater(() -> {
+                        jugador.getTanque().dibuarTanque(gc);
+                        jugador.getTanque().crearHitbox(gc,terrain);
+                    });
+                });
+            }
+        }
+
+    }
 }

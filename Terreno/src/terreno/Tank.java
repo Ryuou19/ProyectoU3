@@ -111,7 +111,7 @@ public class Tank{
                if  (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){
                    int marcar_hitbox = 0;
                    if(jugadorTanque==0){
-                        marcar_hitbox=jugadorTanque+2;// marcado
+                        marcar_hitbox=jugadorTanque+2;// la primera marca del jugador 1 sera un 2 dado que las dunas son 1
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
                        gc.setFill(Color.GREEN);
                        gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
@@ -197,6 +197,7 @@ public class Tank{
            Image tanque = new Image(getClass().getResourceAsStream(color));
            gc.drawImage(tanque, posicionX-7, posicionY-12, 70, 70);
     }
+
 
 
 }

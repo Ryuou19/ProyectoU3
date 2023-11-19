@@ -264,12 +264,10 @@ public class Terreno{
         int x = (int) bala.ejeX / pixel;//traspasamos la posicion x a relacion escala de la matriz y no de los pixeles
         int y = (int) bala.ejeY / pixel;//traspasamos la posicion y a relacion escala de la matriz y no de los pixeles
         if (x >= 0 && x < 400 && y >= 0 && y < 300) {
-            if (matriz[x][y] == 2) {//retorna el valor 1 si se colisiono al tanque 1               
+            int valorMatriz=matriz[x][y];
+            if ( valorMatriz>=2) {//retorna el valor 1 si se colisiono al tanque 1
                 bala.marcar();
-                return 1;
-            } else if (matriz[x][y] == 3) {//retorna el valor 1 si se colisiono al tanque 1                
-                bala.marcar();
-                return 2;
+                return valorMatriz-1; //retorna 1 si fua el impacto al tanque 1 , 2 si fue al tanque 2 etc...
             } else if (dunas[x][y] == 1) {//colision en el terreno
                 bala.marcar();
                 matriz[x][y] = 0;
@@ -307,6 +305,16 @@ public class Terreno{
         for (Jugador jugador : listJugador.getLista()) {
             jugador.creaTanque(gc, vida, validar, terreno);
             jugador.getTanque().modificarCañon(gc, angulo);
+        }
+    }
+    public void borrarHitboxAnterior() {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                // Si la celda contiene la marca de un tanque, la reseteamos
+                if (matriz[i][j] >= 2) { // Asumiendo que las marcas de tanque son 2, 3, 4, etc.
+                    matriz[i][j] = 0;
+                }
+            }
         }
     }
 }  

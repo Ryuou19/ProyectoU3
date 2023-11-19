@@ -75,7 +75,7 @@ public class Jugar  {
         }
         stage.setResizable(false);
         listJugador.instanciarJugadores(4);
-        //escogemos altiro el jugador que le tocara
+        //escogemos altiro el JUGADOR QUE Juega
         listJugador.generarTurnoAleatorio();
         //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
 
@@ -135,27 +135,14 @@ public class Jugar  {
                             @Override
                             public void handle(long now){
                                 nuevaBala.dibujo(interfaz.gc,nuevaBala.getDanio());
-                                if(turno==1){
-                                    nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,interfaz.boxdistancia,interfaz.boxaltura,listJugador.getJugador1().getTanque().getCañonY(),listJugador.getJugador1().getTanque().getCañonX());
-                                }
-                                if(turno==2){
-                                    nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,interfaz.boxdistancia,interfaz.boxaltura,listJugador.getJugador2().getTanque().getCañonY(),listJugador.getJugador2().getTanque().getCañonX());
-                                }                             
+                                nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,interfaz.boxdistancia,interfaz.boxaltura,listJugador.getJugadorActual().getTanque().getCañonY(),listJugador.getJugadorActual().getTanque().getCañonX());
                                 victoria=terrain.colision_terreno(interfaz.gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);
-                                if(victoria==1){
-                                    impacto_jugador1(nuevaBala.getDanio());
-                                }
-                                else if(victoria==2){
-                                    impacto_jugador2(nuevaBala.getDanio());
+                                if(victoria!=0){ // si victoria es distinto de 0 osea impacto a algun jugador
+                                    impacto_jugador(victoria,nuevaBala.getDanio());
                                 }
                                 if (nuevaBala.eliminar()) {
                                     colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)  
-                                    if(turno==1){
-                                        turno=2;//cambia turno
-                                    }
-                                    else if(turno==2){
-                                        turno=1;//cambia turno
-                                    }                                   
+                                    listJugador.generarTurnoAleatorio();//cambiamos el turno
                                     stop();
                                     animacionCaida();
                                 }
@@ -202,8 +189,10 @@ public class Jugar  {
         Label alturaLabel = (Label) interfaz.boxaltura.getChildren().get(1);
         alturaLabel.setText(" ");           
     }
-    public void impacto_jugador1(int danio){
-        int nuevavida1 = listJugador.getJugador1().getTanque().ajustar_vida(vidatanque1, danio);
+    public void impacto_jugador(int jugadorImpactado,int danio){
+        jugadorImpactado=jugadorImpactado-1; //restamos para acceder al indice
+        int nuevavida1 = listJugador.lista.get(jugadorImpactado).getTanque().ajustar_vida(vidatanque1, danio);
+        listJugador.getJugadorActual().saldo+=10; // le damos 10 monedas al tanque actual por impactar
         vidatanque1 = nuevavida1;
         interfaz.textovida1.setText(nuevavida1+"");
         interfaz.boxtanque1.setVisible(false);
@@ -213,11 +202,18 @@ public class Jugar  {
         interfaz.boxcantidadbalas.setVisible(false);
         if(vidatanque1<=0){
             System.out.println("HA GANADO EL JUGADOR 2!!");
-            reiniciar_partida();
+            listJugador.getJugadorActual().asesionatos+=1;// le agregamos 1 asesinato
+            listJugador.getLista().remove(jugadorImpactado);
+            cantidad_jugadores-=1;
+            if(cantidad_jugadores==1) // si queda un jugador terminamos y reiniciamos
+            {
+
+                reiniciar_partida();
+            }
         }
     }
     
-    public void impacto_jugador2(int danio){
+    /*public void impacto_jugador2(int danio){
         int nuevavida2 = listJugador.getJugador2().getTanque().ajustar_vida(vidatanque2, danio);
         vidatanque2 = nuevavida2;
         interfaz.textovida2.setText(nuevavida2+"");
@@ -231,47 +227,26 @@ public class Jugar  {
             reiniciar_partida();
             
         }
-    }
+    }*/
     
     public void colision_bala(){
         calcular_explosion();
-        if (turno==1){
-            if(terreno_random == 0) {
-                terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
-            }
-            if(terreno_random == 1) {
-                terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
-            }
-            if(terreno_random == 2) {
-                terrain.terreno_aram(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
-            }
-            interfaz.disparar.setDisable(false);
-            interfaz.boxtanque1.setVisible(false);
-            interfaz.boxtanque2.setVisible(true);
-            interfaz.boxvida1.setVisible(false);
-            interfaz.boxvida2.setVisible(true);
-            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';");//reinicia el estilo del boton de balas
-            tipo=0;
-            }
-        if(turno==2){
-            if(terreno_random == 0) {
-                terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque2,validar,terrain,alto,ancho);
-            }
-            if(terreno_random == 1) {
-                terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque2,validar,terrain,alto,ancho);
-            }
-            if(terreno_random == 2) {
-                terrain.terreno_aram(interfaz.gc, 0.0, vidatanque2,validar,terrain,alto,ancho);
-            }
-            interfaz.disparar.setDisable(false);
-            interfaz.boxtanque2.setVisible(false);
-            interfaz.boxtanque1.setVisible(true);
-            interfaz.boxvida2.setVisible(false);
-            interfaz.boxvida1.setVisible(true);
-            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';");
-            interfaz.boxcantidadbalas.setVisible(false);
-            tipo=0;
+        if(terreno_random == 0) {
+            terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
         }
+        if(terreno_random == 1) {
+            terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
+        }
+        if(terreno_random == 2) {
+            terrain.terreno_aram(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
+        }
+        interfaz.disparar.setDisable(false);
+        //interfaz.boxtanque1.setVisible(false);
+        //interfaz.boxtanque2.setVisible(true);
+        //interfaz.boxvida1.setVisible(false);
+        //interfaz.boxvida2.setVisible(true);
+        interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';");//reinicia el estilo del boton de balas
+        tipo=0;
     }    
     public Bala crear_bala(){
         Bala nuevaBala = null;
@@ -285,48 +260,25 @@ public class Jugar  {
         if(tipo==3){
             danio=50;
         }
-        
-        if(turno==1){
-            cañonX = listJugador.getJugador1().getTanque().getCañonX();
-            cañonY = listJugador.getJugador1().getTanque().getCañonY();
-            nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,danio,listJugador.getJugador1());
-        }
-        
-        if(turno==2){
-            cañonX = listJugador.getJugador2().getTanque().getCañonX();
-            cañonY = listJugador.getJugador2().getTanque().getCañonY();
-            angulo = 180 - angulo;
-            nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,danio,listJugador.getJugador2());                                 
-        }
+        cañonX = listJugador.getJugadorActual().getTanque().getCañonX();
+        cañonY = listJugador.getJugadorActual().getTanque().getCañonY();
+        nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,danio,listJugador.getJugadorActual());
         return nuevaBala;
     }
     
     public Boolean comprobarMunicion(int tipo)//comprueba si es que las balas que posee el jugador estan vacias
     {
-        if(turno==1){   
-            switch (tipo){
-                case 1:                 
-                    return listJugador.getJugador1().getCantidad60() == 0;
-                case 2:
-                    return listJugador.getJugador1().getCantidad80() == 0;                  
-                case 3:                    
-                    return listJugador.getJugador1().getCantidad105() == 0;
-                default:
-                    break;
-            }        
+        switch (tipo){
+            case 1:
+                return listJugador.getJugadorActual().getCantidad60() == 0;
+            case 2:
+                return listJugador.getJugadorActual().getCantidad80() == 0;
+            case 3:
+                return listJugador.getJugadorActual().getCantidad105() == 0;
+            default:
+                break;
         }
-        if(turno==2){
-            switch (tipo) {
-                case 1:
-                    return listJugador.getJugador2().getCantidad60() == 0;
-                case 2:                   
-                    return listJugador.getJugador2().getCantidad80() == 0;
-                case 3:                   
-                    return listJugador.getJugador2().getCantidad105() == 0;
-                default:
-                    break;
-            } 
-        }
+
         return false;
     }
     
@@ -362,11 +314,8 @@ public class Jugar  {
                     break;
             }
         }
-        if(tanque==1){
-            impacto_jugador1(area);//realiza el impacto y el ajuste de la vida del tanque1
-        }
-        if(tanque==2){
-            impacto_jugador2(area);;//realiza el impacto y el ajuste de la vida del tanque1
+        if(tanque!=0){
+            impacto_jugador(tanque,area);//realiza el impacto  a todos los tanques
         }
         reiniciar_matriz(terrain.explosion);//reinicia la matriz de explosion para que asi no guarde valores de explosiones anteriores     
     }
@@ -400,6 +349,7 @@ public class Jugar  {
                     tanque.dibuarTanque(interfaz.gc);
 
                     if (todosEnSuelo) {
+                        terrain.borrarHitboxAnterior();//eliminamos las hitbox anteriores de la matriz
                         tanque.crearHitbox(interfaz.gc,terrain);
 
                     }
@@ -435,15 +385,10 @@ public class Jugar  {
         bala3.setStyle("-fx-background-color: " + "Red" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");    
 
         bala1.setOnAction(event -> {//escoge bala 1
-            if(turno==1){
-                String int_string = Integer.toString(listJugador.getJugador1().getCantidad60());
-                interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
 
-            }
-            else{
-                String int_string = Integer.toString(listJugador.getJugador2().getCantidad60());
-                interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
-            }
+            String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
+            interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
+
             interfaz.textcantidad.setStyle("-fx-text-fill: green;");
             interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #008000;");
             tipo=1;//ajusta el tipo
@@ -453,15 +398,9 @@ public class Jugar  {
         });
             
         bala2.setOnAction(event -> {//escoge bala 2
-            if(turno==1){
-                String int_string = Integer.toString(listJugador.getJugador1().getCantidad80());
-                interfaz.textcantidad.setText(int_string);//lo mismo de bala1
 
-            }
-            else{
-                String int_string = Integer.toString(listJugador.getJugador2().getCantidad80());
-                interfaz.textcantidad.setText(int_string);//lo mismo de bala1
-            }
+            String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad80());
+            interfaz.textcantidad.setText(int_string);//lo mismo de bala1
             interfaz.textcantidad.setStyle("-fx-text-fill: blue;");
             interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #0000FF;");
             tipo=2;//ajusta el tipo
@@ -471,14 +410,9 @@ public class Jugar  {
         });
             
         bala3.setOnAction(event -> {//escoge bala 3
-            if(turno==1){
-                String int_string = Integer.toString(listJugador.getJugador1().getCantidad105());
-                interfaz.textcantidad.setText(int_string);
-            }
-            else{
-                String int_string = Integer.toString(listJugador.getJugador2().getCantidad105());
-                interfaz.textcantidad.setText(int_string);
-            }
+
+            String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad105());
+            interfaz.textcantidad.setText(int_string);
             interfaz.textcantidad.setStyle("-fx-text-fill: red;");
             interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #FF0000;");
             tipo=3;//ajusta el tipo
@@ -515,7 +449,8 @@ public class Jugar  {
             }            
             terreno_random = nuevoTerreno;
             iniciar_terreno();
-            turno=1;
+            //turno=1;
+            listJugador.getLista().clear();
             interfaz.boxtanque2.setVisible(false);
             interfaz.boxtanque1.setVisible(true);
             interfaz.boxvida2.setVisible(false);

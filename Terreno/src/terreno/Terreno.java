@@ -265,7 +265,8 @@ public class Terreno{
         int y = (int) bala.ejeY / pixel;//traspasamos la posicion y a relacion escala de la matriz y no de los pixeles
         if (x >= 0 && x < 400 && y >= 0 && y < 300) {
             int valorMatriz=matriz[x][y];
-            if ( valorMatriz>=2) {//retorna el valor 1 si se colisiono al tanque 1
+            System.out.println("el valor en la matriz es ->"+valorMatriz);
+            if (valorMatriz>=2) {
                 bala.marcar();
                 return valorMatriz-1; //retorna 1 si fua el impacto al tanque 1 , 2 si fue al tanque 2 etc...
             } else if (dunas[x][y] == 1) {//colision en el terreno
@@ -278,7 +279,7 @@ public class Terreno{
                     radio=10;
                 }
                 if(tipo==3){
-                    radio=15;
+                    radio=30;
                 }
                 for (int i = x - radio; i <= x + radio; i++) {//realiza la explosion del disparo dependiendo del tipo de bala en base a un radio
                     for (int j = y - radio; j <= y + radio; j++) {
@@ -310,8 +311,7 @@ public class Terreno{
     public void borrarHitboxAnterior() {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
-                // Si la celda contiene la marca de un tanque, la reseteamos
-                if (matriz[i][j] >= 2) { // Asumiendo que las marcas de tanque son 2, 3, 4, etc.
+                if (matriz[i][j] >= 2) {
                     matriz[i][j] = 0;
                 }
             }

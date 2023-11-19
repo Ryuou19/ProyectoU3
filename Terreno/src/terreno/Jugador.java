@@ -18,7 +18,7 @@ public class Jugador {
     int saldo;
     int posicionInicalX=0;
     int posicionInicialY=200;
-    int primeraInstanciaTanque;
+
     //hola
     int asesionatos;
     public int getCantidad105() {

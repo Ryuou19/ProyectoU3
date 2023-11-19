@@ -20,7 +20,7 @@ public class Tank{
     private int cañonY;
     int ancho;
     int alto;   
-    int vida;
+    int vida=100;
 //cambio----------------------------------------------------    
     int gravedad=9;
     int dañoAltura=10;//si cae a mas de 5 pies de altura se hace daño
@@ -102,29 +102,24 @@ public class Tank{
     public void crearHitbox( GraphicsContext gc, Terreno terreno) {
         int hitboxAncho=1;
         int hitboxLargo=2;
+        
         for(int i=0;i<ancho+hitboxAncho;i++){
             for (int j=0;j<alto+hitboxLargo;j++){
+
                //actualizar la colision de la matriz
                int ajustar_posicion=6;//Esta variable se usa para colocar la hitbox del tanque en el lugar correcto, ya que por dimensiones del canvas necesita moverse 6 espacios hacia abajo para quedar correcto
                int posXMatriz = (posicionX / 3 + i);
                int posYMatriz = (posicionY / 3 + j+ajustar_posicion);
-               if  (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){
-                   int marcar_hitbox = 0;
-                   if(jugadorTanque==0){
-                        marcar_hitbox=jugadorTanque+2;// la primera marca del jugador 1 sera un 2 dado que las dunas son 1
+                if (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){
+                        int marcar_hitbox = jugadorTanque + 2; // se pone un 2 para tanque 0
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
-                       gc.setFill(Color.GREEN);
-                       gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
-                   }
-                    else{
-                        terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox; // 3,4,5 seran las marcas de los demas tanques
-                       gc.setFill(Color.RED);
-                       gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
-                   }
-                   marcar_hitbox=+1;
-               }
-            }    
-        } 
+                        gc.setFill(Color.GREEN);
+                        gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
+                        System.out.println("indices que representan al jugador"+(jugadorTanque)+"="+marcar_hitbox);
+
+                }
+            }
+        }
     }
     public boolean estaSobreDuna(Terreno terreno) {
         int hitboxAncho = 1;
@@ -147,7 +142,7 @@ public class Tank{
         }
         return false;
     }
-    public void caidaTanque(GraphicsContext gc, Terreno terrain, int tipoTerreno) {
+    /*public void caidaTanque(GraphicsContext gc, Terreno terrain, int tipoTerreno) {
         float contador[] = {0};
         AnimationTimer animation = new AnimationTimer() {
 
@@ -182,7 +177,7 @@ public class Tank{
             }
         };
         animation.start();
-    }
+    }*/
 
     //funcion que reduce la vida dependiendo del valor de la bala o del radio de explosion
     public int ajustar_vida(int vida, int danio){
@@ -193,7 +188,6 @@ public class Tank{
     
     public void dibuarTanque(GraphicsContext gc)
     {
-
            Image tanque = new Image(getClass().getResourceAsStream(color));
            gc.drawImage(tanque, posicionX-7, posicionY-12, 70, 70);
     }

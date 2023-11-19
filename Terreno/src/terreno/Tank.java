@@ -115,8 +115,6 @@ public class Tank{
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
                         gc.setFill(Color.GREEN);
                         gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
-                        System.out.println("indices que representan al jugador"+(jugadorTanque)+"="+marcar_hitbox);
-
                 }
             }
         }

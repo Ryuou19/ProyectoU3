@@ -17,7 +17,7 @@ public class Jugador {
     //SALDO DE CADA JUGADOR
     int saldo;
     int posicionInicalX=0;
-    int posicionInicialY=200;
+    int posicionInicialY=100;
 
     //hola
     int asesionatos;

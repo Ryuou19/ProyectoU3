@@ -64,7 +64,6 @@ public class Jugar  {
     Terreno terrain = new Terreno(alto,ancho, pixel,interfaz.gc);
     
     public static void main(String[] args) {
-        
         launch(args);
     }
 
@@ -75,19 +74,24 @@ public class Jugar  {
             stage.close();
         }
         stage.setResizable(false);
-        listJugador.instanciarJugadores(4); //deberia de tomar la variable con lo que hay en configuracion
+        cantidad_jugadores=4;
+        listJugador.instanciarJugadores(cantidad_jugadores); //deberia de tomar la variable con lo que hay en configuracion
         //escogemos altiro el JUGADOR QUE Juega
-        listJugador.generarTurnoAleatorio();
-        System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
-        //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
-
-        cantidad_jugadores=listJugador.getLista().size();
 
         definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
             
         interfaz.iniciar_interfaz(stage,scene);
         iniciar_terreno();
-                    
+        System.out.println("antes");
+        System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
+        System.out.println("lista de jugadores->"+listJugador.lista);
+        listJugador.generarTurnoAleatorio();
+        System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
+        System.out.println("despues de desordenar la lista");
+        System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
+
+        //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
+
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
             stage.close(); 
             
@@ -152,7 +156,7 @@ public class Jugar  {
                                     listJugador.generarTurnoAleatorio();//cambiamos el turno
                                     System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
                                     animacionCaida();
-                                    System.out.println("actualizacion..");
+                                    System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
                                 }
                             }
                         }.start();
@@ -168,7 +172,6 @@ public class Jugar  {
         
         terrain.iniciar();
         definifirPosicion();
-        
         validar=0;
         if(terreno_random == 0) {
             terrain.terreno_nieve(interfaz.gc, 0.0, 100,validar, terrain,alto,ancho);

@@ -74,7 +74,7 @@ public class Jugar  {
             stage.close();
         }
         stage.setResizable(false);
-        cantidad_jugadores=4;
+        cantidad_jugadores=6;
         listJugador.instanciarJugadores(cantidad_jugadores); //deberia de tomar la variable con lo que hay en configuracion
         //escogemos altiro el JUGADOR QUE Juega
 
@@ -476,7 +476,6 @@ public class Jugar  {
                 nuevoTerreno = random.nextInt(3);
             }            
             terreno_random = nuevoTerreno;
-            cantidad_jugadores=4;// reiniciamos a la cantidad anterior esto deberia de tomar los valores en la configuracion
             listJugador.getLista().clear();
             listJugador.instanciarJugadores(cantidad_jugadores);
             iniciar_terreno();
@@ -522,12 +521,13 @@ public class Jugar  {
     }
     void definifirPosicion()
     {
-        int largo = (alto*pixel);
+        //int largo = (ancho*pixel);
+        int largo = 1200;
         int ancho_segmento=largo/cantidad_jugadores;
         for(int i=0;i<cantidad_jugadores;i++)
         {
             int min=ancho_segmento*i;
-            int max=ancho_segmento*(i+1)-200;
+            int max=ancho_segmento*(i+1);
             int posicion_inicial=random.nextInt(max-min)+min;
             listJugador.getLista().get(i).posicionInicalX=posicion_inicial;
 

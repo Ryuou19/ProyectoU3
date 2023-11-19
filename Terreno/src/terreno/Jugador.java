@@ -81,6 +81,10 @@ public class Jugador {
         {
             this.color="./img/tanque1.png";
         }
+        if (jugador==5)
+        {
+            this.color="./img/tanque1.png";
+        }
         
     }
     

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -156,7 +157,7 @@ public class Jugar  {
                                         turno=1;//cambia turno
                                     }                                   
                                     stop();
-                                    //animacionCaida();
+                                    animacionCaida();
                                 }
                             }
                         }.start();
@@ -176,15 +177,15 @@ public class Jugar  {
         validar=0;
         if(terreno_random == 0) {
             terrain.terreno_nieve(interfaz.gc, 0.0, 100,validar, terrain,alto,ancho);
-            //animacionCaida();
+            animacionCaida();
         }
         if(terreno_random == 1) {
             terrain.terreno_desierto(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
-            //animacionCaida();
+            animacionCaida();
         }
         if(terreno_random == 2) {
             terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
-            //animacionCaida();
+            animacionCaida();
         }
         stage.show();
         /*System.out.println("posicion del tanque1 x e y -> x"+listJugador.getJugador1().getTanque().getCañonX()+"y"+listJugador.getJugador1().getTanque().getCañonY());
@@ -377,21 +378,39 @@ public class Jugar  {
             }
         }
     }
-    
-    public void animacionCaida(){
 
-        ExecutorService executor = Executors.newFixedThreadPool(listJugador.getLista().size());
+    public void animacionCaida() {
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                boolean todosEnSuelo = true;
+                if (terreno_random == 0) {
+                    terrain.terreno_nieve(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
+                } else if (terreno_random == 1) {
+                    terrain.terreno_desierto(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
+                } else if (terreno_random == 2) {
+                    terrain.terreno_aram(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
+                }
+                for (Jugador jugador : listJugador.getLista()) {
+                    Tank tanque = jugador.getTanque();
+                    if (!tanque.estaSobreDuna(terrain)) {
+                        tanque.posicionY += tanque.gravedad;
+                        todosEnSuelo = false;
+                    }
+                    tanque.dibuarTanque(interfaz.gc);
 
-        for (Jugador jugador : listJugador.getLista()) {
+                    if (todosEnSuelo) {
+                        tanque.crearHitbox(interfaz.gc,terrain);
 
-            executor.submit(() -> {
-                jugador.getTanque().caidaTanque(interfaz.gc,terrain,terreno_random);
-            });
-        }
-
-        // Una vez enviadas todas las tareas, cierra el Executor para que no acepte nuevas tareas
-        executor.shutdown();
+                    }
+                }
+                if (todosEnSuelo) {
+                    stop();
+                }
+            }
+        }.start();
     }
+
 
     
     public void elegir_bala(){

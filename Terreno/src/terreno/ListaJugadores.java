@@ -83,12 +83,14 @@ public class ListaJugadores {
      public void generarTurnoAleatorio() {
         if (turnosDisponibles.isEmpty()) {
             // Si todos los jugadores han sido seleccionados, se reiniciar la lista
+
             for (int i = 0; i < lista.size(); i++) {
                 turnosDisponibles.add(i);
             }
             Collections.shuffle(turnosDisponibles);
         }
         indiceActual = turnosDisponibles.remove(0);
+
     }
     public Jugador getJugadorActual() {
         return lista.get(indiceActual);

@@ -1,4 +1,5 @@
 package terreno;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -302,17 +303,10 @@ public class Terreno{
         }
         return 0;
     }
-    public void colocarTanquesTerreno(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho)
-    {
-        System.out.println("posiciones 1 ->"+listJugador.getLista().get(0).posicionInicalX);
-        System.out.println("posiciones 2->"+listJugador.getLista().get(1).posicionInicalX);
-        ExecutorService executor = Executors.newFixedThreadPool(listJugador.getLista().size());
+    public void colocarTanquesTerreno(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno, int alto, int ancho) {
         for (Jugador jugador : listJugador.getLista()) {
-                executor.submit(() -> {
-                    jugador.creaTanque(gc, vida, validar, terreno);
-                    jugador.getTanque().modificarCañon(gc,angulo);
-                });
+            jugador.creaTanque(gc, vida, validar, terreno);
+            jugador.getTanque().modificarCañon(gc, angulo);
         }
-        executor.shutdown();
     }
 }  

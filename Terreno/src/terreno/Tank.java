@@ -24,6 +24,8 @@ public class Tank{
 //cambio----------------------------------------------------    
     int gravedad=9;
     int dañoAltura=10;//si cae a mas de 5 pies de altura se hace daño
+    int alto_resolucion = new Globales().alto_resolucion;
+    int ancho_resolucion = new Globales().ancho_resolucion;
 
 //----------------------------------------------------
     ListaJugadores listaJugador = ListaJugadores.getInstance();
@@ -95,11 +97,9 @@ public class Tank{
     public void agregarTanque(GraphicsContext gc, int ran,int vida,Terreno terreno,int posicionX, int posicionY) {
       this.posicionX= posicionX;
       this.posicionY = posicionY;
-      funcionesSimultaneas(1,gc,terreno);
-
     }
     //cambio--------------------------------------------------------------------------------------------------------    
-    private void crearHitbox( GraphicsContext gc, Terreno terreno) {
+    public void crearHitbox( GraphicsContext gc, Terreno terreno) {
         int hitboxAncho=1;
         int hitboxLargo=2;
         for(int i=0;i<ancho+hitboxAncho;i++){
@@ -109,21 +109,24 @@ public class Tank{
                int posXMatriz = (posicionX / 3 + i);
                int posYMatriz = (posicionY / 3 + j+ajustar_posicion);
                if  (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){
-                    if(jugadorTanque==1){
-                        terreno.matriz[posXMatriz][posYMatriz] = 2;
-                        gc.setFill(Color.RED); 
-                        gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 ); 
-                    }
-                    else if(jugadorTanque==2){
-                        terreno.matriz[posXMatriz][posYMatriz] = 3;
-                        gc.setFill(Color.RED); 
-                        gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
-                    }
-                }
+                   int marcar_hitbox = 0;
+                   if(jugadorTanque==0){
+                        marcar_hitbox=jugadorTanque+2;// marcado
+                        terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
+                       gc.setFill(Color.GREEN);
+                       gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
+                   }
+                    else{
+                        terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox; // 3,4,5 seran las marcas de los demas tanques
+                       gc.setFill(Color.RED);
+                       gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
+                   }
+                   marcar_hitbox=+1;
+               }
             }    
         } 
     }
-        private boolean estaSobreDuna(Terreno terreno) {
+    public boolean estaSobreDuna(Terreno terreno) {
         int hitboxAncho = 1;
         int contadorDunas = 0;
         for(int i = 0; i < ancho + hitboxAncho; i++) {
@@ -144,45 +147,43 @@ public class Tank{
         }
         return false;
     }
-     public void caidaTanque(GraphicsContext gc, Terreno terrain, int tipoTerreno) { 
-        float contador[]={0};
-        AnimationTimer animation;
-        animation = new AnimationTimer() {
+    public void caidaTanque(GraphicsContext gc, Terreno terrain, int tipoTerreno) {
+        float contador[] = {0};
+        AnimationTimer animation = new AnimationTimer() {
+
             @Override
             public void handle(long now) {
+                boolean caidaCompleta = true;
+                if (tipoTerreno == 0) {
+                    terrain.terreno_nieve(gc, 0.0, 100, 1,terrain,alto_resolucion,ancho_resolucion);
 
-                if (!estaSobreDuna(terrain)) {
-                    if (tipoTerreno == 0) {
-                        terrain.terreno_nieve(gc, 0.0, 100, 1,terrain,c.alto_resolucion,c.ancho_resolucion);
-                        
-                    }
-                    if (tipoTerreno == 1) {
-                        terrain.terreno_desierto(gc, 0.0, 100, 1,terrain,c.alto_resolucion,c.ancho_resolucion);
-                        
-                    }
-                    if (tipoTerreno == 2) {
-                        terrain.terreno_aram(gc, 0.0, 100, 1, terrain,c.alto_resolucion,c.ancho_resolucion);
-                        
-                    }
-                    contador[0] +=1.0;
-                    posicionY += gravedad;
-                    //se ejecuta solo el dibujar
-                    //funcionesSimultaneas(1,gc,terrain);
+                }
+                if (tipoTerreno == 1) {
+                    terrain.terreno_desierto(gc, 0.0, 100, 1,terrain,alto_resolucion,ancho_resolucion);
 
-                } else {
+                }
+                if (tipoTerreno == 2) {
+                    terrain.terreno_aram(gc, 0.0, 100, 1,terrain,alto_resolucion,ancho_resolucion);
+
+                }
+                for (Jugador jugador : listaJugador.getLista()) {
+
+                    Tank tanque = jugador.getTanque();
+                    if (!tanque.estaSobreDuna(terrain)) {
+                        tanque.posicionY += tanque.gravedad;
+                        caidaCompleta = false;
+                    }
+
+                    tanque.dibuarTanque(gc);
+                }
+                if (caidaCompleta) {
                     this.stop();
-                    //se ejecuta
-                    //funcionesSimultaneas(2,gc,terrain);
-                                      
-                    modificarCañon(gc, angulo);
-
-                    
                 }
             }
         };
         animation.start();
-
     }
+
     //funcion que reduce la vida dependiendo del valor de la bala o del radio de explosion
     public int ajustar_vida(int vida, int danio){
         vida-=danio;
@@ -197,31 +198,5 @@ public class Tank{
            gc.drawImage(tanque, posicionX-7, posicionY-12, 70, 70);
     }
 
-    public void funcionesSimultaneas(int num_funcion,GraphicsContext gc, Terreno terrain)
-    {
-        if(num_funcion==1)
-        {
-            ExecutorService executor = Executors.newFixedThreadPool(listaJugador.getLista().size());
-            for (Jugador jugador : listaJugador.getLista()) {
-                executor.submit(() -> {
-                    Platform.runLater(() -> {
-                        jugador.getTanque().dibuarTanque(gc);
-                    });
-                });
-            }
-        }
-        if(num_funcion==2)
-        {
-            ExecutorService executor = Executors.newFixedThreadPool(listaJugador.getLista().size());
-            for (Jugador jugador : listaJugador.getLista()) {
-                executor.submit(() -> {
-                    Platform.runLater(() -> {
-                        jugador.getTanque().dibuarTanque(gc);
-                        jugador.getTanque().crearHitbox(gc,terrain);
-                    });
-                });
-            }
-        }
 
-    }
 }

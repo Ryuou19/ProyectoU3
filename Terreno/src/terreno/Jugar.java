@@ -15,9 +15,8 @@ import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.stage.Popup;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+
 public class Jugar  {  
     static Random random = new Random();
     private int turno = 1;
@@ -29,8 +28,7 @@ public class Jugar  {
     int distancia=0;
     int altura=0;
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)
-    int vidatanque1=100;
-    int vidatanque2=100;//vidas representadas en la interfaz
+    int vidatanque1=100;//vidas representadas en la interfaz
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.1;
     int resolucion;
@@ -73,14 +71,17 @@ public class Jugar  {
         if(rondas<0){
             stage.close();
         }
+        
+        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
         stage.setResizable(false);
-        cantidad_jugadores=6;
+        cantidad_jugadores=jugadores;
         listJugador.instanciarJugadores(cantidad_jugadores); //deberia de tomar la variable con lo que hay en configuracion
         //escogemos altiro el JUGADOR QUE Juega
-
-        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
+        
+        
             
         interfaz.iniciar_interfaz(stage,scene);
+        interfaz.mostrarJugador(listJugador.getJugadorActual().jugador);
         iniciar_terreno();
         System.out.println("antes");
         System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
@@ -155,6 +156,7 @@ public class Jugar  {
                                     stop();
                                     listJugador.generarTurnoAleatorio();//cambiamos el turno
                                     System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
+                                    interfaz.mostrarJugador(listJugador.getJugadorActual().jugador);
                                     animacionCaida();
                                     System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
                                 }
@@ -207,14 +209,10 @@ public class Jugar  {
         tanqueImpactado.ajustar_vida(tanqueImpactado.getVida(), danio);
         int nuevavida = tanqueImpactado.vida;
         listJugador.getJugadorActual().saldo+=10; // le damos 10 monedas al tanque actual por impactar
-        interfaz.textovida1.setText(nuevavida+"");
-        //interfaz.boxtanque1.setVisible(false);
-        //interfaz.boxtanque2.setVisible(true);
-        //interfaz.boxvida1.setVisible(false);
-        //interfaz.boxvida2.setVisible(true);
+        interfaz.textovida.setText("Vida = "+nuevavida);
+    
         interfaz.boxcantidadbalas.setVisible(false);
         if(vidatanque1<=0){
-            System.out.println("HA GANADO EL JUGADOR 2!!");
             listJugador.getJugadorActual().asesionatos+=1;// le agregamos 1 asesinato
             listJugador.getLista().remove(jugadorImpactado); //eliminamos el jugador de la lista para que no se vuelva a dibujar
             cantidad_jugadores-=1;
@@ -480,14 +478,10 @@ public class Jugar  {
             listJugador.instanciarJugadores(cantidad_jugadores);
             iniciar_terreno();
 
-            //interfaz.boxtanque2.setVisible(false);
-            //interfaz.boxtanque1.setVisible(true);
-            //interfaz.boxvida2.setVisible(false);
-            //interfaz.boxvida1.setVisible(true);
+           
             vidatanque1=100;
-            //vidatanque2=100;
-            interfaz.textovida1.setText(vidatanque1+"");
-            //interfaz.textovida2.setText(vidatanque2+"");
+           
+            interfaz.textovida.setText(100+"");
     }
     public static int getRandom(){
         return terreno_random;

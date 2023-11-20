@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -50,15 +49,30 @@ public class Interfaz {
     Text textjugador=new Text("Turno Actual");
 
     //TANQUE 1
-    HBox boxtanque1 = new HBox();
+    HBox boxtanque = new HBox();
     Image tanque1 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
     ImageView imagentanque1 = new ImageView(tanque1);
 
     //TANQUE 2
-    HBox boxtanque2 = new HBox();
     Image tanque2 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
     ImageView imagentanque2 = new ImageView(tanque2);
-
+    
+    //TANQUE 3
+    Image tanque3 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
+    ImageView imagentanque3 = new ImageView(tanque3);
+        
+    //TANQUE 4
+    Image tanque4 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
+    ImageView imagentanque4 = new ImageView(tanque4);
+    
+    //TANQUE 5
+    Image tanque5 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
+    ImageView imagentanque5 = new ImageView(tanque5);
+        
+    //TANQUE 6
+    Image tanque6 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
+    ImageView imagentanque6 = new ImageView(tanque6);
+       
     //DISPARO
     HBox boxdisparo= new HBox();
     Button disparar = new Button("!DISPARAR!");
@@ -75,12 +89,8 @@ public class Interfaz {
     Rectangle marco = new Rectangle(300, 560+25, 520, 100);
     
     //VIDA
-    HBox boxvida1= new HBox();   
-    HBox boxvida2= new HBox();
-    Text textvida1=new Text("Vida = ");
-    Text textvida2=new Text("Vida = ");
-    Label textovida1 = new Label(100+"");
-    Label textovida2 = new Label(100+"");
+    HBox boxvida= new HBox();      
+    Label textovida = new Label(100+"");
     
     //BOTON REINICIAR
     HBox boxreiniciar= new HBox();
@@ -139,17 +149,38 @@ public class Interfaz {
         //TANQUE 1
         imagentanque1.setFitWidth(120);
         imagentanque1.setFitHeight(120);
-        boxtanque1.getChildren().add(imagentanque1);
-        boxtanque1.setLayoutX(500); 
-        boxtanque1.setLayoutY(550+mover);
-               
+    
+                     
         //TANQUE 2
         imagentanque2.setFitWidth(120);
         imagentanque2.setFitHeight(120);
-        boxtanque2.getChildren().add(imagentanque2);
-        boxtanque2.setLayoutX(500);
-        boxtanque2.setLayoutY(550+mover);
-       
+     
+        
+        //TANQUE 3
+        imagentanque3.setFitWidth(120);
+        imagentanque3.setFitHeight(120);
+    
+        
+        //TANQUE 4
+        imagentanque4.setFitWidth(120);
+        imagentanque4.setFitHeight(120);
+  
+        
+        //TANQUE 5
+        imagentanque5.setFitWidth(120);
+        imagentanque5.setFitHeight(120);
+                               
+        //TANQUE 6
+        imagentanque6.setFitWidth(120);
+        imagentanque6.setFitHeight(120);
+      
+        
+        boxtanque.getChildren().addAll(imagentanque1,imagentanque2,
+                imagentanque3,imagentanque4,imagentanque5,imagentanque6);
+        boxtanque.setLayoutX(500); 
+        boxtanque.setLayoutY(550+mover);
+    
+        
         //DISPARO
         disparar.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
         boxdisparo.getChildren().add(disparar);
@@ -185,22 +216,13 @@ public class Interfaz {
         canvasPane.getChildren().add(marco);
 
         //VIDA
-        textvida1.setFill(Color.GREEN); 
-        textvida1.setFont(Font.font("Monospaced", FontWeight.BOLD, 20)); 
-        textvida2.setFill(Color.GREEN); 
-        textvida2.setFont(Font.font("Monospaced", FontWeight.BOLD, 20)); 
-        textovida1.setTextFill(Color.BLACK);
-        textovida2.setTextFill(Color.RED);
-        textovida1.setFont(Font.font("Arial",FontWeight.BOLD, 20));
-        textovida2.setFont(Font.font("Arial",FontWeight.BOLD, 20));  
-        textovida1.setTranslateX(-5);
-        textovida2.setTranslateX(-5);
-        boxvida1.getChildren().addAll(textvida1,textovida1);
-        boxvida2.getChildren().addAll(textvida2,textovida2);
-        boxvida1.setLayoutX(652);
-        boxvida1.setLayoutY(565+mover);
-        boxvida2.setLayoutX(652);
-        boxvida2.setLayoutY(565+mover);
+        textovida.setTextFill(Color.BLACK);      
+        textovida.setFont(Font.font("Arial",FontWeight.BOLD, 20));       
+        textovida.setTranslateX(-5);      
+        boxvida.getChildren().addAll(textovida);     
+        boxvida.setLayoutX(652);
+        boxvida.setLayoutY(565+mover);
+        
         
         //BOTON REINICIAR
         Font font = Font.font("Serif", FontWeight.NORMAL, 20);
@@ -244,13 +266,18 @@ public class Interfaz {
       
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
-                boxjugador,boxtanque1,boxtanque2, boxdisparo, 
-                boxdistancia, boxaltura, boxvida1,boxvida2, 
+                boxjugador,boxtanque, boxdisparo, 
+                boxdistancia, boxaltura, boxvida, 
                 boxreiniciar, boxfinalizar, boxbalas, boxcantidadbalas);
         
-        boxtanque2.setVisible(false);
-        boxtanque1.setVisible(true);
-        boxvida2.setVisible(false);
-        boxvida1.setVisible(true);
+        
+        boxvida.setVisible(true);
+    }
+    
+    public void mostrarJugador(int jugador){
+        for(int i=0;i<6;i++){
+            boxtanque.getChildren().get(i).setVisible(false);
+        }
+        boxtanque.getChildren().get(jugador).setVisible(true);
     }
 }

@@ -34,7 +34,7 @@ public class PantallaInicial extends Application {
     Clip clip;//reproductor
     FloatControl control;//para controlar la musica
     int resolucion_def=2;
-    int jugadores_def=2;
+    int jugadores_def=6;
     int rondas_def=1;
     int entorno_def=0;
     int cantidad_def=0;

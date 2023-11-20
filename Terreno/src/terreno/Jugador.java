@@ -11,9 +11,9 @@ public class Jugador {
     public int jugador;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
-    int cantidad105= 3;
-    int cantidad80=10;
-    int cantidad60 =3;
+    int cantidad105;
+    int cantidad80;
+    int cantidad60;
     int vida;
     //SALDO DE CADA JUGADOR
     int saldo;
@@ -82,19 +82,19 @@ public class Jugador {
         }
         if(jugador==2)
         {
-            this.color="./img/tanque1.png";
+            this.color="./img/tanque3.png";
         }
         if(jugador==3)
         {
-            this.color="./img/tanque2.png";
+            this.color="./img/tanque4.png";
         }
         if(jugador==4)
         {
-            this.color="./img/tanque1.png";
+            this.color="./img/tanque5.png";
         }
         if (jugador==5)
         {
-            this.color="./img/tanque1.png";
+            this.color="./img/tanque6.png";
         }
         
     }

@@ -1,12 +1,8 @@
 package terreno;
 
-import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;// import usado para dibujar hitbox con el fin de visualizarla
-import javafx.application.Platform;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 public class Tank{
@@ -24,8 +20,6 @@ public class Tank{
 //cambio----------------------------------------------------    
     int gravedad=9;
     int dañoAltura=10;//si cae a mas de 5 pies de altura se hace daño
-    int alto_resolucion = new Globales().alto_resolucion;
-    int ancho_resolucion = new Globales().ancho_resolucion;
 
 //----------------------------------------------------
     ListaJugadores listaJugador = ListaJugadores.getInstance();
@@ -116,8 +110,8 @@ public class Tank{
     
                         
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
-                        gc.setFill(Color.GREEN);
-                        gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
+                        //gc.setFill(Color.GREEN);
+                        //gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
                 }
             }
         }

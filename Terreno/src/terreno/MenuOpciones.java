@@ -48,11 +48,6 @@ public class MenuOpciones {
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
     Font font = Font.font("Serif", FontWeight.NORMAL, 24);
-    int resolucion_def;
-    int jugadores_def;
-    int rondas_def;
-    int entorno_def;
-    int cantidad_def;
     Pane panel = new Pane();
     Scene escena=new Scene(panel,1500,900);
     Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
@@ -95,8 +90,8 @@ public class MenuOpciones {
         flecha_derecha1.setMinHeight(50);
         flecha_derecha1.setStyle(estilo_botones);
         flecha_derecha1.setOnAction(e -> {
-            resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,resolucion_def);
-            System.out.println("Actual = "+resolucion_def);
+            Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def);
+            System.out.println("Actual = "+Globales.resolucion_def);
         });
         
         Button flecha_izquierda1 = new Button("<");
@@ -104,8 +99,8 @@ public class MenuOpciones {
         flecha_izquierda1.setMinHeight(50); 
         flecha_izquierda1.setStyle(estilo_botones);
         flecha_izquierda1.setOnAction(e -> {
-            resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,resolucion_def);
-            System.out.println("Actual = "+resolucion_def);
+            Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def);
+            System.out.println("Actual = "+Globales.resolucion_def);
         });
         
         HBox menu_resoluciones = new HBox();
@@ -136,8 +131,8 @@ public class MenuOpciones {
         flecha_derecha2.setMinHeight(50);
         flecha_derecha2.setStyle(estilo_botones);
         flecha_derecha2.setOnAction(e -> {
-            rondas_def=cambiarOpcion(1,rondas,opcion_rondas,rondas_def);
-            System.out.println("Actual = "+rondas_def);
+            Globales.rondas_def=cambiarOpcion(1,rondas,opcion_rondas,Globales.rondas_def);
+            System.out.println("Actual = "+Globales.rondas_def);
         });
         
         Button flecha_izquierda2 = new Button("<");
@@ -145,8 +140,8 @@ public class MenuOpciones {
         flecha_izquierda2.setMinHeight(50);
         flecha_izquierda2.setStyle(estilo_botones);
         flecha_izquierda2.setOnAction(e -> {
-            rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,rondas_def);
-            System.out.println("Actual = "+rondas_def);
+            Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def);
+            System.out.println("Actual = "+Globales.rondas_def);
         });
         
         HBox menu_rondas = new HBox();
@@ -178,8 +173,8 @@ public class MenuOpciones {
         flecha_derecha3.setMinHeight(50);
         flecha_derecha3.setStyle(estilo_botones);
         flecha_derecha3.setOnAction(e -> {
-            jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,jugadores_def);
-            System.out.println("Actual = "+jugadores_def);
+            Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def);
+            System.out.println("Actual = "+Globales.jugadores_def);
         });
         
         Button flecha_izquierda3 = new Button("<");
@@ -187,8 +182,8 @@ public class MenuOpciones {
         flecha_izquierda3.setMinHeight(50);
         flecha_izquierda3.setStyle(estilo_botones);
         flecha_izquierda3.setOnAction(e -> {
-            jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,jugadores_def);
-            System.out.println("Actual = "+jugadores_def);
+            Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def);
+            System.out.println("Actual = "+Globales.jugadores_def);
         });
         
         HBox menu_jugadores = new HBox();
@@ -220,8 +215,8 @@ public class MenuOpciones {
         flecha_derecha5.setMinHeight(50);
         flecha_derecha5.setStyle(estilo_botones);
         flecha_derecha5.setOnAction(e -> {         
-            cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,cantidad_def);
-            System.out.println("Actual = "+cantidad_def); 
+            Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def);
+            System.out.println("Actual = "+Globales.cantidad_def); 
         });
         
         Button flecha_izquierda5 = new Button("<");
@@ -229,8 +224,8 @@ public class MenuOpciones {
         flecha_izquierda5.setMinHeight(50);
         flecha_izquierda5.setStyle(estilo_botones);
         flecha_izquierda5.setOnAction(e -> {         
-            cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,cantidad_def);
-            System.out.println("Actual = "+cantidad_def); 
+            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def);
+            System.out.println("Actual = "+Globales.cantidad_def); 
         });
              
         HBox menu_cantidad = new HBox();
@@ -260,8 +255,8 @@ public class MenuOpciones {
         flecha_derecha4.setMinHeight(50);
         flecha_derecha4.setStyle(estilo_botones);
         flecha_derecha4.setOnAction(e -> {
-            entorno_def=cambiarOpcion(1,entorno,opcion_entorno,entorno_def);
-            System.out.println("Actual = "+entorno_def);    
+            Globales.entorno_def=cambiarOpcion(1,entorno,opcion_entorno,Globales.entorno_def);
+            System.out.println("Actual = "+Globales.entorno_def);    
         });
         
         Button flecha_izquierda4 = new Button("<");
@@ -269,8 +264,8 @@ public class MenuOpciones {
         flecha_izquierda4.setMinHeight(50);
         flecha_izquierda4.setStyle(estilo_botones);
         flecha_izquierda4.setOnAction(e -> {
-            entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,entorno_def);
-            System.out.println("Actual = "+entorno_def);      
+            Globales.entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,Globales.entorno_def);
+            System.out.println("Actual = "+Globales.entorno_def);      
         });
         
         HBox menu_entorno = new HBox();

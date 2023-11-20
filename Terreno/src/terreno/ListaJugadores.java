@@ -96,4 +96,24 @@ public class ListaJugadores {
         return lista.get(indiceActual);
     }
     
+    public void eliminarJugador(int indiceJugador) {
+        if (indiceJugador < 0 || indiceJugador >= lista.size()) {
+            // Índice fuera de rango, no se hace nada
+            return;
+        }
+
+        // Eliminar el jugador de la lista de jugadores
+        lista.remove(indiceJugador);
+
+        // Actualizar la lista de turnos disponibles
+        turnosDisponibles.removeIf(indice -> indice == indiceJugador);
+
+        // Ajustar los índices en turnosDisponibles para los jugadores que vienen después del eliminado
+        for (int i = 0; i < turnosDisponibles.size(); i++) {
+            if (turnosDisponibles.get(i) > indiceJugador) {
+                turnosDisponibles.set(i, turnosDisponibles.get(i) - 1);
+            }
+        }
+    }
+    
 }

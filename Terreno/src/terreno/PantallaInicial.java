@@ -33,11 +33,6 @@ public class PantallaInicial extends Application {
     float volume;//volumen
     Clip clip;//reproductor
     FloatControl control;//para controlar la musica
-    int resolucion_def=2;
-    int jugadores_def=6;
-    int rondas_def=1;
-    int entorno_def=0;
-    int cantidad_def=0;
     Pane panel = new Pane();
     Scene scene = new Scene(panel, 1500, 900);
     MenuOpciones options = new MenuOpciones();
@@ -46,13 +41,7 @@ public class PantallaInicial extends Application {
     public PantallaInicial() {
     }
       
-    public PantallaInicial(int resolucion_def, int rondas_def, int jugadores_def, int cantidad_def, int entorno_def) {
-        this.resolucion_def = resolucion_def;
-        this.jugadores_def = jugadores_def;
-        this.rondas_def = rondas_def;
-        this.entorno_def = entorno_def;
-        this.cantidad_def = cantidad_def;
-    }
+    
     
     public static void main(String[] args) {
         launch(args);
@@ -130,7 +119,7 @@ public class PantallaInicial extends Application {
         
         
         comenzar.setOnAction(e -> {         
-            Jugar juego = new Jugar(list,resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);//inicia el proceso de jugar
+            Jugar juego = new Jugar(list);//inicia el proceso de jugar
             //list.instanciarJugadores(cantidadJugadores);
             juego.start(primaryStage,scene);
             volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen

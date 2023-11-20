@@ -31,11 +31,7 @@ public class Jugar  {
     
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.1;
-    int resolucion;
-    int jugadores;
-    int rondas;
-    int entorno;
-    int cantidad;
+    
     Stage stage;
     ListaJugadores listJugador;
     int alto = 500;
@@ -45,20 +41,11 @@ public class Jugar  {
     int cantidad_jugadores=0;
     int contador_inicio=0;
     int vidatanque1=100;
-    int vidatanque2=100;
-    int vidatanque3=100;
-    int vidatanque4=100;
-    int vidatanque5=100;
-    int vidatanque6=100;
-    int[] vidas={vidatanque1,vidatanque2,vidatanque3,vidatanque4,vidatanque5,vidatanque6};
+   
+    
     
 
-    public Jugar(ListaJugadores listJugador,int resolucion, int rondas, int jugadores, int cantidad,int entorno) {
-        this.resolucion = resolucion;
-        this.jugadores = jugadores;
-        this.rondas = rondas;
-        this.entorno = entorno;
-        this.cantidad = cantidad;
+    public Jugar(ListaJugadores listJugador) {
         this.listJugador = listJugador;
         
     }
@@ -76,13 +63,13 @@ public class Jugar  {
    
     public void start(Stage primaryStage, Scene scene) {
         stage=primaryStage;
-        if(rondas<0){
+        if(Globales.rondas_def==0){
             stage.close();
         }
         
-        definir_opciones(resolucion,rondas,jugadores,cantidad,entorno);
+ 
         stage.setResizable(false);
-        cantidad_jugadores=jugadores;
+        cantidad_jugadores=Globales.jugadores_def;
         listJugador.instanciarJugadores(cantidad_jugadores); //deberia de tomar la variable con lo que hay en configuracion
         //escogemos altiro el JUGADOR QUE Juega
         
@@ -101,13 +88,18 @@ public class Jugar  {
 
         //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
 
-        interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion    
-            stage.close(); 
+        interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
+            if(Globales.rondas_def>0){
+                stage.close();       
+                Tienda escenaTienda = new Tienda();
+                escenaTienda.inicializarInterfaz(stage, listJugador);
+                
+                System.out.println("Rondas="+Globales.rondas_def);
+            }
+            if(Globales.rondas_def==0){
+                Platform.exit();
+            }
             
-            Tienda escenaTienda = new Tienda(resolucion,rondas,jugadores,cantidad,entorno);
-            escenaTienda.inicializarInterfaz(stage, listJugador);
-            rondas++;
-            System.out.println("Rondas="+rondas);
 
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
@@ -224,8 +216,9 @@ public class Jugar  {
         interfaz.boxcantidadbalas.setVisible(false);
         if(jugador.vida<=0){
             listJugador.getJugadorActual().asesionatos+=1;// le agregamos 1 asesinato
-            listJugador.getLista().remove(jugadorImpactado); //eliminamos el jugador de la lista para que no se vuelva a dibujar
+            listJugador.eliminarJugador(jugadorImpactado);//eliminamos el jugador de la lista para que no se vuelva a dibujar
             cantidad_jugadores-=1;
+            
             if(cantidad_jugadores==1) // si queda un jugador terminamos y reiniciamos
             {
                 reiniciar_partida();
@@ -299,49 +292,44 @@ public class Jugar  {
                 if(terrain.explosion[i][j]==1 && choque==2){
                     area++;
                     tanque=1;
-                    System.out.println("el area es "+area);
+                
                 }
                 if(terrain.explosion[i][j]==1 && choque==3){
                     area++;
                     tanque=2;
-                    System.out.println("el area es "+area);
+                 
                 }
                 if(terrain.explosion[i][j]==1 && choque==4){
                     area++;
                     tanque=3;
-                    System.out.println("el area es "+area);
+                
                 }
                 if(terrain.explosion[i][j]==1 && choque==5){
                     area++;
                     tanque=4;
-                    System.out.println("el area es "+area);
+                    
                 }
                 if(terrain.explosion[i][j]==1 && choque==6){
                     area++;
                     tanque=5;
-                    System.out.println("el area es "+area);
+                    
                 }
                 if(terrain.explosion[i][j]==1 && choque==7){
                     area++;
                     tanque=6;
-                    System.out.println("el area es "+area);
+                    
                 }
             }
         }
+        System.out.println("el area es "+area);
         area = Math.round(area / 2);//se divide a la mitad ya que la hitbox del tanque tiene 200 valores, y la vida del tanque es 100, para hacerlo mas preciso
         if(area>terrain.radio){//en caso de que el area sea mayor al daño propio de la bala, se inflinge el daño base de la bala partido a la mitad, ya que no fue un disparo directo como tal
             switch (terrain.radio) {
-                case 5:
-                    area=30/2;
-                    break;
-                case 10:
-                    area=40/2;
-                    break;
-                case 15:
-                    area=50/2;
-                    break;
-                default:
-                    break;
+                case 5 -> area=30/2;
+                case 10 -> area=40/2;
+                case 15 -> area=50/2;
+                default -> {
+                }
             }
         }
         if(tanque!=0){
@@ -508,32 +496,7 @@ public class Jugar  {
         return terreno_random;
     }
     
-    public void definir_opciones(int resolucion_def, int rondas_def, int jugadores_def, int cantidad_def, int entorno_def){
-        //Resolucion
-        if(resolucion_def==0){
-            alto=267;
-            ancho=267;
-        }
-        if(resolucion_def==1){
-            alto=300;
-            ancho=300;
-        }
-        if(resolucion_def==2){
-            alto=500;
-            ancho=300;
-        }
-        //Rondas
-        rondas=rondas_def;
-        //Jugadores
-
-        //AHI MAS ADELANTE SE AGREGAN EL RESTO DE JUGADORES, PROVISORIO HASTA QUE SE PUEDAN CREAR DE FORMA GENERICA
-        
-        //Cantidad
-        //SE AGREGARA CUANDO NOS METAMOS CON LAS IA'S
-        
-        //Entorno
-        //SE AGREGARA CUANDO TRABAJEMOS LOS ENTORNOS
-    }
+    
     void definifirPosicion()
     {
         //int largo = (ancho*pixel);
@@ -560,4 +523,6 @@ public class Jugar  {
             System.out.println("Jugador " + (i + 1) + ": " + vidaActual + " de vida");
         }
     }
+    
+    
 }

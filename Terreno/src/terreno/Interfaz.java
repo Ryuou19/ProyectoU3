@@ -55,19 +55,19 @@ public class Interfaz {
     ImageView imagentanque2 = new ImageView(tanque2);
     
     //TANQUE 3
-    Image tanque3 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
+    Image tanque3 = new Image(getClass().getResourceAsStream("./img/tanque3.png"));
     ImageView imagentanque3 = new ImageView(tanque3);
         
     //TANQUE 4
-    Image tanque4 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
+    Image tanque4 = new Image(getClass().getResourceAsStream("./img/tanque4.png"));
     ImageView imagentanque4 = new ImageView(tanque4);
     
     //TANQUE 5
-    Image tanque5 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
+    Image tanque5 = new Image(getClass().getResourceAsStream("./img/tanque5.png"));
     ImageView imagentanque5 = new ImageView(tanque5);
         
     //TANQUE 6
-    Image tanque6 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
+    Image tanque6 = new Image(getClass().getResourceAsStream("./img/tanque6.png"));
     ImageView imagentanque6 = new ImageView(tanque6);
        
     //LISTA TANQUES

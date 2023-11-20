@@ -38,7 +38,7 @@ public class Jugar  {
     int ancho=300;
     Interfaz interfaz=new Interfaz(alto,ancho);
     int pixel = 3;
-    int cantidad_jugadores=0;
+
     int contador_inicio=0;
     int vidatanque1=100;
    
@@ -63,25 +63,23 @@ public class Jugar  {
    
     public void start(Stage primaryStage, Scene scene) {
         stage=primaryStage;
+        listJugador.instanciarJugadores(Globales.jugadores_def);
+        listJugador.generarTurnoAleatorio();
+        
         if(Globales.rondas_def==0){
             stage.close();
         }
         
  
-        stage.setResizable(false);
-        cantidad_jugadores=Globales.jugadores_def;
-        listJugador.instanciarJugadores(cantidad_jugadores); //deberia de tomar la variable con lo que hay en configuracion
-        //escogemos altiro el JUGADOR QUE Juega
-        
-        
-            
+        stage.setResizable(false);     
+         //deberia de tomar la variable con lo que hay en configuracion         
         interfaz.iniciar_interfaz(stage,scene);
         interfaz.mostrarJugador(listJugador.getJugadorActual());
         iniciar_terreno();
         System.out.println("antes");
         System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
         System.out.println("lista de jugadores->"+listJugador.lista);
-        listJugador.generarTurnoAleatorio();
+        
         System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
         System.out.println("despues de desordenar la lista");
         System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
@@ -93,6 +91,7 @@ public class Jugar  {
                 stage.close();       
                 Tienda escenaTienda = new Tienda();
                 escenaTienda.inicializarInterfaz(stage, listJugador);
+                
                 
                 System.out.println("Rondas="+Globales.rondas_def);
             }
@@ -106,11 +105,9 @@ public class Jugar  {
             reiniciar_partida();
         });
         
-        tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
+        tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla                        
+        elegir_bala();   
         
-        interfaz.balas.setOnAction(e -> {            
-            elegir_bala();   
-        });
                
         interfaz.disparar.setOnAction(event ->{
                 
@@ -217,9 +214,9 @@ public class Jugar  {
         if(jugador.vida<=0){
             listJugador.getJugadorActual().asesionatos+=1;// le agregamos 1 asesinato
             listJugador.eliminarJugador(jugadorImpactado);//eliminamos el jugador de la lista para que no se vuelva a dibujar
-            cantidad_jugadores-=1;
+            Globales.jugadores_def-=1;
             
-            if(cantidad_jugadores==1) // si queda un jugador terminamos y reiniciamos
+            if(Globales.jugadores_def==1) // si queda un jugador terminamos y reiniciamos
             {
                 reiniciar_partida();
             }
@@ -245,7 +242,7 @@ public class Jugar  {
         //interfaz.boxtanque2.setVisible(true);
         //interfaz.boxvida1.setVisible(false);
         //interfaz.boxvida2.setVisible(true);
-        interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';");//reinicia el estilo del boton de balas
+        
         tipo=0;
     }    
     public Bala crear_bala(){
@@ -398,81 +395,49 @@ public class Jugar  {
 
     
     public void elegir_bala(){
-        interfaz.balas.setDisable(true);
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
         interfaz.boxcantidadbalas.setVisible(true);
         int posicionx=-20;
         int posiciony=80;
-        //VENTANA
-        Popup popup = new Popup();
-        popup.setX(572+posicionx);
-        popup.setY(510+posiciony);
-        HBox tipos = new HBox(10);
-        tipos.setStyle("-fx-background-color: #C0C0C0;");
         
-        //BOTONES
-        Button bala1 = new Button("60mm");
-        bala1.setStyle("-fx-background-color: " + "Green" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
-        Button bala2 = new Button("80mm");
-        bala2.setStyle("-fx-background-color: " + "Blue" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");;
-        Button bala3 = new Button("105mm");
-        bala3.setStyle("-fx-background-color: " + "Red" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");    
+         
 
-        bala1.setOnAction(event -> {//escoge bala 1
+        interfaz.bala1.setOnAction(event -> {//escoge bala 1
 
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
             interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
 
             interfaz.textcantidad.setStyle("-fx-text-fill: green;");
-            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #008000;");
+            
             tipo=1;//ajusta el tipo
-            popup.hide();
-            interfaz.balas.setDisable(false);
+            
             interfaz.disparar.setDisable(false);
         });
             
-        bala2.setOnAction(event -> {//escoge bala 2
+        interfaz.bala2.setOnAction(event -> {//escoge bala 2
 
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad80());
             interfaz.textcantidad.setText(int_string);//lo mismo de bala1
             interfaz.textcantidad.setStyle("-fx-text-fill: blue;");
-            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #0000FF;");
+            
             tipo=2;//ajusta el tipo
-            popup.hide();
-            interfaz.balas.setDisable(false);
+           
             interfaz.disparar.setDisable(false);
         });
             
-        bala3.setOnAction(event -> {//escoge bala 3
+        interfaz.bala3.setOnAction(event -> {//escoge bala 3
 
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad105());
             interfaz.textcantidad.setText(int_string);
             interfaz.textcantidad.setStyle("-fx-text-fill: red;");
-            interfaz.balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';-fx-font-weight: bold;-fx-text-fill: #FF0000;");
+            
             tipo=3;//ajusta el tipo
-            popup.hide(); 
-            interfaz.balas.setDisable(false);
+            
             interfaz.disparar.setDisable(false);
         });
-        ChangeListener<Number> stagePositionListenerX = (obs, oldValue, newValue) -> {
-            double x = stage.getX() + 500+posicionx;
-            double y = stage.getY() + 500+posiciony;
-            popup.setX(x);
-            popup.setY(y);
-        };
-
-        ChangeListener<Number> stagePositionListenerY = (obs, oldValue, newValue) -> {
-            double x = stage.getX() + 500+posicionx;
-            double y = stage.getY() + 500+posiciony;
-            popup.setX(x);
-            popup.setY(y);
-        };
-        stage.xProperty().addListener(stagePositionListenerX);
-        stage.yProperty().addListener(stagePositionListenerY);
             
-        tipos.getChildren().addAll(bala1,bala2,bala3);   
-        popup.getContent().add(tipos);           
-        popup.show(stage);
+            
+              
     }
     
     public void reiniciar_partida(){
@@ -484,7 +449,7 @@ public class Jugar  {
             }            
             terreno_random = nuevoTerreno;
             listJugador.getLista().clear();
-            listJugador.instanciarJugadores(cantidad_jugadores);
+            listJugador.instanciarJugadores(Globales.jugadores_def);
             iniciar_terreno();
 
            
@@ -501,8 +466,8 @@ public class Jugar  {
     {
         //int largo = (ancho*pixel);
         int largo = 1200;
-        int ancho_segmento=largo/cantidad_jugadores;
-        for(int i=0;i<cantidad_jugadores;i++)
+        int ancho_segmento=largo/Globales.jugadores_def;
+        for(int i=0;i<Globales.jugadores_def;i++)
         {
             int min=ancho_segmento*i;
             int max=ancho_segmento*(i+1);

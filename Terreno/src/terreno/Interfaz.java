@@ -99,18 +99,22 @@ public class Interfaz {
     //BOTON FINALIZAR
     HBox boxfinalizar= new HBox();
     Button finalizar = new Button("FINALIZAR JUEGO");
+      
+    //BOTONES BALAS
+    HBox tipos = new HBox();
+    Button bala1 = new Button("60mm");  
+    Button bala2 = new Button("80mm");  
+    Button bala3 = new Button("105mm");
     
-    //BOTON SELECCIONAR BALA
-    HBox boxbalas=new HBox();
-    Button balas = new Button("BALAS");
     
     //CANTIDAD BALAS
     HBox boxcantidadbalas=new HBox();
     Label textcantidad= new Label("");
     GraphicsContext gc;
+    Pane canvasPane = new Pane();
     
     public void iniciar_interfaz(Stage primaryStage, Scene escena){//inicia todo lo visual e interactivo de la interfaz de juego         
-        Pane canvasPane = new Pane();
+        
         canvasPane.setPrefSize(alto, ancho);       
         
         
@@ -158,7 +162,7 @@ public class Interfaz {
         //DISPARO
         disparar.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
         boxdisparo.getChildren().add(disparar);
-        boxdisparo.setLayoutX(650); 
+        boxdisparo.setLayoutX(660); 
         boxdisparo.setLayoutY(590+mover);
                        
         //DISTANCIA   
@@ -194,7 +198,7 @@ public class Interfaz {
         textovida.setFont(Font.font("Arial",FontWeight.BOLD, 20));       
         textovida.setTranslateX(-5);      
         boxvida.getChildren().addAll(textovida);     
-        boxvida.setLayoutX(652);
+        boxvida.setLayoutX(677);
         boxvida.setLayoutY(565+mover);
         
         
@@ -226,22 +230,25 @@ public class Interfaz {
         boxfinalizar.setLayoutY(648);
         
         //BOTON BALAS
-        balas.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced';");
-        boxbalas.getChildren().add(balas);
-        boxbalas.setLayoutX(675); 
-        boxbalas.setLayoutY(648);
+        tipos.setStyle("-fx-background-color: #C0C0C0;");
+        bala1.setStyle("-fx-background-color: " + "Green" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
+        bala2.setStyle("-fx-background-color: " + "Blue" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
+        bala3.setStyle("-fx-background-color: " + "Red" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;"); 
+        tipos.setLayoutX(642);
+        tipos.setLayoutY(650);
+        tipos.getChildren().addAll(bala1,bala2,bala3);
         
         //CANTIDAD BALAS
         textcantidad.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         boxcantidadbalas.getChildren().add(textcantidad);
-        boxcantidadbalas.setLayoutX(753);
-        boxcantidadbalas.setLayoutY(652);
+        boxcantidadbalas.setLayoutX(785);
+        boxcantidadbalas.setLayoutY(620);
         
       
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
                 boxjugador,boxdisparo, boxdistancia, boxaltura, boxvida, 
-                boxreiniciar, boxfinalizar, boxbalas, boxcantidadbalas);
+                boxreiniciar, boxfinalizar, tipos, boxcantidadbalas);
         
         
         boxvida.setVisible(true);

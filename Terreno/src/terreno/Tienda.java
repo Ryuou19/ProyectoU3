@@ -174,7 +174,7 @@ public class Tienda extends Pane {
             jugadorActual++; 
             System.out.println("JugadorActual= "+jugadorActual);
             System.out.println("Tamanio lista= "+listJugadores.lista.size());
-            if (jugadorActual >= 2/*listJugadores.lista.size()/2*/) {
+            if (jugadorActual >= Globales.jugadores_def/*listJugadores.lista.size()/2*/) {
                 Globales.rondas_def--;
                 primaryStage.close();           
                 Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
@@ -188,9 +188,7 @@ public class Tienda extends Pane {
             }
         });
         
-        this.getChildren().addAll(comprarBala60,comprarBala80,comprarBala105, boxNombre,boxImagenJugador, boxSaldo, boxBalas60,boxBalas80,boxBalas105,finalizarTienda);      
-        primaryStage.setX(280); 
-        primaryStage.setY(60);    
+        this.getChildren().addAll(comprarBala60,comprarBala80,comprarBala105, boxNombre,boxImagenJugador, boxSaldo, boxBalas60,boxBalas80,boxBalas105,finalizarTienda);        
         primaryStage.setScene(escena);
         primaryStage.show();
     }

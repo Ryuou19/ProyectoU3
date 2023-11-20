@@ -22,6 +22,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Timer;
 
 public class MenuOpciones {
+    
     String musicPath;//ruta de musica
     AudioInputStream audioInput;//audio del sistema
     float volume;//volumen
@@ -47,34 +48,29 @@ public class MenuOpciones {
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
     Font font = Font.font("Serif", FontWeight.NORMAL, 24);
-    int resolucion_def;
-    int jugadores_def;
-    int rondas_def;
-    int entorno_def;
-    int cantidad_def;
+    Pane panel = new Pane();
+    Scene escena=new Scene(panel,1500,900);
+    Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
+    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg"));     
+
+    public MenuOpciones() {
+    }  
     
-    
-    public void start(Stage stage,  Scene escena, ListaJugadores list){
+    public void start(Stage stage, ListaJugadores list,Scene scene){
+        PantallaInicial inicio=new PantallaInicial();
+        stage.setFullScreen(true);
+        inicio.scene=scene;
         
-        stage.setTitle("Menu Opciones");
-        musica();
-        Pane panel = new Pane();
-        panel.setPrefSize(500, 650);
-        
-        Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));
-        stage.getIcons().add(icono); 
-              
-        Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg"));       
+        panel.setPrefSize(1500, 900);       
         ImageView imageView = new ImageView(fondo);   
         imageView.setPreserveRatio(false);
-        imageView.setFitWidth(500);
-        imageView.setFitHeight(650);       
-        panel.getChildren().add(imageView);
-              
+        imageView.setFitWidth(1380);
+        imageView.setFitHeight(780);       
+        panel.getChildren().add(imageView);              
         escena.setRoot(panel);
-        stage.setWidth(500);
+        /*stage.setWidth(500);
         stage.setHeight(630);
-        stage.setX(400); stage.setY(60);
+        stage.setX(400); stage.setY(60);*/
         
         
         //VOLVER MENU PRINCIPAAL
@@ -94,8 +90,8 @@ public class MenuOpciones {
         flecha_derecha1.setMinHeight(50);
         flecha_derecha1.setStyle(estilo_botones);
         flecha_derecha1.setOnAction(e -> {
-            resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,resolucion_def);
-            System.out.println("Actual = "+resolucion_def);
+            Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def);
+            System.out.println("Actual = "+Globales.resolucion_def);
         });
         
         Button flecha_izquierda1 = new Button("<");
@@ -103,8 +99,8 @@ public class MenuOpciones {
         flecha_izquierda1.setMinHeight(50); 
         flecha_izquierda1.setStyle(estilo_botones);
         flecha_izquierda1.setOnAction(e -> {
-            resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,resolucion_def);
-            System.out.println("Actual = "+resolucion_def);
+            Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def);
+            System.out.println("Actual = "+Globales.resolucion_def);
         });
         
         HBox menu_resoluciones = new HBox();
@@ -135,8 +131,8 @@ public class MenuOpciones {
         flecha_derecha2.setMinHeight(50);
         flecha_derecha2.setStyle(estilo_botones);
         flecha_derecha2.setOnAction(e -> {
-            rondas_def=cambiarOpcion(1,rondas,opcion_rondas,rondas_def);
-            System.out.println("Actual = "+rondas_def);
+            Globales.rondas_def=cambiarOpcion(1,rondas,opcion_rondas,Globales.rondas_def);
+            System.out.println("Actual = "+Globales.rondas_def);
         });
         
         Button flecha_izquierda2 = new Button("<");
@@ -144,8 +140,8 @@ public class MenuOpciones {
         flecha_izquierda2.setMinHeight(50);
         flecha_izquierda2.setStyle(estilo_botones);
         flecha_izquierda2.setOnAction(e -> {
-            rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,rondas_def);
-            System.out.println("Actual = "+rondas_def);
+            Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def);
+            System.out.println("Actual = "+Globales.rondas_def);
         });
         
         HBox menu_rondas = new HBox();
@@ -177,8 +173,8 @@ public class MenuOpciones {
         flecha_derecha3.setMinHeight(50);
         flecha_derecha3.setStyle(estilo_botones);
         flecha_derecha3.setOnAction(e -> {
-            jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,jugadores_def);
-            System.out.println("Actual = "+jugadores_def);
+            Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def);
+            System.out.println("Actual = "+Globales.jugadores_def);
         });
         
         Button flecha_izquierda3 = new Button("<");
@@ -186,8 +182,8 @@ public class MenuOpciones {
         flecha_izquierda3.setMinHeight(50);
         flecha_izquierda3.setStyle(estilo_botones);
         flecha_izquierda3.setOnAction(e -> {
-            jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,jugadores_def);
-            System.out.println("Actual = "+jugadores_def);
+            Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def);
+            System.out.println("Actual = "+Globales.jugadores_def);
         });
         
         HBox menu_jugadores = new HBox();
@@ -219,8 +215,8 @@ public class MenuOpciones {
         flecha_derecha5.setMinHeight(50);
         flecha_derecha5.setStyle(estilo_botones);
         flecha_derecha5.setOnAction(e -> {         
-            cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,cantidad_def);
-            System.out.println("Actual = "+cantidad_def); 
+            Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def);
+            System.out.println("Actual = "+Globales.cantidad_def); 
         });
         
         Button flecha_izquierda5 = new Button("<");
@@ -228,8 +224,8 @@ public class MenuOpciones {
         flecha_izquierda5.setMinHeight(50);
         flecha_izquierda5.setStyle(estilo_botones);
         flecha_izquierda5.setOnAction(e -> {         
-            cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,cantidad_def);
-            System.out.println("Actual = "+cantidad_def); 
+            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def);
+            System.out.println("Actual = "+Globales.cantidad_def); 
         });
              
         HBox menu_cantidad = new HBox();
@@ -259,8 +255,8 @@ public class MenuOpciones {
         flecha_derecha4.setMinHeight(50);
         flecha_derecha4.setStyle(estilo_botones);
         flecha_derecha4.setOnAction(e -> {
-            entorno_def=cambiarOpcion(1,entorno,opcion_entorno,entorno_def);
-            System.out.println("Actual = "+entorno_def);    
+            Globales.entorno_def=cambiarOpcion(1,entorno,opcion_entorno,Globales.entorno_def);
+            System.out.println("Actual = "+Globales.entorno_def);    
         });
         
         Button flecha_izquierda4 = new Button("<");
@@ -268,8 +264,8 @@ public class MenuOpciones {
         flecha_izquierda4.setMinHeight(50);
         flecha_izquierda4.setStyle(estilo_botones);
         flecha_izquierda4.setOnAction(e -> {
-            entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,entorno_def);
-            System.out.println("Actual = "+entorno_def);      
+            Globales.entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,Globales.entorno_def);
+            System.out.println("Actual = "+Globales.entorno_def);      
         });
         
         HBox menu_entorno = new HBox();
@@ -299,16 +295,15 @@ public class MenuOpciones {
         //VOLVER
         
         volverMenu.setOnAction(e -> {
-            PantallaInicial inicio= new PantallaInicial(resolucion_def,rondas_def,jugadores_def,cantidad_def,entorno_def);
-            inicio.start(stage);
-            volume=-80.0f;
-            control.setValue(volume);
+            detenerMusica();
+            inicio.mostrar_inicio(stage);
+            
         });
         
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
         texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno,
         menu_cantidad,texto_IA,volver);                 
-        stage.setScene(escena);
+        stage.setFullScreen(true);  
         stage.show();
     }
     
@@ -350,17 +345,28 @@ public class MenuOpciones {
         return opcion;
     }
     
-    public void musica(){
-        musicPath = "src/terreno/music/musicaMenuOpciones.wav";
+    public void mostrar(Stage stage){
+        detenerMusica();
+        stage.setTitle("Menu Opciones");
+        stage.getIcons().add(icono);
+        stage.setScene(escena); 
+        musicPath="src/terreno/music/musicaMenuOpciones.wav";   
+        detenerMusica();
+        musica(musicPath);
+    }
+    
+    
+    
+    public void musica(String musica){
         try{
-            audioInput = AudioSystem.getAudioInputStream(new File(musicPath));
+            audioInput = AudioSystem.getAudioInputStream(new File(musica));
             clip = AudioSystem.getClip();
             clip.open(audioInput);
             //control de volumen
             control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
             //volumen (rango: -80.0 a 6.0206)     
-            volume = 0.0f;            
+            volume = -20.0f;            
             control.setValue(volume);
             
             Timer timer = new Timer(0, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
@@ -381,4 +387,10 @@ public class MenuOpciones {
             throw new RuntimeException(e);
         }
     }  
+    
+    public void detenerMusica() {
+        if (clip != null && clip.isOpen()) {
+            clip.stop();
+        }
+}
 }

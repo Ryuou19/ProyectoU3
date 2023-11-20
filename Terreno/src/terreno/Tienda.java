@@ -15,23 +15,14 @@ import javafx.stage.Stage;
 
 public class Tienda extends Pane {
     
-    Scene escena=new Scene(this, 800, 600);
+    Scene escena=new Scene(this, 1200, 700);
     Font font = Font.font("Monospaced", FontWeight.BOLD, 20);
     DropShadow dropShadow = new DropShadow();
     int jugadorActual = 0;
     private Stage primaryStage;
-    int resolucion;
-    int jugadores;
-    int rondas;
-    int entorno;
-    int cantidad;
 
-    public Tienda(int resolucion, int jugadores, int rondas, int entorno, int cantidad) {
-        this.resolucion = resolucion;
-        this.jugadores = jugadores;
-        this.rondas = rondas;
-        this.entorno = entorno;
-        this.cantidad = cantidad;
+    public Tienda() {
+        
     }
     
     
@@ -184,11 +175,10 @@ public class Tienda extends Pane {
             System.out.println("JugadorActual= "+jugadorActual);
             System.out.println("Tamanio lista= "+listJugadores.lista.size());
             if (jugadorActual >= 2/*listJugadores.lista.size()/2*/) {
-                rondas++;
-                System.out.println("Rondas="+rondas);
+                Globales.rondas_def--;
                 primaryStage.close();           
-                Jugar juego = new Jugar(listJugadores,resolucion,rondas,jugadores,cantidad,entorno);//inicia el proceso de jugar
-                juego.start(new Stage());
+                Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
+                juego.start(new Stage(),escena);
                 
             } 
             else {          

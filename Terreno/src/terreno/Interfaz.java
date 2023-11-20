@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -22,20 +21,17 @@ import javafx.stage.Stage;
 
 public class Interfaz {
     
-    int alto=400;
-    int ancho=300;
+    int alto;
+    int ancho;
 
     public Interfaz(int alto, int ancho) {
-        this.alto = alto;
-        this.ancho = ancho;
+        this.alto = alto*3;
+        this.ancho = ancho*3;
     }
-    
-    
-    
+  
     public Label textodistancia;//distancia maxima mostrada en la interfaz a traves de la variable distancia
     public Label textoaltura;//altura maxima mostrada en la interfaz a traves de la variable altura
     
-
     //ANGULO
     HBox boxangulo = new HBox();
     Text text1 = new Text("Angulo");
@@ -50,15 +46,33 @@ public class Interfaz {
     Text textjugador=new Text("Turno Actual");
 
     //TANQUE 1
-    HBox boxtanque1 = new HBox();
+    HBox boxtanque = new HBox();
     Image tanque1 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
     ImageView imagentanque1 = new ImageView(tanque1);
 
     //TANQUE 2
-    HBox boxtanque2 = new HBox();
     Image tanque2 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
     ImageView imagentanque2 = new ImageView(tanque2);
-
+    
+    //TANQUE 3
+    Image tanque3 = new Image(getClass().getResourceAsStream("./img/tanque3.png"));
+    ImageView imagentanque3 = new ImageView(tanque3);
+        
+    //TANQUE 4
+    Image tanque4 = new Image(getClass().getResourceAsStream("./img/tanque4.png"));
+    ImageView imagentanque4 = new ImageView(tanque4);
+    
+    //TANQUE 5
+    Image tanque5 = new Image(getClass().getResourceAsStream("./img/tanque5.png"));
+    ImageView imagentanque5 = new ImageView(tanque5);
+        
+    //TANQUE 6
+    Image tanque6 = new Image(getClass().getResourceAsStream("./img/tanque6.png"));
+    ImageView imagentanque6 = new ImageView(tanque6);
+       
+    //LISTA TANQUES
+    ImageView[] imagenes={imagentanque1,imagentanque2,imagentanque3,imagentanque4,imagentanque5,imagentanque6};
+    
     //DISPARO
     HBox boxdisparo= new HBox();
     Button disparar = new Button("!DISPARAR!");
@@ -75,12 +89,8 @@ public class Interfaz {
     Rectangle marco = new Rectangle(300, 560+25, 520, 100);
     
     //VIDA
-    HBox boxvida1= new HBox();   
-    HBox boxvida2= new HBox();
-    Text textvida1=new Text("Vida = ");
-    Text textvida2=new Text("Vida = ");
-    Label textovida1 = new Label(100+"");
-    Label textovida2 = new Label(100+"");
+    HBox boxvida= new HBox();      
+    Label textovida = new Label(100+"");
     
     //BOTON REINICIAR
     HBox boxreiniciar= new HBox();
@@ -99,19 +109,20 @@ public class Interfaz {
     Label textcantidad= new Label("");
     GraphicsContext gc;
     
-    public void iniciar_interfaz(Stage primaryStage, int alto, int ancho){//inicia todo lo visual e interactivo de la interfaz de juego    
-        StackPane root = new StackPane();
-        Scene scene = new Scene(root, alto*3, 700);
-        Canvas canvas = new Canvas(alto*3, ancho*3);
+    public void iniciar_interfaz(Stage primaryStage, Scene escena){//inicia todo lo visual e interactivo de la interfaz de juego         
+        Pane canvasPane = new Pane();
+        canvasPane.setPrefSize(alto, ancho);       
+        
+        
+        Canvas canvas = new Canvas(alto, ancho);
         GraphicsContext newgc = canvas.getGraphicsContext2D();
         gc=newgc;
-        primaryStage.setScene(scene);
-        Pane canvasPane = new Pane();
-        canvasPane.setPrefSize(1200, 900);
-        root.getChildren().add(canvasPane);
-        canvasPane.getChildren().add(canvas);
-        int mover=25;
         
+        escena.setRoot(canvasPane);
+        canvasPane.getChildren().add(canvas);
+        primaryStage.setScene(escena);
+        int mover=25;
+           
         //ANGULO
         boxangulo.setSpacing(10);
         text1.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -134,21 +145,16 @@ public class Interfaz {
         textjugador.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         boxjugador.setLayoutX(498); 
         boxjugador.setLayoutY(570+mover);
-
-        //TANQUE 1
-        imagentanque1.setFitWidth(120);
-        imagentanque1.setFitHeight(120);
-        boxtanque1.getChildren().add(imagentanque1);
-        boxtanque1.setLayoutX(500); 
-        boxtanque1.setLayoutY(550+mover);
-               
-        //TANQUE 2
-        imagentanque2.setFitWidth(120);
-        imagentanque2.setFitHeight(120);
-        boxtanque2.getChildren().add(imagentanque2);
-        boxtanque2.setLayoutX(500);
-        boxtanque2.setLayoutY(550+mover);
-       
+        
+        //TANQUES
+        for (ImageView imagen : imagenes) {
+            imagen.setFitWidth(120);
+            imagen.setFitHeight(120);
+            imagen.setLayoutX(500);
+            imagen.setLayoutY(575);
+            canvasPane.getChildren().add(imagen); // Agrega cada imagen al Pane
+        }
+            
         //DISPARO
         disparar.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
         boxdisparo.getChildren().add(disparar);
@@ -184,22 +190,13 @@ public class Interfaz {
         canvasPane.getChildren().add(marco);
 
         //VIDA
-        textvida1.setFill(Color.GREEN); 
-        textvida1.setFont(Font.font("Monospaced", FontWeight.BOLD, 20)); 
-        textvida2.setFill(Color.GREEN); 
-        textvida2.setFont(Font.font("Monospaced", FontWeight.BOLD, 20)); 
-        textovida1.setTextFill(Color.BLACK);
-        textovida2.setTextFill(Color.RED);
-        textovida1.setFont(Font.font("Arial",FontWeight.BOLD, 20));
-        textovida2.setFont(Font.font("Arial",FontWeight.BOLD, 20));  
-        textovida1.setTranslateX(-5);
-        textovida2.setTranslateX(-5);
-        boxvida1.getChildren().addAll(textvida1,textovida1);
-        boxvida2.getChildren().addAll(textvida2,textovida2);
-        boxvida1.setLayoutX(652);
-        boxvida1.setLayoutY(565+mover);
-        boxvida2.setLayoutX(652);
-        boxvida2.setLayoutY(565+mover);
+        textovida.setTextFill(Color.BLACK);      
+        textovida.setFont(Font.font("Arial",FontWeight.BOLD, 20));       
+        textovida.setTranslateX(-5);      
+        boxvida.getChildren().addAll(textovida);     
+        boxvida.setLayoutX(652);
+        boxvida.setLayoutY(565+mover);
+        
         
         //BOTON REINICIAR
         Font font = Font.font("Serif", FontWeight.NORMAL, 20);
@@ -243,13 +240,21 @@ public class Interfaz {
       
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
-                boxjugador,boxtanque1,boxtanque2, boxdisparo, 
-                boxdistancia, boxaltura, boxvida1,boxvida2, 
+                boxjugador,boxdisparo, boxdistancia, boxaltura, boxvida, 
                 boxreiniciar, boxfinalizar, boxbalas, boxcantidadbalas);
         
-        boxtanque2.setVisible(false);
-        boxtanque1.setVisible(true);
-        boxvida2.setVisible(false);
-        boxvida1.setVisible(true);
+        
+        boxvida.setVisible(true);
     }
+    
+    public void mostrarJugador(Jugador jugador){
+        for (ImageView imagen : imagenes) {
+            imagen.setVisible(false);
+        }
+        imagenes[jugador.jugador].setVisible(true);
+        textovida.setText("Vida = "+jugador.getVida());
+        
+    }
+    
+    
 }

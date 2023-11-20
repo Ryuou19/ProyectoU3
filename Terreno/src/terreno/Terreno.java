@@ -263,12 +263,31 @@ public class Terreno{
     public int colision_terreno(GraphicsContext gc, Bala bala, int dunas[][], int matriz[][], int tipo) {
         int x = (int) bala.ejeX / pixel;//traspasamos la posicion x a relacion escala de la matriz y no de los pixeles
         int y = (int) bala.ejeY / pixel;//traspasamos la posicion y a relacion escala de la matriz y no de los pixeles
-        if (x >= 0 && x < 400 && y >= 0 && y < 300) {
+        if (x >= 0 && x < 500 && y >= 0 && y < 300) {
             int valorMatriz=matriz[x][y];
-            System.out.println("el valor en la matriz es ->"+valorMatriz);
+            //System.out.println("el valor en la matriz es ->"+valorMatriz);
             if (valorMatriz>=2) {
                 bala.marcar();
-                return valorMatriz-1; //retorna 1 si fua el impacto al tanque 1 , 2 si fue al tanque 2 etc...
+                if(valorMatriz==2){
+                    return 1;
+                }
+                if(valorMatriz==3){
+                    return 2;
+                }
+                if(valorMatriz==4){
+                    return 3;
+                }
+                if(valorMatriz==5){
+                    return 4;
+                }
+                if(valorMatriz==6){
+                    return 5;
+                }
+                if(valorMatriz==7){
+                    return 6;
+                }
+                
+                
             } else if (dunas[x][y] == 1) {//colision en el terreno
                 bala.marcar();
                 matriz[x][y] = 0;
@@ -297,7 +316,7 @@ public class Terreno{
                 }
             }
         }
-        if (x > 399 || x < 0 ) {
+        if (x > 500 || x < 0 ) {
             bala.marcar();
         }
         return 0;

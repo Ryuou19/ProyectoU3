@@ -28,7 +28,7 @@ public class Jugar  {
     int distancia=0;
     int altura=0;
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)
-    int vidatanque1=100;//vidas representadas en la interfaz
+    
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.1;
     int resolucion;
@@ -44,6 +44,14 @@ public class Jugar  {
     int pixel = 3;
     int cantidad_jugadores=0;
     int contador_inicio=0;
+    int vidatanque1=100;
+    int vidatanque2=100;
+    int vidatanque3=100;
+    int vidatanque4=100;
+    int vidatanque5=100;
+    int vidatanque6=100;
+    int[] vidas={vidatanque1,vidatanque2,vidatanque3,vidatanque4,vidatanque5,vidatanque6};
+    
 
     public Jugar(ListaJugadores listJugador,int resolucion, int rondas, int jugadores, int cantidad,int entorno) {
         this.resolucion = resolucion;
@@ -81,7 +89,7 @@ public class Jugar  {
         
             
         interfaz.iniciar_interfaz(stage,scene);
-        interfaz.mostrarJugador(listJugador.getJugadorActual().jugador);
+        interfaz.mostrarJugador(listJugador.getJugadorActual());
         iniciar_terreno();
         System.out.println("antes");
         System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
@@ -146,19 +154,21 @@ public class Jugar  {
                                 nuevaBala.dibujo(interfaz.gc,nuevaBala.getDanio());
                                 nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,interfaz.boxdistancia,interfaz.boxaltura,listJugador.getJugadorActual().getTanque().getCañonY(),listJugador.getJugadorActual().getTanque().getCañonX());
                                 victoria=terrain.colision_terreno(interfaz.gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);
-                                System.out.println("victoria->"+(victoria));
-                                if(victoria>0){ // si victoria es distinto de 0 osea impacto a algun jugador
+                                if(victoria!=0){ // si victoria es distinto de 0 osea impacto a algun jugador
+                                    System.out.println("Victoria = "+victoria);
                                     impacto_jugador(victoria,nuevaBala.getDanio());
                                 }
                                 if (nuevaBala.eliminar()) {
+                                    System.out.println("Victoria = "+victoria);
                                     colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)
                                     System.out.println("hola si se ejecuto colisicion_bala");
                                     stop();
                                     listJugador.generarTurnoAleatorio();//cambiamos el turno
                                     System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
-                                    interfaz.mostrarJugador(listJugador.getJugadorActual().jugador);
+                                    
                                     animacionCaida();
                                     System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
+                                    interfaz.mostrarJugador(listJugador.getJugadorActual());
                                 }
                             }
                         }.start();
@@ -205,14 +215,14 @@ public class Jugar  {
     }
     public void impacto_jugador(int jugadorImpactado,int danio){
         jugadorImpactado=jugadorImpactado-1; //restamos para acceder al indice
-        Tank tanqueImpactado = listJugador.lista.get(jugadorImpactado).getTanque();
-        tanqueImpactado.ajustar_vida(tanqueImpactado.getVida(), danio);
-        int nuevavida = tanqueImpactado.vida;
+        Jugador jugador = listJugador.lista.get(jugadorImpactado);
+        jugador.ajustar_vida(jugador.getVida(), danio);
         listJugador.getJugadorActual().saldo+=10; // le damos 10 monedas al tanque actual por impactar
-        interfaz.textovida.setText("Vida = "+nuevavida);
-    
+        
+       
+        
         interfaz.boxcantidadbalas.setVisible(false);
-        if(vidatanque1<=0){
+        if(jugador.vida<=0){
             listJugador.getJugadorActual().asesionatos+=1;// le agregamos 1 asesinato
             listJugador.getLista().remove(jugadorImpactado); //eliminamos el jugador de la lista para que no se vuelva a dibujar
             cantidad_jugadores-=1;
@@ -225,21 +235,6 @@ public class Jugar  {
         imprimirVidaJugadores();
     }
     
-    /*public void impacto_jugador2(int danio){
-        int nuevavida2 = listJugador.getJugador2().getTanque().ajustar_vida(vidatanque2, danio);
-        vidatanque2 = nuevavida2;
-        interfaz.textovida2.setText(nuevavida2+"");
-        interfaz.boxtanque2.setVisible(false);
-        interfaz.boxtanque1.setVisible(true);
-        interfaz.boxvida2.setVisible(false);
-        interfaz.boxvida1.setVisible(true);
-        interfaz.boxcantidadbalas.setVisible(false);
-        if(vidatanque2<=0){
-            System.out.println("HA GANADO EL JUGADOR 1!!");
-            reiniciar_partida();
-            
-        }
-    }*/
     
     public void colision_bala(){
         calcular_explosion();
@@ -297,14 +292,39 @@ public class Jugar  {
     public void calcular_explosion(){//calcula la explosion en base a un area que se genera con el contacto entre la explosion y la hitbox del tanque(para efectos mas realistas)
         int area=0;
         int tanque=0;
+        int choque=0;
         for(int i=0;i<terrain.matriz.length;i++){
             for(int j=0;j<terrain.matriz[i].length;j++){
-                if(terrain.matriz[i][j]>=2 && terrain.explosion[i][j]==1){
+                choque=terrain.matriz[i][j];
+                if(terrain.explosion[i][j]==1 && choque==2){
                     area++;
+                    tanque=1;
                     System.out.println("el area es "+area);
-                    int marcarHitbox=terrain.matriz[i][j];
-                    tanque=marcarHitbox-1; //explosion cerca del tanque 1, 2 3 ,4 5
-
+                }
+                if(terrain.explosion[i][j]==1 && choque==3){
+                    area++;
+                    tanque=2;
+                    System.out.println("el area es "+area);
+                }
+                if(terrain.explosion[i][j]==1 && choque==4){
+                    area++;
+                    tanque=3;
+                    System.out.println("el area es "+area);
+                }
+                if(terrain.explosion[i][j]==1 && choque==5){
+                    area++;
+                    tanque=4;
+                    System.out.println("el area es "+area);
+                }
+                if(terrain.explosion[i][j]==1 && choque==6){
+                    area++;
+                    tanque=5;
+                    System.out.println("el area es "+area);
+                }
+                if(terrain.explosion[i][j]==1 && choque==7){
+                    area++;
+                    tanque=6;
+                    System.out.println("el area es "+area);
                 }
             }
         }
@@ -344,6 +364,7 @@ public class Jugar  {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
+                terrain.borrarHitboxAnterior();
                 boolean todosEnSuelo = true;
                 if (terreno_random == 0) {
                     terrain.terreno_nieve(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
@@ -365,15 +386,15 @@ public class Jugar  {
                         int alturaCaida = tanque.getPosicionY() - posicionInicialY; // Calcular la altura de la caída
                         if (alturaCaida > tanque.dañoAltura) { // daño altura es de 10, tiene que caer de 10 de altura para hacer el daño
                             int dañoPorCaida = calcularDañoPorAltura(alturaCaida);
-                            tanque.ajustar_vida(tanque.getVida(), dañoPorCaida);
+                            jugador.ajustar_vida(jugador.getVida(), dañoPorCaida);
                         }
                     }
                     tanque.dibuarTanque(interfaz.gc);
                     tanque.modificarCañon(interfaz.gc, 0);
 
                     if (todosEnSuelo) {
-                        terrain.borrarHitboxAnterior(); // eliminamos hitboxes anteriores
-                        tanque.crearHitbox(interfaz.gc, terrain);
+                         // eliminamos hitboxes anteriores
+                        tanque.crearHitbox(interfaz.gc, terrain,jugador);
                         contador_inicio++;
                     }
                 }
@@ -481,7 +502,7 @@ public class Jugar  {
            
             vidatanque1=100;
            
-            interfaz.textovida.setText(100+"");
+            interfaz.textovida.setText("Vida = "+100);
     }
     public static int getRandom(){
         return terreno_random;
@@ -535,7 +556,7 @@ public class Jugar  {
         System.out.println("Estado actual de la vida de los jugadores:");
         for (int i = 0; i < listJugador.getLista().size(); i++) {
             Jugador jugadorActual = listJugador.getLista().get(i);
-            int vidaActual = jugadorActual.getTanque().getVida();
+            int vidaActual = jugadorActual.getVida();
             System.out.println("Jugador " + (i + 1) + ": " + vidaActual + " de vida");
         }
     }

@@ -28,13 +28,10 @@ public class Interfaz {
         this.alto = alto*3;
         this.ancho = ancho*3;
     }
-    
-    
-    
+  
     public Label textodistancia;//distancia maxima mostrada en la interfaz a traves de la variable distancia
     public Label textoaltura;//altura maxima mostrada en la interfaz a traves de la variable altura
     
-
     //ANGULO
     HBox boxangulo = new HBox();
     Text text1 = new Text("Angulo");
@@ -73,6 +70,9 @@ public class Interfaz {
     Image tanque6 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
     ImageView imagentanque6 = new ImageView(tanque6);
        
+    //LISTA TANQUES
+    ImageView[] imagenes={imagentanque1,imagentanque2,imagentanque3,imagentanque4,imagentanque5,imagentanque6};
+    
     //DISPARO
     HBox boxdisparo= new HBox();
     Button disparar = new Button("!DISPARAR!");
@@ -145,42 +145,16 @@ public class Interfaz {
         textjugador.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         boxjugador.setLayoutX(498); 
         boxjugador.setLayoutY(570+mover);
-
-        //TANQUE 1
-        imagentanque1.setFitWidth(120);
-        imagentanque1.setFitHeight(120);
-    
-                     
-        //TANQUE 2
-        imagentanque2.setFitWidth(120);
-        imagentanque2.setFitHeight(120);
-     
         
-        //TANQUE 3
-        imagentanque3.setFitWidth(120);
-        imagentanque3.setFitHeight(120);
-    
-        
-        //TANQUE 4
-        imagentanque4.setFitWidth(120);
-        imagentanque4.setFitHeight(120);
-  
-        
-        //TANQUE 5
-        imagentanque5.setFitWidth(120);
-        imagentanque5.setFitHeight(120);
-                               
-        //TANQUE 6
-        imagentanque6.setFitWidth(120);
-        imagentanque6.setFitHeight(120);
-      
-        
-        boxtanque.getChildren().addAll(imagentanque1,imagentanque2,
-                imagentanque3,imagentanque4,imagentanque5,imagentanque6);
-        boxtanque.setLayoutX(500); 
-        boxtanque.setLayoutY(550+mover);
-    
-        
+        //TANQUES
+        for (ImageView imagen : imagenes) {
+            imagen.setFitWidth(120);
+            imagen.setFitHeight(120);
+            imagen.setLayoutX(500);
+            imagen.setLayoutY(575);
+            canvasPane.getChildren().add(imagen); // Agrega cada imagen al Pane
+        }
+            
         //DISPARO
         disparar.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
         boxdisparo.getChildren().add(disparar);
@@ -266,18 +240,21 @@ public class Interfaz {
       
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
-                boxjugador,boxtanque, boxdisparo, 
-                boxdistancia, boxaltura, boxvida, 
+                boxjugador,boxdisparo, boxdistancia, boxaltura, boxvida, 
                 boxreiniciar, boxfinalizar, boxbalas, boxcantidadbalas);
         
         
         boxvida.setVisible(true);
     }
     
-    public void mostrarJugador(int jugador){
-        for(int i=0;i<6;i++){
-            boxtanque.getChildren().get(i).setVisible(false);
+    public void mostrarJugador(Jugador jugador){
+        for (ImageView imagen : imagenes) {
+            imagen.setVisible(false);
         }
-        boxtanque.getChildren().get(jugador).setVisible(true);
+        imagenes[jugador.jugador].setVisible(true);
+        textovida.setText("Vida = "+jugador.getVida());
+        
     }
+    
+    
 }

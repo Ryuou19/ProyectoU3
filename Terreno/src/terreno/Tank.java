@@ -99,10 +99,11 @@ public class Tank{
       this.posicionY = posicionY;
     }
     //cambio--------------------------------------------------------------------------------------------------------    
-    public void crearHitbox( GraphicsContext gc, Terreno terreno) {
+    public void crearHitbox( GraphicsContext gc, Terreno terreno,Jugador jugador) {
         int hitboxAncho=1;
         int hitboxLargo=2;
-        
+        int marcar_hitbox = jugador.jugador + 2; // se pone un 2 para tanque 0
+        System.out.println("marca de la hitbox="+marcar_hitbox);
         for(int i=0;i<ancho+hitboxAncho;i++){
             for (int j=0;j<alto+hitboxLargo;j++){
 
@@ -110,8 +111,10 @@ public class Tank{
                int ajustar_posicion=6;//Esta variable se usa para colocar la hitbox del tanque en el lugar correcto, ya que por dimensiones del canvas necesita moverse 6 espacios hacia abajo para quedar correcto
                int posXMatriz = (posicionX / 3 + i);
                int posYMatriz = (posicionY / 3 + j+ajustar_posicion);
+               
                 if (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){
-                        int marcar_hitbox = jugadorTanque + 2; // se pone un 2 para tanque 0
+    
+                        
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
                         gc.setFill(Color.GREEN);
                         gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
@@ -177,12 +180,7 @@ public class Tank{
         animation.start();
     }*/
 
-    //funcion que reduce la vida dependiendo del valor de la bala o del radio de explosion
-    public int ajustar_vida(int vida, int danio){
-        vida-=danio;
-        this.vida=vida;
-        return vida;
-    }
+    
     
     public void dibuarTanque(GraphicsContext gc)
     {

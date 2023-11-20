@@ -14,13 +14,23 @@ public class Jugador {
     int cantidad105= 3;
     int cantidad80=10;
     int cantidad60 =3;
+    int vida;
     //SALDO DE CADA JUGADOR
     int saldo;
     int posicionInicalX=0;
     int posicionInicialY=100;
-
     //hola
     int asesionatos;
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+    
+    
     public int getCantidad105() {
         return cantidad105;
     }
@@ -60,6 +70,7 @@ public class Jugador {
         this.random=rand.nextInt(4);
         this.saldo=10000;
         this.nombre=nombre;
+        this.vida=100;
         //de esta forma no pasamos como parametro la imagenes haciendo mas facil la inicializacion de la clase en la pantalla de inizicio 
         if (jugador==0)
         {
@@ -100,5 +111,12 @@ public class Jugador {
     public void agregar_saldo(int cantidad){
         this.saldo+=cantidad;
         System.out.println("Saldo disponible= "+this.saldo);
+    }
+    
+    //funcion que reduce la vida dependiendo del valor de la bala o del radio de explosion
+    public int ajustar_vida(int vida, int danio){
+        vida-=danio;
+        this.vida=vida;
+        return vida;
     }
 }

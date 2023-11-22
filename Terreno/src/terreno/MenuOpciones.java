@@ -1,9 +1,5 @@
 package terreno;
 
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,12 +10,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.Timer;
 
 public class MenuOpciones {
     
@@ -47,36 +39,50 @@ public class MenuOpciones {
     "-fx-border-color: #FF0000;" + 
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
-    Font font = Font.font("Serif", FontWeight.NORMAL, 24);
-    Pane panel = new Pane();
-    Scene escena=new Scene(panel,1500,900);
-    Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
-    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg"));     
+    Globales global=new Globales();
+    Pane paneOpciones=escenaOpciones();
+  
+    Button volverMenu;    
 
     public MenuOpciones() {
+        
     }  
     
-    public void start(Stage stage, ListaJugadores list,Scene scene){
-        PantallaInicial inicio=new PantallaInicial();
-        stage.setFullScreen(true);
-        inicio.scene=scene;
+    public void start(Stage stage, ListaJugadores list,Pane panel){
         
-        panel.setPrefSize(1500, 900);       
+        
+        
+        Globales.escena.setRoot(paneOpciones);
+        paneOpciones.setPrefSize(Globales.alto_resolucion,Globales.ancho_resolucion);
+        volverMenu.setOnAction(e -> {
+            //detenerMusica();
+            Globales.escena.setRoot(panel);
+            global.cambiarEscena(Globales.escena);         
+        }); 
+        stage.show();
+        
+    }
+    
+    public Pane escenaOpciones(){
+        Pane panel = new Pane();
+        Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
+        Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg")); 
         ImageView imageView = new ImageView(fondo);   
         imageView.setPreserveRatio(false);
         imageView.setFitWidth(1380);
         imageView.setFitHeight(780);       
         panel.getChildren().add(imageView);              
-        escena.setRoot(panel);
         /*stage.setWidth(500);
         stage.setHeight(630);
         stage.setX(400); stage.setY(60);*/
-        
-        
-        //VOLVER MENU PRINCIPAAL
-        Button volverMenu = new Button("Volver al Menú Principal");
-        volverMenu.setFont(font);
-        volverMenu.setStyle(estilo_botones);
+               
+        //VOLVER MENU PRINCIPAAL    
+        Font font = Font.font("Serif", FontWeight.NORMAL, 24);
+        Button volver = new Button("Volver Al Menu Principal");
+        volver.setFont(font);
+        volver.setStyle(estilo_botones);
+        volver.setLayoutX(110);
+        volver.setLayoutY(520);
         
         //////////////////////////////////////////////////////////////////7
         //RESOLUCION     
@@ -92,6 +98,22 @@ public class MenuOpciones {
         flecha_derecha1.setOnAction(e -> {
             Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def);
             System.out.println("Actual = "+Globales.resolucion_def);
+            if(opcionActual==0){
+                Globales.stage.setX(280);
+                Globales.alto_resolucion=800;
+                Globales.ancho_resolucion=800;
+            }
+            if(opcionActual==1){
+                Globales.stage.setX(230);
+                Globales.alto_resolucion=900;
+                Globales.ancho_resolucion=900;
+            }
+            if(opcionActual==2){
+                Globales.stage.setX(-20);
+                Globales.alto_resolucion=1920;
+                Globales.ancho_resolucion=1080;
+            }
+            global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
         });
         
         Button flecha_izquierda1 = new Button("<");
@@ -101,6 +123,22 @@ public class MenuOpciones {
         flecha_izquierda1.setOnAction(e -> {
             Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def);
             System.out.println("Actual = "+Globales.resolucion_def);
+            if(opcionActual==0){
+                Globales.stage.setX(280);
+                Globales.alto_resolucion=800;
+                Globales.ancho_resolucion=800;
+            }
+            if(opcionActual==1){
+                Globales.stage.setX(230);
+                Globales.alto_resolucion=900;
+                Globales.ancho_resolucion=900;
+            }
+            if(opcionActual==2){
+                Globales.stage.setX(-20);
+                Globales.alto_resolucion=1920;
+                Globales.ancho_resolucion=1080;
+            }
+            global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
         });
         
         HBox menu_resoluciones = new HBox();
@@ -285,28 +323,13 @@ public class MenuOpciones {
         //ENTORNO
         
         
-        /////////////////////////////////////////////////
-        //VOLVER
-        HBox volver=new HBox();
-        volver.getChildren().add(volverMenu);
-        volver.setLayoutX(110);
-        volver.setLayoutY(520);
-        /////////////////////////////////////////////////
-        //VOLVER
-        
-        volverMenu.setOnAction(e -> {
-            detenerMusica();
-            inicio.mostrar_inicio(stage);
-            
-        });
-        
+       
+        this.volverMenu=volver;
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
         texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno,
         menu_cantidad,texto_IA,volver);                 
-        stage.setFullScreen(true);  
-        stage.show();
+        return panel;
     }
-    
     
     private int cambiarOpcion(int desplazamiento, String[] tipo, Button opcion, int var_opcion) {
         opcionActual = (opcionActual + desplazamiento) % tipo.length;
@@ -345,11 +368,25 @@ public class MenuOpciones {
         return opcion;
     }
     
-    public void mostrar(Stage stage){
+    public void ajustarResolucion(){
+        if(Globales.alto_resolucion==800){
+            
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*public void mostrar(Stage stage){
         detenerMusica();
-        stage.setTitle("Menu Opciones");
-        stage.getIcons().add(icono);
-        stage.setScene(escena); 
+        //stage.setTitle("Menu Opciones");
+        //stage.getIcons().add(icono);
+        //stage.setScene(escena); 
         musicPath="src/terreno/music/musicaMenuOpciones.wav";   
         detenerMusica();
         musica(musicPath);
@@ -392,5 +429,6 @@ public class MenuOpciones {
         if (clip != null && clip.isOpen()) {
             clip.stop();
         }
-}
+    }*/
+    
 }

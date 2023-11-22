@@ -36,7 +36,7 @@ public class Jugar  {
     ListaJugadores listJugador;
     int alto = 500;
     int ancho=300;
-    Interfaz interfaz=new Interfaz(alto,ancho);
+    Interfaz interfaz=new Interfaz(Globales.alto_resolucion,Globales.ancho_resolucion);
     int pixel = 3;
 
     int contador_inicio=0;
@@ -56,9 +56,7 @@ public class Jugar  {
     }
     Terreno terrain = new Terreno(alto,ancho, pixel,interfaz.gc);
     
-    public static void main(String[] args) {
-        launch(args);
-    }
+    
 
    
     public void start(Stage primaryStage, Scene scene) {
@@ -71,7 +69,7 @@ public class Jugar  {
         }
         
  
-        stage.setResizable(false);     
+        
          //deberia de tomar la variable con lo que hay en configuracion         
         interfaz.iniciar_interfaz(stage,scene);
         interfaz.mostrarJugador(listJugador.getJugadorActual());

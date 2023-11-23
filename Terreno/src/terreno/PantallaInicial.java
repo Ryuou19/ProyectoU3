@@ -113,9 +113,9 @@ public class PantallaInicial extends Application {
         
         
         comenzar.setOnAction(e -> {         
-            Jugar juego = new Jugar(list);//inicia el proceso de jugar
             list.instanciarJugadores(Globales.jugadores_def);
-            juego.start(Globales.stage,Globales.escena);
+            Tienda tienda=new Tienda();
+            tienda.inicializarInterfaz(Globales.stage, list);
             //volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen
             //control.setValue(volume);
         });

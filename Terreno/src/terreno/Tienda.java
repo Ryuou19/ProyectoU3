@@ -19,8 +19,7 @@ public class Tienda extends Pane {
     Font font = Font.font("Monospaced", FontWeight.BOLD, 20);
     DropShadow dropShadow = new DropShadow();
     int jugadorActual = 0;
-    private Stage primaryStage;
-
+    int ultimaOpcion;
     public Tienda() {
         
     }
@@ -33,11 +32,13 @@ public class Tienda extends Pane {
        
     public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores,Stage primaryStage){
         primaryStage.setTitle("Tienda de Armas");
+        
         Image fondo = new Image(getClass().getResourceAsStream("./img/fondotienda.jpg"));       
         ImageView imageView = new ImageView(fondo);   
         imageView.setPreserveRatio(false);
-        imageView.setFitWidth(800);
-        imageView.setFitHeight(600);       
+        imageView.setFitWidth(Globales.alto_resolucion);
+        imageView.setFitHeight(Globales.ancho_resolucion); 
+        
         this.getChildren().add(imageView);
         HBox boxNombre= new HBox();
         Text textNombreJugador=new Text("JUGADOR-->"+jugador.nombre);
@@ -137,6 +138,17 @@ public class Tienda extends Pane {
             "-fx-border-width: 3px;" +  
             "-fx-background-radius: 0;"  
         );
+        
+        Button revertirCompra = new Button("DEVOLVER COMPRA");
+        revertirCompra.setLayoutX(400);
+        revertirCompra.setLayoutY(560);
+        revertirCompra.setStyle(
+            "-fx-background-color: #000000; " +
+            "-fx-text-fill: #FFFFFF;" +  
+            "-fx-border-color: #FFFFFF;" + 
+            "-fx-border-width: 3px;" +  
+            "-fx-background-radius: 0;"  
+        );
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         comprarBala60.setOnAction(event -> {            
             System.out.println("Bala 60 comprada");
@@ -144,27 +156,49 @@ public class Tienda extends Pane {
             textSaldoJugador.setText("SALDO = "+jugador.saldo);
             jugador.setCantidad60(jugador.getCantidad60()+1);
             textBalas60.setText("BALAS 60mm -- "+String.valueOf(jugador.getCantidad60()));
+            ultimaOpcion=1;
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
             
         });
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
-        comprarBala80.setOnAction(event -> {
-            
+        comprarBala80.setOnAction(event -> {        
             System.out.println("Bala 80 comprada");
             jugador.saldo-=2500;
             textSaldoJugador.setText("SALDO = "+jugador.saldo);
             jugador.setCantidad80(jugador.getCantidad80()+1);
             textBalas80.setText("BALAS 80mm -- "+String.valueOf(jugador.getCantidad80()));
+            ultimaOpcion=2;
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);                      
         });
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);    
-        comprarBala105.setOnAction(event -> {
-                    
+        comprarBala105.setOnAction(event -> {                   
             System.out.println("Bala 105 comprada");
             jugador.saldo-=4000;
             textSaldoJugador.setText("SALDO = "+jugador.saldo);
             jugador.setCantidad105(jugador.getCantidad105()+1);
             textBalas105.setText("BALAS 105mm -- "+String.valueOf(jugador.getCantidad105()));  
+            ultimaOpcion=3;
+            bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
+        });
+        
+        revertirCompra.setOnAction(event -> {                   
+            if(ultimaOpcion==1){
+                jugador.saldo+=1000;
+                jugador.setCantidad60(jugador.getCantidad60()-1);
+                textBalas60.setText("BALAS 60mm -- "+String.valueOf(jugador.getCantidad60()));  
+            }
+            if(ultimaOpcion==2){
+                jugador.saldo+=2500;
+                jugador.setCantidad80(jugador.getCantidad80()-1);
+                textBalas80.setText("BALAS 80mm -- "+String.valueOf(jugador.getCantidad80()));  
+            }
+            if(ultimaOpcion==3){
+                jugador.saldo+=4000;
+                jugador.setCantidad105(jugador.getCantidad105()-1);
+                textBalas105.setText("BALAS 105mm -- "+String.valueOf(jugador.getCantidad105()));  
+            }     
+            ultimaOpcion=0;
+            textSaldoJugador.setText("SALDO = "+jugador.saldo);
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         });
         
@@ -173,10 +207,12 @@ public class Tienda extends Pane {
             System.out.println("JugadorActual= "+jugadorActual);
             System.out.println("Tamanio lista= "+listJugadores.lista.size());
             if (jugadorActual >= Globales.jugadores_def/*listJugadores.lista.size()/2*/) {
-                Globales.rondas_def--;
-                primaryStage.close();           
+                Globales.rondas_def--;  
+                if(Globales.rondas_def<=0){
+                    primaryStage.close();
+                }
                 Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
-                juego.start(new Stage(),escena);
+                juego.start(Globales.escena);
                 
             } 
             else {          
@@ -186,7 +222,8 @@ public class Tienda extends Pane {
             }
         });
         
-        this.getChildren().addAll(comprarBala60,comprarBala80,comprarBala105, boxNombre,boxImagenJugador, boxSaldo, boxBalas60,boxBalas80,boxBalas105,finalizarTienda);        
+        this.getChildren().addAll(comprarBala60,comprarBala80,comprarBala105, boxNombre,boxImagenJugador,
+          boxSaldo, boxBalas60,boxBalas80,boxBalas105,finalizarTienda,revertirCompra);        
         primaryStage.setScene(escena);
         primaryStage.show();
     }

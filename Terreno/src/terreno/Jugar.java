@@ -27,18 +27,15 @@ public class Jugar  {
     int victoria;//colision con un tanque
     int distancia=0;
     int altura=0;
-    int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)
-    
+    int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)   
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.1;
-    
     Stage stage;
     ListaJugadores listJugador;
     int alto = 400;
     int ancho=300;
     Interfaz interfaz=new Interfaz(Globales.alto_resolucion,Globales.ancho_resolucion);
     int pixel = 3;
-
     int contador_inicio=0;
     int vidatanque1=100;
    
@@ -60,9 +57,8 @@ public class Jugar  {
 
    
     public void start(Stage primaryStage, Scene scene) {
-        stage=primaryStage;
+        stage=Globales.stage;
         stage.setResizable(true);
-        listJugador.instanciarJugadores(Globales.jugadores_def);
         listJugador.generarTurnoAleatorio();
         
         if(Globales.rondas_def==0){
@@ -86,8 +82,7 @@ public class Jugar  {
         //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
 
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
-            if(Globales.rondas_def>0){
-                stage.close();       
+            if(Globales.rondas_def>0){     
                 Tienda escenaTienda = new Tienda();
                 escenaTienda.inicializarInterfaz(stage, listJugador);
                 
@@ -464,7 +459,7 @@ public class Jugar  {
     void definifirPosicion()
     {
         //int largo = (ancho*pixel);
-        int largo = Globales.alto_resolucion;
+        int largo = Globales.alto_resolucion-20;
         int ancho_segmento=largo/Globales.jugadores_def;
         for(int i=0;i<Globales.jugadores_def;i++)
         {

@@ -28,13 +28,11 @@ public class Tienda extends Pane {
     
     
     public void inicializarInterfaz(Stage primaryStage, ListaJugadores listJugadores) {
-        this.primaryStage = new Stage();
-        tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores,this.primaryStage);
+        tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores,primaryStage);
     }
        
     public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores,Stage primaryStage){
         primaryStage.setTitle("Tienda de Armas");
-        primaryStage.setResizable(false);
         Image fondo = new Image(getClass().getResourceAsStream("./img/fondotienda.jpg"));       
         ImageView imageView = new ImageView(fondo);   
         imageView.setPreserveRatio(false);
@@ -183,7 +181,7 @@ public class Tienda extends Pane {
             } 
             else {          
                 this.getChildren().clear();
-                primaryStage.hide();
+                
                 tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores,primaryStage);
             }
         });

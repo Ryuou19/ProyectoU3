@@ -317,7 +317,7 @@ public class Terreno{
                 }
             }
         }
-        if (x > 500 || x < 0 ) {
+        if (x > Globales.alto_resolucion/3 || x < 0 ) {
             bala.marcar();
         }
         return 0;

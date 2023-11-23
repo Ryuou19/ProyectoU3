@@ -33,10 +33,19 @@ public class PantallaInicial extends Application {
     float volume;//volumen
     Clip clip;//reproductor
     FloatControl control;//para controlar la musica
-    Pane panel = new Pane();
-    Scene scene = new Scene(panel, 1500, 900);
+    static Pane panel = new Pane();
+    Globales global=new Globales();
     MenuOpciones options = new MenuOpciones();
     Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
+    Image imagen = new Image(getClass().getResource("./img/tanque menu.gif").toExternalForm());
+    Image titulo1=new Image(getClass().getResource("./img/text.gif").toExternalForm());
+    ImageView imageView = new ImageView(imagen);        
+    ImageView titulo = new ImageView(titulo1);
+    HBox boxopciones=new HBox();
+    static Button opciones = new Button("OPCIONES");  
+    HBox boxcomenzar=new HBox();
+    static Button comenzar = new Button("!!!JUGAR!!!");
+    Rectangle marco = new Rectangle(1600, 800);  
     int validar=0;
     public PantallaInicial() {
     }
@@ -49,46 +58,33 @@ public class PantallaInicial extends Application {
       
     @Override   
     public void start(Stage primaryStage) {
-     
-        
-        
-        primaryStage.setFullScreen(true);
-        primaryStage.setX(-10);
-        primaryStage.setY(0);
-        primaryStage.getIcons().add(icono); 
-        primaryStage.setWidth(1500);
-        primaryStage.setHeight(800);
-        
+        Globales.escena=new Scene(panel,Globales.alto_resolucion,Globales.ancho_resolucion); 
+        Globales.stage=primaryStage;
+        Globales.stage.setResizable(false);
+        Globales.stage.getIcons().add(icono); 
+        Globales.stage.setWidth(Globales.alto_resolucion);
+        Globales.stage.setHeight(Globales.ancho_resolucion);    
         musicPath = "src/terreno/music/BAIXO-SLOWED.wav";
-        musica(musicPath); 
+        //musica(musicPath); 
         
         
-        //imagen tanque inicial con sus propiedades y estilo
-        Image imagen = new Image(getClass().getResource("./img/tanque menu.gif").toExternalForm());
-        ImageView imageView = new ImageView(imagen);
-        
-        double nuevoAncho = 450; 
-        double nuevoAlto = 300;  
-        imageView.setFitWidth(nuevoAncho);
-        imageView.setFitHeight(nuevoAlto);
-        
-        //titulo inicial con gif  
-        imagen=new Image(getClass().getResource("./img/text.gif").toExternalForm());
-        ImageView titulo = new ImageView(imagen);
+        //imagen tanque inicial con sus propiedades y estilo        
+        imageView.setFitWidth(450);
+        imageView.setFitHeight(300);
         titulo.setLayoutX(390); 
         titulo.setLayoutY(150); 
-        nuevoAncho=600;
-        nuevoAlto=150;
-        titulo.setFitWidth(nuevoAncho);
-        titulo.setFitHeight(nuevoAlto);
         
-        //fondo
-        Rectangle marco = new Rectangle(1600, 800);  
+        //titulo inicial con gif  
+        titulo.setLayoutX(390); 
+        titulo.setLayoutY(150); 
+        titulo.setFitWidth(600);
+        titulo.setFitHeight(150);
+        
+        //fondo   
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
         
         //boton comenzar
-        HBox boxcomenzar=new HBox();
-        Button comenzar = new Button("!!!JUGAR!!!");  
+         
         Font font = Font.font("Serif", FontWeight.NORMAL, 29);//fuente para el texto del boton
         comenzar.setFont(font);
         boxcomenzar.getChildren().add(comenzar);
@@ -102,9 +98,7 @@ public class PantallaInicial extends Application {
             "-fx-background-radius: 0;" 
         );//estilo del boton
         
-        //boton opciones
-        HBox boxopciones=new HBox();
-        Button opciones = new Button("OPCIONES");  
+        //boton opciones        
         opciones.setFont(font);
         boxopciones.getChildren().add(opciones);
         opciones.setLayoutX(518);
@@ -119,59 +113,33 @@ public class PantallaInicial extends Application {
         
         
         comenzar.setOnAction(e -> {         
-            Jugar juego = new Jugar(list);//inicia el proceso de jugar
-            //list.instanciarJugadores(cantidadJugadores);
-            juego.start(primaryStage,scene);
-            volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen
-            control.setValue(volume);
+            list.instanciarJugadores(Globales.jugadores_def);
+            Tienda tienda=new Tienda();
+            tienda.inicializarInterfaz(Globales.stage, list);
+            //volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen
+            //control.setValue(volume);
         });
         
         opciones.setOnAction(e -> {
             if(validar==0){
-                options.start(primaryStage,list,scene);
+                options.start(Globales.stage,list,panel,imageView,titulo);
                 validar=1;
             }
             if(validar==1){
-                detenerMusica();
-                options.mostrar(primaryStage);
+                Globales.escena.setRoot(options.paneOpciones);
+                global.cambiarEscena(Globales.escena);
                 //volume=-20.0f;
                 //control.setValue(volume);
-            }
-            
-            
+            }       
         });
+        
+        ajustarResolucion(imageView,titulo);
         
         //se añade todo al panel
         panel.getChildren().addAll(marco,comenzar,imageView, titulo,opciones);    
-        /*FadeTransition fadeTransition = new FadeTransition(Duration.seconds(3), panel);//fade blanco inicial
-        fadeTransition.setFromValue(0); 
-        fadeTransition.setToValue(1); 
-        fadeTransition.play();*/
-        
-       
-        double porcentajeX = 0.34;
-        double porcentajeY = 0.35; 
-        imageView.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
-        imageView.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
-        
-        porcentajeX=0.27;
-        porcentajeY=0.15;
-        titulo.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
-        titulo.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
-     
-        porcentajeX=0.436;
-        porcentajeY=0.76;
-        comenzar.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
-        comenzar.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
-        
-        porcentajeX=0.44;
-        porcentajeY=0.85;
-        opciones.layoutXProperty().bind(scene.widthProperty().multiply(porcentajeX));
-        opciones.layoutYProperty().bind(scene.heightProperty().multiply(porcentajeY));
-        
-        
-        primaryStage.setScene(scene);
-        primaryStage.show();
+                
+        Globales.stage.setScene(Globales.escena);
+        Globales.stage.show();
     }
     //funcion que procesa la musica
     public void musica(String musica){     
@@ -207,10 +175,18 @@ public class PantallaInicial extends Application {
     public void mostrar_inicio(Stage stage){
         stage.setTitle("!TANK WAR!");
         stage.getIcons().add(icono);
-        stage.setScene(scene);  
+        stage.setScene(Globales.escena);  
         detenerMusica();
         musicPath="src/terreno/music/BAIXO-SLOWED.wav";                
         musica(musicPath);
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public ImageView getTitulo() {
+        return titulo;
     }
     
     
@@ -219,4 +195,96 @@ public class PantallaInicial extends Application {
             clip.stop();
         }
     }
+    
+    public  void ajustarResolucion(ImageView imageView, ImageView titulo){
+        if(Globales.alto_resolucion==800){
+            Font font = Font.font("Serif", FontWeight.NORMAL, 21);//fuente para el texto del boton               
+            imageView.setFitWidth(350);
+            imageView.setFitHeight(280);
+            imageView.setLayoutX(220); 
+            imageView.setLayoutY(200); 
+            
+            titulo.setLayoutX(200); 
+            titulo.setLayoutY(100); 
+            titulo.setFitWidth(400);
+            titulo.setFitHeight(100);
+            
+            comenzar.setPrefWidth(150); 
+            comenzar.setMinHeight(20); 
+            comenzar.setPrefHeight(50);
+            comenzar.setFont(font);
+            comenzar.setLayoutX(320);
+            comenzar.setLayoutY(500);
+            
+            
+            opciones.setPrefWidth(150); 
+            opciones.setMinHeight(20); 
+            opciones.setPrefHeight(50);
+            opciones.setFont(font);
+            opciones.setLayoutX(320);
+            opciones.setLayoutY(560);
+        }
+        
+        if(Globales.alto_resolucion==900){
+            Font font = Font.font("Serif", FontWeight.NORMAL, 25);//fuente para el texto del boton
+            Globales.stage.setY(1);
+            imageView.setFitWidth(400);
+            imageView.setFitHeight(300);
+            imageView.setLayoutX(260); 
+            imageView.setLayoutY(200); 
+             
+            titulo.setFitWidth(450);
+            titulo.setFitHeight(120);         
+            titulo.setLayoutX(220); 
+            titulo.setLayoutY(85);
+            
+            comenzar.setPrefWidth(180); 
+            comenzar.setMinHeight(20); 
+            comenzar.setPrefHeight(57);
+            comenzar.setFont(font);
+            comenzar.setLayoutX(360);
+            comenzar.setLayoutY(520);
+            
+            
+            opciones.setPrefWidth(180); 
+            opciones.setMinHeight(20); 
+            opciones.setPrefHeight(57);
+            opciones.setFont(font);
+            opciones.setLayoutX(360);
+            opciones.setLayoutY(580);
+        }
+        
+        if(Globales.alto_resolucion==1920){
+            Font font = Font.font("Serif", FontWeight.NORMAL, 30);//fuente para el texto del boton
+            Globales.stage.setY(1);
+            Globales.stage.setX(-20);
+            
+            imageView.setFitWidth(480);
+            imageView.setFitHeight(340);
+            imageView.setLayoutX(460); 
+            imageView.setLayoutY(185); 
+             
+            titulo.setFitWidth(500);
+            titulo.setFitHeight(150);         
+            titulo.setLayoutX(440); 
+            titulo.setLayoutY(60);
+            
+            comenzar.setPrefWidth(230); 
+            comenzar.setMinHeight(30); 
+            comenzar.setPrefHeight(60);
+            comenzar.setFont(font);
+            comenzar.setLayoutX(590);
+            comenzar.setLayoutY(540);
+            
+            
+            opciones.setPrefWidth(230); 
+            opciones.setMinHeight(30); 
+            opciones.setPrefHeight(60);
+            opciones.setFont(font);
+            opciones.setLayoutX(590);
+            opciones.setLayoutY(610);
+        }
+        
+    }
+    
 }

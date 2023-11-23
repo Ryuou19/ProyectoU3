@@ -11,9 +11,9 @@ public class Jugador {
     public int jugador;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
-    int cantidad105;
-    int cantidad80;
-    int cantidad60;
+    int cantidad105=3;
+    int cantidad80=10;
+    int cantidad60=3;
     int vida;
     //SALDO DE CADA JUGADOR
     int saldo;

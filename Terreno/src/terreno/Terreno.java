@@ -25,6 +25,7 @@ public class Terreno{
 
     public Terreno(int alto, int ancho, int pixel,GraphicsContext gc ) {
         this.pixel=pixel;
+        
         this.matriz=new int[alto][ancho];
         this.dunas=new int[alto][ancho];
         this.explosion=new int[alto][ancho];
@@ -107,7 +108,7 @@ public class Terreno{
 
         amplitud = 0.2;
         frecuencia = 0.03;
-        for (int i = 326; i < alto; i++) {
+        for (int i = alto*2/3; i < alto; i++) {
             for (int j = 0; j < ancho; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;

@@ -269,19 +269,19 @@ public class PantallaInicial extends Application {
             titulo.setLayoutX(440); 
             titulo.setLayoutY(60);
             
-            comenzar.setPrefWidth(200); 
+            comenzar.setPrefWidth(230); 
             comenzar.setMinHeight(30); 
             comenzar.setPrefHeight(60);
             comenzar.setFont(font);
-            comenzar.setLayoutX(600);
+            comenzar.setLayoutX(590);
             comenzar.setLayoutY(540);
             
             
-            opciones.setPrefWidth(200); 
+            opciones.setPrefWidth(230); 
             opciones.setMinHeight(30); 
             opciones.setPrefHeight(60);
             opciones.setFont(font);
-            opciones.setLayoutX(600);
+            opciones.setLayoutX(590);
             opciones.setLayoutY(610);
         }
         

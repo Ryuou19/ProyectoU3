@@ -213,8 +213,8 @@ public class Interfaz {
             "-fx-background-radius: 0;"  
         );
         boxreiniciar.getChildren().add(reiniciar);
-        boxreiniciar.setLayoutX(995); 
-        boxreiniciar.setLayoutY(648);
+        boxreiniciar.setLayoutX(560); 
+        boxreiniciar.setLayoutY(700);
         
         //BOTON FINALIZAR
         finalizar.setFont(font);
@@ -226,8 +226,8 @@ public class Interfaz {
             "-fx-background-radius: 0;"  
         );
         boxfinalizar.getChildren().add(finalizar);
-        boxfinalizar.setLayoutX(10); 
-        boxfinalizar.setLayoutY(648);
+        boxfinalizar.setLayoutX(350); 
+        boxfinalizar.setLayoutY(700);
         
         //BOTON BALAS
         tipos.setStyle("-fx-background-color: #C0C0C0;");

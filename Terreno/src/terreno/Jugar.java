@@ -34,7 +34,7 @@ public class Jugar  {
     
     Stage stage;
     ListaJugadores listJugador;
-    int alto = 500;
+    int alto = 400;
     int ancho=300;
     Interfaz interfaz=new Interfaz(Globales.alto_resolucion,Globales.ancho_resolucion);
     int pixel = 3;
@@ -61,6 +61,7 @@ public class Jugar  {
    
     public void start(Stage primaryStage, Scene scene) {
         stage=primaryStage;
+        stage.setResizable(true);
         listJugador.instanciarJugadores(Globales.jugadores_def);
         listJugador.generarTurnoAleatorio();
         
@@ -463,7 +464,7 @@ public class Jugar  {
     void definifirPosicion()
     {
         //int largo = (ancho*pixel);
-        int largo = 1200;
+        int largo = Globales.alto_resolucion;
         int ancho_segmento=largo/Globales.jugadores_def;
         for(int i=0;i<Globales.jugadores_def;i++)
         {

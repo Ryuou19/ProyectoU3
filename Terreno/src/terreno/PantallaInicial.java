@@ -33,7 +33,7 @@ public class PantallaInicial extends Application {
     float volume;//volumen
     Clip clip;//reproductor
     FloatControl control;//para controlar la musica
-    Pane panel = new Pane();
+    static Pane panel = new Pane();
     Globales global=new Globales();
     MenuOpciones options = new MenuOpciones();
     Image icono = new Image(getClass().getResourceAsStream("./img/tanque menu.gif"));
@@ -42,9 +42,9 @@ public class PantallaInicial extends Application {
     ImageView imageView = new ImageView(imagen);        
     ImageView titulo = new ImageView(titulo1);
     HBox boxopciones=new HBox();
-    Button opciones = new Button("OPCIONES");  
+    static Button opciones = new Button("OPCIONES");  
     HBox boxcomenzar=new HBox();
-    Button comenzar = new Button("!!!JUGAR!!!");
+    static Button comenzar = new Button("!!!JUGAR!!!");
     Rectangle marco = new Rectangle(1600, 800);  
     int validar=0;
     public PantallaInicial() {
@@ -116,13 +116,13 @@ public class PantallaInicial extends Application {
             Jugar juego = new Jugar(list);//inicia el proceso de jugar
             //list.instanciarJugadores(cantidadJugadores);
             juego.start(Globales.stage,Globales.escena);
-            volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen
-            control.setValue(volume);
+            //volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen
+            //control.setValue(volume);
         });
         
         opciones.setOnAction(e -> {
             if(validar==0){
-                options.start(Globales.stage,list,panel);
+                options.start(Globales.stage,list,panel,imageView,titulo);
                 validar=1;
             }
             if(validar==1){
@@ -133,7 +133,7 @@ public class PantallaInicial extends Application {
             }       
         });
         
-        ajustarResolucion();
+        ajustarResolucion(imageView,titulo);
         
         //se añade todo al panel
         panel.getChildren().addAll(marco,comenzar,imageView, titulo,opciones);    
@@ -180,6 +180,14 @@ public class PantallaInicial extends Application {
         musicPath="src/terreno/music/BAIXO-SLOWED.wav";                
         musica(musicPath);
     }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public ImageView getTitulo() {
+        return titulo;
+    }
     
     
     public void detenerMusica() {
@@ -188,10 +196,9 @@ public class PantallaInicial extends Application {
         }
     }
     
-    public void ajustarResolucion(){
+    public  void ajustarResolucion(ImageView imageView, ImageView titulo){
         if(Globales.alto_resolucion==800){
-            Font font = Font.font("Serif", FontWeight.NORMAL, 21);//fuente para el texto del boton
-                   
+            Font font = Font.font("Serif", FontWeight.NORMAL, 21);//fuente para el texto del boton               
             imageView.setFitWidth(350);
             imageView.setFitHeight(280);
             imageView.setLayoutX(220); 
@@ -246,6 +253,38 @@ public class PantallaInicial extends Application {
             opciones.setLayoutX(360);
             opciones.setLayoutY(580);
         }
+        
+        if(Globales.alto_resolucion==1920){
+            Font font = Font.font("Serif", FontWeight.NORMAL, 30);//fuente para el texto del boton
+            Globales.stage.setY(1);
+            Globales.stage.setX(-20);
+            
+            imageView.setFitWidth(480);
+            imageView.setFitHeight(340);
+            imageView.setLayoutX(460); 
+            imageView.setLayoutY(185); 
+             
+            titulo.setFitWidth(500);
+            titulo.setFitHeight(150);         
+            titulo.setLayoutX(440); 
+            titulo.setLayoutY(60);
+            
+            comenzar.setPrefWidth(200); 
+            comenzar.setMinHeight(30); 
+            comenzar.setPrefHeight(60);
+            comenzar.setFont(font);
+            comenzar.setLayoutX(600);
+            comenzar.setLayoutY(540);
+            
+            
+            opciones.setPrefWidth(200); 
+            opciones.setMinHeight(30); 
+            opciones.setPrefHeight(60);
+            opciones.setFont(font);
+            opciones.setLayoutX(600);
+            opciones.setLayoutY(610);
+        }
+        
     }
     
 }

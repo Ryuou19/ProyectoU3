@@ -25,8 +25,8 @@ public class Interfaz {
     int ancho;
 
     public Interfaz(int alto, int ancho) {
-        this.alto = alto/3;
-        this.ancho = ancho/3;
+        this.alto = alto;
+        this.ancho = ancho;
     }
   
     public Label textodistancia;//distancia maxima mostrada en la interfaz a traves de la variable distancia

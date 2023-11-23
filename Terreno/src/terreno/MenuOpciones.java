@@ -39,19 +39,48 @@ public class MenuOpciones {
     "-fx-border-color: #FF0000;" + 
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
-    Globales global=new Globales();
-    Pane paneOpciones=escenaOpciones();
-  
+    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg")); 
+    Button volver = new Button("Volver Al Menu Principal");
+    Button flecha_derecha1 = new Button(">");
+    Button flecha_izquierda1 = new Button("<");
+    HBox menu_resoluciones = new HBox();
+    Label labelResolucion = new Label("Resolución");
+    HBox texto_resoluciones= new HBox();
+    Button flecha_derecha2 = new Button(">");
+    Button flecha_izquierda2 = new Button("<");
+    Label labelRondas = new Label("Rondas");
+    HBox texto_rondas= new HBox();
+    HBox menu_rondas = new HBox();
+    Button flecha_derecha3 = new Button(">");
+    Button flecha_izquierda3 = new Button("<");
+    HBox menu_jugadores = new HBox();
+    Label labelJugadores = new Label("Jugadores");
+    HBox texto_jugadores= new HBox();
+    Button flecha_derecha5 = new Button(">");
+    Button flecha_izquierda5 = new Button("<");
+    HBox menu_cantidad = new HBox();
+    Label labelIA = new Label("Jug. Artificiales");
+    HBox texto_IA= new HBox();
+    Button flecha_derecha4 = new Button(">");
+    Button flecha_izquierda4 = new Button("<");
+    HBox menu_entorno = new HBox();
+    Label labelEntorno = new Label("Efectos de Entorno");
+    HBox texto_entorno= new HBox();
+    
+    
+    Globales global=new Globales();   
+    Pane paneOpciones;
+    
     Button volverMenu;    
 
     public MenuOpciones() {
         
     }  
     
-    public void start(Stage stage, ListaJugadores list,Pane panel){
+    public void start(Stage stage, ListaJugadores list,Pane panel,ImageView imageView,ImageView titulo){
         
         
-        
+        paneOpciones=escenaOpciones(imageView,titulo);
         Globales.escena.setRoot(paneOpciones);
         paneOpciones.setPrefSize(Globales.alto_resolucion,Globales.ancho_resolucion);
         volverMenu.setOnAction(e -> {
@@ -63,35 +92,27 @@ public class MenuOpciones {
         
     }
     
-    public Pane escenaOpciones(){
+    public Pane escenaOpciones(ImageView imageview,ImageView titulo){
+        PantallaInicial inicio=new PantallaInicial();
         Pane panel = new Pane();
-        Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
-        Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg")); 
+        
+        //Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
+        
         ImageView imageView = new ImageView(fondo);   
-        imageView.setPreserveRatio(false);
-        imageView.setFitWidth(1380);
-        imageView.setFitHeight(780);       
-        panel.getChildren().add(imageView);              
-        /*stage.setWidth(500);
-        stage.setHeight(630);
-        stage.setX(400); stage.setY(60);*/
-               
+        imageView.setPreserveRatio(false); 
+        panel.getChildren().add(imageView);    
+        
+        
         //VOLVER MENU PRINCIPAAL    
         Font font = Font.font("Serif", FontWeight.NORMAL, 24);
-        Button volver = new Button("Volver Al Menu Principal");
-        volver.setFont(font);
         volver.setStyle(estilo_botones);
-        volver.setLayoutX(110);
-        volver.setLayoutY(520);
-        
+         
         //////////////////////////////////////////////////////////////////7
         //RESOLUCION     
-        opcion_resolucion = new Button(resolucion[opcionActual]);
-        opcion_resolucion.setMinWidth(200);
-        opcion_resolucion.setFont(font);
+        opcion_resolucion = new Button(resolucion[opcionActual]);   
         opcion_resolucion.setStyle(estilo_botones);
         
-        Button flecha_derecha1 = new Button(">");
+        
         flecha_derecha1.setMinWidth(50);
         flecha_derecha1.setMinHeight(50);
         flecha_derecha1.setStyle(estilo_botones);
@@ -114,9 +135,11 @@ public class MenuOpciones {
                 Globales.ancho_resolucion=1080;
             }
             global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
+            inicio.ajustarResolucion(imageview,titulo);
+            ajustarResolucion(imageView);
         });
         
-        Button flecha_izquierda1 = new Button("<");
+       
         flecha_izquierda1.setMinWidth(50); 
         flecha_izquierda1.setMinHeight(50); 
         flecha_izquierda1.setStyle(estilo_botones);
@@ -139,32 +162,27 @@ public class MenuOpciones {
                 Globales.ancho_resolucion=1080;
             }
             global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
+            inicio.ajustarResolucion(imageview,titulo);
+            ajustarResolucion(imageView);
+            
         });
         
-        HBox menu_resoluciones = new HBox();
+        
         menu_resoluciones.getChildren().addAll(flecha_izquierda1,opcion_resolucion, flecha_derecha1);
-        menu_resoluciones.setLayoutX(100);
-        menu_resoluciones.setLayoutY(40);
-        
-        Label labelResolucion = new Label("Resolución");
-        labelResolucion.setFont(font);
-        labelResolucion.setStyle("-fx-text-fill: white;");
-        
-        HBox texto_resoluciones= new HBox();
+      
+        labelResolucion.setStyle("-fx-text-fill: white;");    
         texto_resoluciones.getChildren().add(labelResolucion);
-        texto_resoluciones.setLayoutX(195); 
-        texto_resoluciones.setLayoutY(5);       
+             
         /////////////////////////////////////////////////
         ///RESOLUCION
        
         /////////////////////////////////////////////////////
         //RONDAS
         opcion_rondas = new Button(rondas[opcionActual]);
-        opcion_rondas.setMinWidth(200);
-        opcion_rondas.setFont(font);
+        
         opcion_rondas.setStyle(estilo_botones);
                
-        Button flecha_derecha2 = new Button(">");
+        
         flecha_derecha2.setMinWidth(50);
         flecha_derecha2.setMinHeight(50);
         flecha_derecha2.setStyle(estilo_botones);
@@ -173,7 +191,7 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.rondas_def);
         });
         
-        Button flecha_izquierda2 = new Button("<");
+       
         flecha_izquierda2.setMinWidth(50);
         flecha_izquierda2.setMinHeight(50);
         flecha_izquierda2.setStyle(estilo_botones);
@@ -182,31 +200,22 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.rondas_def);
         });
         
-        HBox menu_rondas = new HBox();
+        
         menu_rondas.getChildren().addAll(flecha_izquierda2,opcion_rondas, flecha_derecha2);
-        menu_rondas.setLayoutX(100);
-        menu_rondas.setLayoutY(140);
-        
-        Label labelRondas = new Label("Rondas");
-        labelRondas.setFont(font);
-        labelRondas.setStyle("-fx-text-fill: white;");
-        
-        HBox texto_rondas= new HBox();
+        labelRondas.setStyle("-fx-text-fill: white;");     
         texto_rondas.getChildren().add(labelRondas);
-        texto_rondas.setLayoutX(210); 
-        texto_rondas.setLayoutY(100);    
+           
         /////////////////////////////////////////////////////
-        //JUGADORES
+        //RONDAS
         
         
         /////////////////////////////////////////////////////
         //JUGADORES
         opcion_jugadores = new Button(jugadores[opcionActual]);
-        opcion_jugadores.setMinWidth(200);
-        opcion_jugadores.setFont(font);
+        
         opcion_jugadores.setStyle(estilo_botones);
                
-        Button flecha_derecha3 = new Button(">");
+        
         flecha_derecha3.setMinWidth(50);
         flecha_derecha3.setMinHeight(50);
         flecha_derecha3.setStyle(estilo_botones);
@@ -215,7 +224,7 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.jugadores_def);
         });
         
-        Button flecha_izquierda3 = new Button("<");
+        
         flecha_izquierda3.setMinWidth(50);
         flecha_izquierda3.setMinHeight(50);
         flecha_izquierda3.setStyle(estilo_botones);
@@ -224,31 +233,21 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.jugadores_def);
         });
         
-        HBox menu_jugadores = new HBox();
+        
         menu_jugadores.getChildren().addAll(flecha_izquierda3,opcion_jugadores, flecha_derecha3);
-        menu_jugadores.setLayoutX(100);
-        menu_jugadores.setLayoutY(240);
-        
-        Label labelJugadores = new Label("Jugadores");
-        labelJugadores.setFont(font);
-        labelJugadores.setStyle("-fx-text-fill: white;");
-        
-        HBox texto_jugadores= new HBox();
+        labelJugadores.setStyle("-fx-text-fill: white;");          
         texto_jugadores.getChildren().add(labelJugadores);
-        texto_jugadores.setLayoutX(200); 
-        texto_jugadores.setLayoutY(200);    
+           
         /////////////////////////////////////////////////////
         //JUGADORES
         
         
         ////////////////////////////////////////////
         //CANTIDAD IA´S
-        opcion_cantidad = new Button(cantidad[opcionActual]);
-        opcion_cantidad.setMinWidth(200);
-        opcion_cantidad.setFont(font);
+        opcion_cantidad = new Button(cantidad[opcionActual]);        
         opcion_cantidad.setStyle(estilo_botones);
                
-        Button flecha_derecha5 = new Button(">");
+        
         flecha_derecha5.setMinWidth(50); 
         flecha_derecha5.setMinHeight(50);
         flecha_derecha5.setStyle(estilo_botones);
@@ -257,7 +256,7 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.cantidad_def); 
         });
         
-        Button flecha_izquierda5 = new Button("<");
+        
         flecha_izquierda5.setMinWidth(50); 
         flecha_izquierda5.setMinHeight(50);
         flecha_izquierda5.setStyle(estilo_botones);
@@ -266,29 +265,23 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.cantidad_def); 
         });
              
-        HBox menu_cantidad = new HBox();
-        menu_cantidad.getChildren().addAll(flecha_izquierda5,opcion_cantidad, flecha_derecha5);
-        menu_cantidad.setLayoutX(100);
-        menu_cantidad.setLayoutY(340);
         
-        Label labelIA = new Label("Jug. Artificiales");
-        labelIA.setFont(font);
+        menu_cantidad.getChildren().addAll(flecha_izquierda5,opcion_cantidad, flecha_derecha5);
+        
         labelIA.setStyle("-fx-text-fill: white;");
         
-        HBox texto_IA= new HBox();
+        
         texto_IA.getChildren().add(labelIA);
-        texto_IA.setLayoutX(175); 
-        texto_IA.setLayoutY(300); 
+        
         
         
         /////////////////////////////////////////
         //ENTORNO
         opcion_entorno = new Button(entorno[opcionActual]);
-        opcion_entorno.setMinWidth(200);
-        opcion_entorno.setFont(font);
+        
         opcion_entorno.setStyle(estilo_botones);
                
-        Button flecha_derecha4 = new Button(">");
+        
         flecha_derecha4.setMinWidth(50); 
         flecha_derecha4.setMinHeight(50);
         flecha_derecha4.setStyle(estilo_botones);
@@ -297,7 +290,7 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.entorno_def);    
         });
         
-        Button flecha_izquierda4 = new Button("<");
+        
         flecha_izquierda4.setMinWidth(50);
         flecha_izquierda4.setMinHeight(50);
         flecha_izquierda4.setStyle(estilo_botones);
@@ -306,23 +299,18 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.entorno_def);      
         });
         
-        HBox menu_entorno = new HBox();
-        menu_entorno.getChildren().addAll(flecha_izquierda4,opcion_entorno, flecha_derecha4);
-        menu_entorno.setLayoutX(100); 
-        menu_entorno.setLayoutY(440);
         
-        Label labelEntorno = new Label("Efectos de Entorno");
-        labelEntorno.setFont(font);
+        menu_entorno.getChildren().addAll(flecha_izquierda4,opcion_entorno, flecha_derecha4);
+        
         labelEntorno.setStyle("-fx-text-fill: white;");
         
-        HBox texto_entorno= new HBox();
+        
         texto_entorno.getChildren().add(labelEntorno);
-        texto_entorno.setLayoutX(160); 
-        texto_entorno.setLayoutY(400); 
+        
         ///////////////////////////////////////////////
         //ENTORNO
         
-        
+        ajustarResolucion(imageView);
        
         this.volverMenu=volver;
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
@@ -368,67 +356,119 @@ public class MenuOpciones {
         return opcion;
     }
     
-    public void ajustarResolucion(){
+    public void ajustarResolucion(ImageView imagen){
         if(Globales.alto_resolucion==800){
+            Font font = Font.font("Serif", FontWeight.NORMAL, 19);      
+            imagen.setFitWidth(800);
+            imagen.setFitHeight(750);
             
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*public void mostrar(Stage stage){
-        detenerMusica();
-        //stage.setTitle("Menu Opciones");
-        //stage.getIcons().add(icono);
-        //stage.setScene(escena); 
-        musicPath="src/terreno/music/musicaMenuOpciones.wav";   
-        detenerMusica();
-        musica(musicPath);
-    }
-    
-    
-    
-    public void musica(String musica){
-        try{
-            audioInput = AudioSystem.getAudioInputStream(new File(musica));
-            clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            //control de volumen
-            control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
-            //volumen (rango: -80.0 a 6.0206)     
-            volume = -20.0f;            
-            control.setValue(volume);
+            volver.setLayoutX(275);
+            volver.setLayoutY(550);
+            volver.setPrefWidth(240);
+            volver.setPrefHeight(50);
+            volver.setFont(font);
             
-            Timer timer = new Timer(0, new ActionListener() {//funcion que genera delay al inicio de la ejecucion para la musica, para adaptarse al fade inicial
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    clip.start();
-                }
-            });
+            opcion_resolucion.setPrefWidth(140);
+            opcion_resolucion.setPrefHeight(50);
+            opcion_resolucion.setFont(font);
+            menu_resoluciones.setLayoutX(275);
+            menu_resoluciones.setLayoutY(120);
+            labelResolucion.setFont(font);
+            texto_resoluciones.setLayoutX(352); 
+            texto_resoluciones.setLayoutY(90);  
             
-            timer.setRepeats(false);
-            timer.start();
-        //manejo de exepciones
-        }catch(UnsupportedAudioFileException e){
-            System.out.println(e.toString());
-        } catch (LineUnavailableException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            opcion_rondas.setPrefWidth(140);
+            opcion_rondas.setPrefHeight(50);
+            opcion_rondas.setFont(font);
+            menu_rondas.setLayoutX(275);
+            menu_rondas.setLayoutY(210);     
+            labelRondas.setFont(font);            
+            texto_rondas.setLayoutX(365); 
+            texto_rondas.setLayoutY(180); 
+            
+            opcion_jugadores.setPrefWidth(140);
+            opcion_jugadores.setPrefHeight(50);
+            opcion_jugadores.setFont(font);
+            menu_jugadores.setLayoutX(275);
+            menu_jugadores.setLayoutY(300);       
+            labelJugadores.setFont(font);          
+            texto_jugadores.setLayoutX(357); 
+            texto_jugadores.setLayoutY(270);           
+            
+            opcion_cantidad.setPrefWidth(140);
+            opcion_cantidad.setPrefHeight(50);
+            opcion_cantidad.setFont(font);
+            menu_cantidad.setLayoutX(275);
+            menu_cantidad.setLayoutY(390);       
+            labelIA.setFont(font);
+            texto_IA.setLayoutX(336); 
+            texto_IA.setLayoutY(360); 
+            
+            opcion_entorno.setPrefWidth(140);
+            opcion_entorno.setPrefHeight(50);
+            opcion_entorno.setFont(font);
+            menu_entorno.setLayoutX(275); 
+            menu_entorno.setLayoutY(480);    
+            labelEntorno.setFont(font);           
+            texto_entorno.setLayoutX(322); 
+            texto_entorno.setLayoutY(450); 
         }
-    }  
-    
-    public void detenerMusica() {
-        if (clip != null && clip.isOpen()) {
-            clip.stop();
+        
+        if(Globales.alto_resolucion==900){
+            Font font = Font.font("Serif", FontWeight.NORMAL, 22);      
+            imagen.setFitWidth(900);
+            imagen.setFitHeight(850);
+            
+            volver.setLayoutX(275);
+            volver.setLayoutY(550);
+            volver.setPrefWidth(240);
+            volver.setPrefHeight(50);
+            volver.setFont(font);
+            
+            opcion_resolucion.setPrefWidth(140);
+            opcion_resolucion.setPrefHeight(50);
+            opcion_resolucion.setFont(font);
+            menu_resoluciones.setLayoutX(275);
+            menu_resoluciones.setLayoutY(120);
+            labelResolucion.setFont(font);
+            texto_resoluciones.setLayoutX(352); 
+            texto_resoluciones.setLayoutY(90);  
+            
+            opcion_rondas.setPrefWidth(140);
+            opcion_rondas.setPrefHeight(50);
+            opcion_rondas.setFont(font);
+            menu_rondas.setLayoutX(275);
+            menu_rondas.setLayoutY(210);     
+            labelRondas.setFont(font);            
+            texto_rondas.setLayoutX(365); 
+            texto_rondas.setLayoutY(180); 
+            
+            opcion_jugadores.setPrefWidth(140);
+            opcion_jugadores.setPrefHeight(50);
+            opcion_jugadores.setFont(font);
+            menu_jugadores.setLayoutX(275);
+            menu_jugadores.setLayoutY(300);       
+            labelJugadores.setFont(font);          
+            texto_jugadores.setLayoutX(357); 
+            texto_jugadores.setLayoutY(270);           
+            
+            opcion_cantidad.setPrefWidth(140);
+            opcion_cantidad.setPrefHeight(50);
+            opcion_cantidad.setFont(font);
+            menu_cantidad.setLayoutX(275);
+            menu_cantidad.setLayoutY(390);       
+            labelIA.setFont(font);
+            texto_IA.setLayoutX(336); 
+            texto_IA.setLayoutY(360); 
+            
+            opcion_entorno.setPrefWidth(140);
+            opcion_entorno.setPrefHeight(50);
+            opcion_entorno.setFont(font);
+            menu_entorno.setLayoutX(275); 
+            menu_entorno.setLayoutY(480);    
+            labelEntorno.setFont(font);           
+            texto_entorno.setLayoutX(322); 
+            texto_entorno.setLayoutY(450); 
         }
-    }*/
-    
+    }   
 }

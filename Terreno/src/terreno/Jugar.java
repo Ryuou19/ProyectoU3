@@ -409,7 +409,7 @@ public class Jugar  {
             animacionCaida();        
             vidatanque1=100;
            
-            interfaz.textovida.setText("Vida = "+100);
+            
     }
     public static int getRandom(){
         return terreno_random;

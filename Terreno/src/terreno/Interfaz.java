@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -90,7 +91,7 @@ public class Interfaz {
     
     //VIDA
     HBox boxvida= new HBox();      
-    Label textovida = new Label(100+"");
+    ProgressBar barraDeVida = new ProgressBar();
     
     //BOTON REINICIAR
     HBox boxreiniciar= new HBox();
@@ -194,12 +195,17 @@ public class Interfaz {
         canvasPane.getChildren().add(marco);
 
         //VIDA
-        textovida.setTextFill(Color.BLACK);      
-        textovida.setFont(Font.font("Arial",FontWeight.BOLD, 20));       
-        textovida.setTranslateX(-5);      
-        boxvida.getChildren().addAll(textovida);     
-        boxvida.setLayoutX(677);
+        barraDeVida.setPrefWidth(120);  
+        barraDeVida.setStyle("-fx-control-inner-background: black; " +
+                             "-fx-accent: #00FF00; " +
+                             "-fx-background-color: black, black; " +
+                             "-fx-background-insets: 0, 2; " +
+                             "-fx-background-radius: 0.5em;");
+        boxvida.getChildren().addAll(barraDeVida);     
+        boxvida.setLayoutX(660);
         boxvida.setLayoutY(565+mover);
+        
+        
         
         
         //BOTON REINICIAR
@@ -259,8 +265,7 @@ public class Interfaz {
             imagen.setVisible(false);
         }
         imagenes[jugador.jugador].setVisible(true);
-        textovida.setText("Vida = "+jugador.getVida());
-        
+        barraDeVida.setProgress(jugador.getVida()/100.0);
     }
     
     

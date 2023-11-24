@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 
 
-public class Jugador {
+public class  Jugador {
 
     String color = "";
     public int jugador;
@@ -21,6 +21,11 @@ public class Jugador {
     int posicionInicialY=100;
     //hola
     int asesionatos;
+
+    public Random rand;
+    private Tank tanque;
+    int random;
+    String tipo;
 
     public int getVida() {
         return vida;
@@ -55,15 +60,13 @@ public class Jugador {
         this.cantidad60 = cantidad60;
     }
 
-    public Random rand;
-    private Tank tanque;
-    int random;
+
   
     public Tank getTanque() {
         return tanque;
     }
   
-    public Jugador(int jugador,String nombre){
+    public Jugador(int jugador,String nombre,String tipo){
         
         this.jugador = jugador;
         this.rand=new Random();
@@ -71,6 +74,7 @@ public class Jugador {
         this.saldo=10000;
         this.nombre=nombre;
         this.vida=100;
+        this.tipo=tipo;
         //de esta forma no pasamos como parametro la imagenes haciendo mas facil la inicializacion de la clase en la pantalla de inizicio 
         if (jugador==0)
         {

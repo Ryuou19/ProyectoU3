@@ -38,15 +38,20 @@ public class ListaJugadores {
     public ArrayList<Jugador> getLista(){
         return lista;
     }
-    public void instanciarJugadores(int cantidadJugadores)
+    public void instanciarJugadores(int cantidadJugadores, int cantidadBots)
     {
-        for(int i=0;i<cantidadJugadores;i++)
+        int cantidadNormales= cantidadJugadores-cantidadBots; //le quitamos la cantidad de bots a los jugadores
+        //agregamos la cantidad de jguadores normales,
+        for(int i=0;i<cantidadNormales;i++)
         {
-            Jugador aux = new Jugador(i,"Juan");
+            Jugador aux = new Jugador(i,"Juan","jugador");
             lista.add(aux);
-            
         }
-
+        //agregamos la cantidad de jguadors que seran bots
+        for(int i=cantidadNormales;i<cantidadJugadores;i++)
+        {
+            Jugador aux= new Jugador(i,"robarto","bot");
+        }
     }
     
     public void copiarLista(){

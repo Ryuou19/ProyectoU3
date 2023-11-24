@@ -404,7 +404,7 @@ public class Jugar  {
             }            
             terreno_random = nuevoTerreno;
             listJugador.getLista().clear();
-            listJugador.instanciarJugadores(Globales.jugadores_def);
+            listJugador.instanciarJugadores(Globales.jugadores_def,Globales.jugadores_bot);
             iniciar_terreno();
             animacionCaida();        
             vidatanque1=100;

@@ -38,7 +38,7 @@ public class Jugar  {
     int pixel = 3;
     int contador_inicio=0;
     int vidatanque1=100;
-   
+    int tipo_jugador; // si es 0 es un un bot si es 1 es un normal
     
     
 
@@ -85,11 +85,46 @@ public class Jugar  {
             reiniciar_partida();
         });
         
-        tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla                        
-        elegir_bala();   
-        
-               
-        interfaz.disparar.setOnAction(event ->{                            
+        tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
+        //Seleccion del tipo----------------------------------------------------------------------------------
+        if(listJugador.getJugadorActual().tipo=="bot")// si el jugador actual resulto ser un bot
+        {
+             elegir_bala_bot();
+            Bala nuevaBala = crear_bala();
+            velocidad= random.nextDouble(61) + 30; // va de 30 a 90
+            angulo = random.nextDouble() * 360;
+
+            new AnimationTimer() {
+                @Override
+                public void handle(long now){
+                    nuevaBala.dibujo(interfaz.gc,nuevaBala.getDanio());
+                    nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,interfaz.boxdistancia,interfaz.boxaltura,listJugador.getJugadorActual().getTanque().getCañonY(),listJugador.getJugadorActual().getTanque().getCañonX());
+                    impacto=terrain.colision_terreno(interfaz.gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);
+                    if(impacto!=0){ // si victoria es distinto de 0 osea impacto a algun jugador
+                        System.out.println("Victoria = "+impacto);
+                        impacto_jugador(impacto,nuevaBala.getDanio());
+                    }
+                    if (nuevaBala.eliminar()) {
+                        System.out.println("Victoria = "+impacto);
+                        colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)
+                        System.out.println("hola si se ejecuto colisicion_bala");
+                        stop();
+                        listJugador.generarTurnoAleatorio();//cambiamos el turno
+                        animacionCaida();
+                        System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
+                        interfaz.mostrarJugador(listJugador.getJugadorActual());
+                    }
+                }
+            }.start();
+
+        }
+        else
+        {
+            elegir_bala();
+            tipo_jugador=0;
+        }
+        interfaz.disparar.setOnAction(event ->{
+
                 interfaz.textcantidad.setVisible(false);
                 if (comprobarMunicion(tipo)) {//verifica si quedan balas del tipo seleccionado
                     System.out.println("no quedan balas de ese tipo");
@@ -115,7 +150,7 @@ public class Jugar  {
                     System.out.println("no quedan mas balas ");
                 }
                 else{
-                    new AnimationTimer() {                          
+                    new AnimationTimer() {
                         @Override
                         public void handle(long now){
                             nuevaBala.dibujo(interfaz.gc,nuevaBala.getDanio());
@@ -137,7 +172,7 @@ public class Jugar  {
                             }
                         }
                     }.start();
-                    
+
                 }     
             interfaz.entradaangulo.setText("");
             interfaz.entradavelocidad.setText("");
@@ -246,7 +281,7 @@ public class Jugar  {
 
         return false;
     }
-    
+
     public void calcular_explosion(){//calcula la explosion en base a un area que se genera con el contacto entre la explosion y la hitbox del tanque(para efectos mas realistas)
         int area=0;
         int tanque=0;
@@ -454,6 +489,10 @@ public class Jugar  {
             Platform.exit();
         }
     }
-    
+    public void elegir_bala_bot()
+    {
+        int tipo_aux= random.nextInt(3)+1;
+        tipo=tipo_aux;
+    }
     
 }

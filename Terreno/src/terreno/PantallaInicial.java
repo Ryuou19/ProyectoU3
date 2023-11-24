@@ -113,7 +113,7 @@ public class PantallaInicial extends Application {
         
         
         comenzar.setOnAction(e -> {         
-            list.instanciarJugadores(Globales.jugadores_def);
+            list.instanciarJugadores(Globales.jugadores_def,Globales.jugadores_bot);
             Tienda tienda=new Tienda();
             tienda.inicializarInterfaz(Globales.stage, list);
             //volume = -20.0f;//al comenzar a jugar, se baja un poco el volumen

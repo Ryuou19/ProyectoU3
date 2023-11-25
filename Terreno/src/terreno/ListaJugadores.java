@@ -51,6 +51,7 @@ public class ListaJugadores {
         for(int i=cantidadNormales;i<cantidadJugadores;i++)
         {
             Jugador aux= new Jugador(i,"robarto","bot");
+            lista.add(aux);
         }
     }
     
@@ -70,9 +71,7 @@ public class ListaJugadores {
 
     }
     public Jugador getJugadorActual() {
-        if(indiceActual>ronda.size()-1){
-            return ronda.get(indiceActual-1);
-        }
+
         return ronda.get(indiceActual);
     }
     

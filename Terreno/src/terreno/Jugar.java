@@ -115,7 +115,6 @@ public class Jugar  {
                 angulo = -Double.parseDouble(anguloTexto);
                 velocidad = Double.parseDouble(velocidadTexto);
 
-
                 System.out.println("la velocidad es->"+velocidad);
                 Bala nuevaBala = crear_bala();//creamos nueva bala con el tipo seleciconado
                 //comprobamos si la bala esta vacia
@@ -167,27 +166,33 @@ public class Jugar  {
         Label alturaLabel = (Label) interfaz.boxaltura.getChildren().get(1);
         alturaLabel.setText(" ");           
     }
-    public void impacto_jugador(int jugadorImpactado,int danio){
-        jugadorImpactado=jugadorImpactado-1; //restamos para acceder al indice
+    public void impacto_jugador(int jugadorImpactado, int danio) {
+        jugadorImpactado = jugadorImpactado - 1; // Ajustar para acceder al índice
         Jugador jugador = listJugador.lista.get(jugadorImpactado);
         jugador.ajustar_vida(jugador.getVida(), danio);
-        listJugador.getJugadorActual().saldo+=10; // le damos 10 monedas al tanque actual por impactar
-   
-        if(jugador.vida<=0){
-            listJugador.getJugadorActual().asesionatos+=1;// le agregamos 1 asesinato
-            listJugador.getJugadorActual().saldo+=5000;
-            System.out.println("Asesinatos del jugador = "+listJugador.getJugadorActual().asesionatos);
-            listJugador.eliminarJugador(jugadorImpactado);//marcamos al jugador como eliminado
-            int marca_hitbox=jugadorImpactado+1;
-            terrain.borrarHitboxJugador(marca_hitbox); // eliminamos la hitbox del jugador muerto
-            if(listJugador.quedaUnoVivo()) // si queda un jugador terminamos y reiniciamos
-            {
-                finalizarRonda();
 
+        // Verifica si el jugador actual es diferente del jugador impactado
+        if (listJugador.getJugadorActual() != jugador) {
+            listJugador.getJugadorActual().saldo += 10; // Damos monedas al tanque actual por impactar
+            if (jugador.vida <= 0) {
+                listJugador.getJugadorActual().asesionatos += 1; // Incrementa asesinatos
+                listJugador.getJugadorActual().saldo += 5000;
+                System.out.println("Asesinatos del jugador = " + listJugador.getJugadorActual().asesionatos);
+            }
+        } else {
+            // Caso donde el jugador se impacta a sí mismo no hacmos nada
+        }
+        if (jugador.vida <= 0) {
+            listJugador.eliminarJugador(jugadorImpactado); // Marca al jugador como eliminado
+            int marca_hitbox = jugadorImpactado + 1;
+            terrain.borrarHitboxJugador(marca_hitbox); // Elimina la hitbox del jugador muerto
+            if (listJugador.quedaUnoVivo()) { // Si queda un jugador, termina y reinicia
+                finalizarRonda();
             }
         }
         imprimirVidaJugadores();
     }
+
     
     
     public void colision_bala(){
@@ -464,7 +469,7 @@ public class Jugar  {
     }
     public void elegir_bala_bot()
     {
-        int tipo_aux= random.nextInt(3)+1;
+        int tipo_aux=random.nextInt(3)+1;;
         tipo=tipo_aux;
     }
     public void animacionBala(Bala nuevaBala)
@@ -504,17 +509,43 @@ public class Jugar  {
             }
         }.start();
     }
-    public void iniciar_bot()
-    {
+    public void iniciar_bot() {
         if (!disparo_en_curso) {
             elegir_bala_bot();
-            //velocidad = random.nextDouble() * 35 + 30;
-            //angulo = random.nextDouble() * 360;
-            //para matar a los bots y que se suiciden
-            velocidad=30;
-            angulo=270;
-            Bala nuevaBala = crear_bala();
-            animacionBala(nuevaBala);
+
+            if (comprobarMunicion(tipo)) { // Si no hay municiones del tipo actual
+                // Encuentra un tipo de bala disponible
+                tipo = encontrarTipoDeBalaDisponible();
+
+            }
+            if(tipo==0)//no le quedan balas, matamos al bot
+            {
+                int indice= listJugador.getJugadorActual().jugador;
+                listJugador.eliminarJugador(indice);//marcamos al jugador como eliminado
+            }
+            else
+            {
+                //velocidad = random.nextDouble() * 35 + 30;
+                //angulo = random.nextDouble() * 360; //
+                velocidad=50;
+                angulo=270;
+                Bala nuevaBala = crear_bala();
+                animacionBala(nuevaBala);
+            }
+
         }
     }
+    private int encontrarTipoDeBalaDisponible() {
+        // Comprueba cada tipo de bala y devuelve el primer tipo disponible
+        if (listJugador.getJugadorActual().getCantidad60() > 0) {
+            return 1;
+        } else if (listJugador.getJugadorActual().getCantidad80() > 0) {
+            return 2;
+        } else if (listJugador.getJugadorActual().getCantidad105() > 0) {
+            return 3;
+        } else {
+            return 0; // No hay balas disponibles
+        }
+    }
+
 }

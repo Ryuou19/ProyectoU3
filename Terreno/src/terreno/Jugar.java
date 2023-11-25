@@ -472,29 +472,35 @@ public class Jugar  {
         new AnimationTimer() {
             @Override
             public void handle(long now){
-                if (!disparo_en_curso) {
-                    disparo_en_curso = true;
-                }
-                nuevaBala.dibujo(interfaz.gc,nuevaBala.getDanio());
-                nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,interfaz.boxdistancia,interfaz.boxaltura,listJugador.getJugadorActual().getTanque().getCañonY(),listJugador.getJugadorActual().getTanque().getCañonX());
-                impacto=terrain.colision_terreno(interfaz.gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);
-                if(impacto!=0){ // si victoria es distinto de 0 osea impacto a algun jugador
-                    System.out.println("Victoria = "+impacto);
-                    impacto_jugador(impacto,nuevaBala.getDanio());
-                }
-                if (nuevaBala.eliminar()) {
+                if (now - Globales.lastFrameTime >= Globales.timePerFrame) {
+                    Globales.lastFrameTime = now;
 
-                    System.out.println("Victoria = "+impacto);
-                    colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)
-                    System.out.println("hola si se ejecuto colisicion_bala");
-                    stop();
-                    disparo_en_curso = false;
-                    animacionCaida();
-                    System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
-                    interfaz.mostrarJugador(listJugador.getJugadorActual());
+                    if (!disparo_en_curso) {
+                        disparo_en_curso = true;
+                    }
+                    nuevaBala.dibujo(interfaz.gc,nuevaBala.getDanio());
+                    nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura,interfaz.boxdistancia,interfaz.boxaltura,listJugador.getJugadorActual().getTanque().getCañonY(),listJugador.getJugadorActual().getTanque().getCañonX());
+                    impacto=terrain.colision_terreno(interfaz.gc, nuevaBala,terrain.dunas, terrain.matriz,tipo);
+                    if(impacto!=0){ // si victoria es distinto de 0 osea impacto a algun jugador
+                        System.out.println("Victoria = "+impacto);
+                        impacto_jugador(impacto,nuevaBala.getDanio());
+                    }
+                    if (nuevaBala.eliminar()) {
 
+                        System.out.println("Victoria = "+impacto);
+                        colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)
+                        System.out.println("hola si se ejecuto colisicion_bala");
+                        stop();
+                        disparo_en_curso = false;
+                        animacionCaida();
+                        System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
+                        interfaz.mostrarJugador(listJugador.getJugadorActual());
+
+
+                    }
 
                 }
+
             }
         }.start();
     }
@@ -502,11 +508,11 @@ public class Jugar  {
     {
         if (!disparo_en_curso) {
             elegir_bala_bot();
-            velocidad = random.nextDouble() * 35 + 30;
-            angulo = random.nextDouble() * 360;
+            //velocidad = random.nextDouble() * 35 + 30;
+            //angulo = random.nextDouble() * 360;
             //para matar a los bots y que se suiciden
-            //velocidad=30;
-            //angulo=270;
+            velocidad=30;
+            angulo=270;
             Bala nuevaBala = crear_bala();
             animacionBala(nuevaBala);
         }

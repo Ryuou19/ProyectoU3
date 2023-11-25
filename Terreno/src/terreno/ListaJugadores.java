@@ -11,7 +11,7 @@ public class ListaJugadores {
     private Jugador jugador4;
     private Terreno terreno;
     public ArrayList<Jugador> lista= new ArrayList<>();
-    public ArrayList<Jugador> ronda= new ArrayList<>();
+
     public ArrayList<Integer> turnosDisponibles = new ArrayList<>();
     public int indiceActual;
     
@@ -54,25 +54,22 @@ public class ListaJugadores {
             lista.add(aux);
         }
     }
-    
-    public void copiarLista(){
-        ronda= (ArrayList<Jugador>) lista.clone();
-    }
-     public void generarTurnoAleatorio() {
-        if (turnosDisponibles.isEmpty()) {
-            // Si todos los jugadores han sido seleccionados, se reiniciar la lista
 
-            for (int i = 0; i < lista.size(); i++) {
-                turnosDisponibles.add(i);
+
+    public void generarTurnoAleatorio() {
+        if (turnosDisponibles.isEmpty()) {
+            for (Jugador jugador : lista) {
+                if (!jugador.estaEliminado()) {
+                    turnosDisponibles.add(lista.indexOf(jugador));
+                }
             }
             Collections.shuffle(turnosDisponibles);
         }
-        indiceActual = turnosDisponibles.remove(0);
-
+        indiceActual = turnosDisponibles.isEmpty() ? -1 : turnosDisponibles.remove(0);
     }
-    public Jugador getJugadorActual() {
 
-        return ronda.get(indiceActual);
+    public Jugador getJugadorActual() {
+        return lista.get(indiceActual);
     }
     
     public void eliminarJugador(int indiceJugador) {
@@ -81,18 +78,32 @@ public class ListaJugadores {
             return;
         }
 
-        // Eliminar el jugador de la lista de jugadores
-        ronda.remove(indiceJugador);
+        lista.get(indiceJugador).eliminar();
 
-        // Actualizar la lista de turnos disponibles
-        turnosDisponibles.removeIf(indice -> indice == indiceJugador);
 
-        // Ajustar los índices en turnosDisponibles para los jugadores que vienen después del eliminado
-        for (int i = 0; i < turnosDisponibles.size(); i++) {
-            if (turnosDisponibles.get(i) > indiceJugador) {
-                turnosDisponibles.set(i, turnosDisponibles.get(i) - 1);
+    }
+    public boolean quedaUnoVivo()
+    {
+        int cantidadMuetos=0;
+        for(Jugador aux: lista)
+        {
+            if(aux.estaEliminado())
+            {
+                cantidadMuetos++;
             }
         }
+        if(cantidadMuetos==lista.size()-1)
+        {
+            return true;
+        }
+        return false;
     }
-    
+    public void revivir()
+    {
+        for (Jugador aux : lista)
+        {
+            aux.eliminado=false; // no esta eliminado
+            aux.setVida(100);
+        }
+    }
 }

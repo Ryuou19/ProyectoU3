@@ -62,7 +62,7 @@ public class Jugar  {
     public void start(Scene scene) {
         stage=Globales.stage;
         stage.setResizable(true);
-        listJugador.copiarLista();
+
 
         if(Globales.rondas_def==0){
             stage.close();
@@ -73,7 +73,7 @@ public class Jugar  {
         iniciar_terreno();
         System.out.println("antes");
         System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
-        System.out.println("lista de jugadores->"+listJugador.ronda);
+        System.out.println("lista de jugadores->"+listJugador.lista);
         
         System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
         System.out.println("despues de desordenar la lista");
@@ -169,7 +169,7 @@ public class Jugar  {
     }
     public void impacto_jugador(int jugadorImpactado,int danio){
         jugadorImpactado=jugadorImpactado-1; //restamos para acceder al indice
-        Jugador jugador = listJugador.ronda.get(jugadorImpactado);
+        Jugador jugador = listJugador.lista.get(jugadorImpactado);
         jugador.ajustar_vida(jugador.getVida(), danio);
         listJugador.getJugadorActual().saldo+=10; // le damos 10 monedas al tanque actual por impactar
    
@@ -177,11 +177,13 @@ public class Jugar  {
             listJugador.getJugadorActual().asesionatos+=1;// le agregamos 1 asesinato
             listJugador.getJugadorActual().saldo+=5000;
             System.out.println("Asesinatos del jugador = "+listJugador.getJugadorActual().asesionatos);
-            listJugador.eliminarJugador(jugadorImpactado);//eliminamos el jugador de la lista para que no se vuelva a dibujar
-       
-            if(listJugador.ronda.size()==1) // si queda un jugador terminamos y reiniciamos
+            listJugador.eliminarJugador(jugadorImpactado);//marcamos al jugador como eliminado
+            int marca_hitbox=jugadorImpactado+1;
+            terrain.borrarHitboxJugador(marca_hitbox); // eliminamos la hitbox del jugador muerto
+            if(listJugador.quedaUnoVivo()) // si queda un jugador terminamos y reiniciamos
             {
                 finalizarRonda();
+
             }
         }
         imprimirVidaJugadores();
@@ -319,28 +321,31 @@ public class Jugar  {
                     terrain.terreno_aram(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
                 }
                 for (Jugador jugador : listJugador.getLista()) {
-                    Tank tanque = jugador.getTanque();
-                    int posicionInicialY = tanque.getPosicionY(); //posicion de donde cae
-
-                    if (!tanque.estaSobreDuna(terrain)) {
-                        tanque.posicionY += tanque.gravedad;
-                        todosEnSuelo = false;
-                    }
-                    if(contador_inicio!=0)
+                    if(!jugador.estaEliminado())
                     {
-                        int alturaCaida = tanque.getPosicionY() - posicionInicialY; // Calcular la altura de la caída
-                        if (alturaCaida > tanque.dañoAltura) { // daño altura es de 10, tiene que caer de 10 de altura para hacer el daño
-                            int dañoPorCaida = calcularDañoPorAltura(alturaCaida);
-                            jugador.ajustar_vida(jugador.getVida(), dañoPorCaida);
+                        Tank tanque = jugador.getTanque();
+                        int posicionInicialY = tanque.getPosicionY(); //posicion de donde cae
+
+                        if (!tanque.estaSobreDuna(terrain)) {
+                            tanque.posicionY += tanque.gravedad;
+                            todosEnSuelo = false;
                         }
-                    }
-                    tanque.dibuarTanque(interfaz.gc);
-                    tanque.modificarCañon(interfaz.gc, 0);
+                        if(contador_inicio!=0)
+                        {
+                            int alturaCaida = tanque.getPosicionY() - posicionInicialY; // Calcular la altura de la caída
+                            if (alturaCaida > tanque.dañoAltura) { // daño altura es de 10, tiene que caer de 10 de altura para hacer el daño
+                                int dañoPorCaida = calcularDañoPorAltura(alturaCaida);
+                                jugador.ajustar_vida(jugador.getVida(), dañoPorCaida);
+                            }
+                        }
+                        tanque.dibuarTanque(interfaz.gc);
+                        tanque.modificarCañon(interfaz.gc, 0);
 
-                    if (todosEnSuelo) {
-                         // eliminamos hitboxes anteriores
-                        tanque.crearHitbox(interfaz.gc, terrain,jugador);
+                        if (todosEnSuelo) {
+                             // eliminamos hitboxes anteriores
+                            tanque.crearHitbox(interfaz.gc, terrain,jugador);
 
+                        }
                     }
                 }
                 if (todosEnSuelo) {
@@ -439,14 +444,16 @@ public class Jugar  {
     
     public void imprimirVidaJugadores() {
         System.out.println("Estado actual de la vida de los jugadores:");
-        for (int i = 0; i < listJugador.ronda.size(); i++) {
-            Jugador jugadorActual = listJugador.ronda.get(i);
+        for (int i = 0; i < listJugador.lista.size(); i++) {
+            Jugador jugadorActual = listJugador.lista.get(i);
             int vidaActual = jugadorActual.getVida();
             System.out.println("Jugador " + (i + 1) + ": " + vidaActual + " de vida");
         }
     }
     
     public void finalizarRonda(){
+        listJugador.revivir(); // marcamos todos los jugadores como vivos
+        terrain.borrarHitboxAnterior(); // eliminamos las hitbox anteriores
         if(Globales.rondas_def>0){                   
             escenaTienda.inicializarInterfaz(stage, listJugador);
             System.out.println("Rondas="+Globales.rondas_def);
@@ -497,6 +504,9 @@ public class Jugar  {
             elegir_bala_bot();
             velocidad = random.nextDouble() * 35 + 30;
             angulo = random.nextDouble() * 360;
+            //para matar a los bots y que se suiciden
+            //velocidad=30;
+            //angulo=270;
             Bala nuevaBala = crear_bala();
             animacionBala(nuevaBala);
         }

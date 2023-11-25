@@ -26,6 +26,7 @@ public class  Jugador {
     private Tank tanque;
     int random;
     String tipo;
+    public boolean eliminado = false;
 
     public int getVida() {
         return vida;
@@ -111,7 +112,14 @@ public class  Jugador {
         tanque.agregarTanque(gc,this.random,vida,terreno,posicionInicalX,posicionInicialY);
         this.tanque=tanque;
     }
-    
+
+    public void eliminar() {
+        this.eliminado = true;
+    }
+
+    public boolean estaEliminado() {
+        return eliminado;
+    }
     public void agregar_saldo(int cantidad){
         this.saldo+=cantidad;
         System.out.println("Saldo disponible= "+this.saldo);

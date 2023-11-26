@@ -509,43 +509,95 @@ public class Jugar  {
             }
         }.start();
     }
+    // esta funcion es de forma general para una bala de tipo 1 en esta
+    /*public void iniciar_bot() {
+        if (!disparo_en_curso) {
+            tipo = 1; // Siempre usa la bala de tipo 1
+
+            if (comprobarMunicion(tipo)) { // Verifica si hay municiones para el tipo 1
+                listJugador.generarTurnoAleatorio();
+                interfaz.mostrarJugador(listJugador.getJugadorActual());
+
+                if (listJugador.getJugadorActual().tipo.equals("bot")) {
+                    iniciar_bot();
+                }
+                return; // Termina la ejecución del método aquí
+            }
+
+            // Configuración del disparo del bot
+            //velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
+            //angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
+            velocidad=60;
+            angulo=250;
+            // Crear y disparar la bala
+            Bala nuevaBala = crear_bala();
+            animacionBala(nuevaBala);
+        }
+    }*/
+
     public void iniciar_bot() {
         if (!disparo_en_curso) {
-            elegir_bala_bot();
+            List<Integer> tiposDisponibles = new ArrayList<>();
+            tiposDisponibles.add(1);tiposDisponibles.add(2);tiposDisponibles.add(3);
 
-            if (comprobarMunicion(tipo)) { // Si no hay municiones del tipo actual
-                // Encuentra un tipo de bala disponible
-                tipo = encontrarTipoDeBalaDisponible();
+            boolean balaEncontrada = false;
 
-            }
-            if(tipo==0)//no le quedan balas, matamos al bot
-            {
-                int indice= listJugador.getJugadorActual().jugador;
-                listJugador.eliminarJugador(indice);//marcamos al jugador como eliminado
-            }
-            else
-            {
-                //velocidad = random.nextDouble() * 35 + 30;
-                //angulo = random.nextDouble() * 360; //
-                velocidad=50;
-                angulo=270;
-                Bala nuevaBala = crear_bala();
-                animacionBala(nuevaBala);
+            // Verifica cada tipo de bala hasta encontrar una con municiones o agotar todas las opciones
+            while (!tiposDisponibles.isEmpty() && !balaEncontrada) {
+                int indiceAleatorio = random.nextInt(tiposDisponibles.size());
+                tipo = tiposDisponibles.get(indiceAleatorio);
+                balaEncontrada = !comprobarMunicion(tipo);
+
+                if (!balaEncontrada) {
+                    // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
+                    tiposDisponibles.remove(indiceAleatorio);
+                }
             }
 
+            if (!balaEncontrada) { // ya se itero y el jugador no tiene mas balas
+                listJugador.generarTurnoAleatorio(); // se le sede el turno al proximo jugador
+                interfaz.mostrarJugador(listJugador.getJugadorActual());
+
+                if (listJugador.getJugadorActual().tipo.equals("bot")) {
+                    iniciar_bot();
+                }
+                return; // Termina la ejecución del método aquí
+            }
+
+            // Configuración del disparo del bot
+            velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
+            angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
+
+            // Crear y disparar la bala
+            Bala nuevaBala = crear_bala();
+            animacionBala(nuevaBala);
         }
     }
-    private int encontrarTipoDeBalaDisponible() {
-        // Comprueba cada tipo de bala y devuelve el primer tipo disponible
-        if (listJugador.getJugadorActual().getCantidad60() > 0) {
-            return 1;
-        } else if (listJugador.getJugadorActual().getCantidad80() > 0) {
-            return 2;
-        } else if (listJugador.getJugadorActual().getCantidad105() > 0) {
-            return 3;
-        } else {
-            return 0; // No hay balas disponibles
+
+
+
+
+
+    public void actualizarCanvas() {
+
+        if (terreno_random == 0) {
+            terrain.terreno_nieve(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
+        } else if (terreno_random == 1) {
+            terrain.terreno_desierto(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
+        } else if (terreno_random == 2) {
+            terrain.terreno_aram(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
+        }
+        terrain.borrarHitboxAnterior();
+        for (Jugador jugador : listJugador.getLista()) {
+            if (!jugador.estaEliminado()) {
+                Tank tanque = jugador.getTanque();
+                tanque.dibuarTanque(interfaz.gc);
+                tanque.modificarCañon(interfaz.gc, 0);
+                tanque.crearHitbox(interfaz.gc, terrain, jugador);
+            }
         }
     }
+
+
 
 }

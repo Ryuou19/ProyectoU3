@@ -1,22 +1,17 @@
 package terreno;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.util.Random;
-import static javafx.application.Application.launch;
-import javafx.beans.value.ChangeListener;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
-import javafx.stage.Popup;
-import java.util.Timer;
-import java.util.TimerTask;
+import javafx.util.Duration;
 
 
 
@@ -93,14 +88,34 @@ public class Jugar  {
 
         elegir_bala();
 
-
+        
         interfaz.disparar.setOnAction(event ->{
-
+            
+                
                 interfaz.textcantidad.setVisible(false);
                 if (comprobarMunicion(tipo)) {//verifica si quedan balas del tipo seleccionado
                     System.out.println("no quedan balas de ese tipo");
-                    return;
+                    HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!");
+                    interfaz.canvasPane.getChildren().add(aviso);
+                    aviso.setLayoutX(Globales.alto_resolucion/2-70);
+                    aviso.setLayoutY(Globales.ancho_resolucion/2);
+                    
+                    
+                    if(revisarBalasDisponibles()){
+                        aviso=VentanaEmergente.aparecer("Finalizando Ronda...");
+                        interfaz.canvasPane.getChildren().add(aviso);
+                        aviso.setLayoutX(Globales.alto_resolucion/2-80);
+                        aviso.setLayoutY(0);
+                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(2), e -> finalizarRonda()));
+                        delay.play();
+                    }
+                    else{
+                        return;
+                    }
+                    
+                    
                 }
+                
                 if(tipo==0){//si no se selecciono nada
                     return;
                 }
@@ -129,8 +144,9 @@ public class Jugar  {
                 }     
             interfaz.entradaangulo.setText("");
             interfaz.entradavelocidad.setText("");
-            }
+            }           
         );
+        
     } 
     
     public void iniciar_terreno(){//inicializa la matriz del terreno y la dibuja dependiendo de la eleccion random
@@ -493,14 +509,16 @@ public class Jugar  {
                         System.out.println("Victoria = "+impacto);
                         try {
                             Thread.sleep(1000); // 1000 milisegundos = 1 segundo
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        } catch (InterruptedException e) {}
+                        
                         colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)
                         System.out.println("hola si se ejecuto colisicion_bala");
                         stop();
                         disparo_en_curso = false;
-                        animacionCaida();
+                        if(revisarBalasDisponibles()){
+                            finalizarRonda();
+                        }
+                        animacionCaida();                      
                         System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
                         interfaz.mostrarJugador(listJugador.getJugadorActual());
 
@@ -582,7 +600,7 @@ public class Jugar  {
 
 
 
-
+    //se usa???
     public void actualizarCanvas() {
 
         if (terreno_random == 0) {
@@ -601,5 +619,20 @@ public class Jugar  {
                 tanque.crearHitbox(interfaz.gc, terrain, jugador);
             }
         }
+    }
+    
+    public boolean revisarBalasDisponibles(){
+        for(Jugador jugador : listJugador.getLista()){
+            if(jugador.getCantidad60()!=0){
+                return false;
+            }
+            if(jugador.getCantidad80()!=0){
+                return false;
+            }
+            if(jugador.getCantidad105()!=0){
+                return false;
+            }
+        }
+        return true;
     }
 }

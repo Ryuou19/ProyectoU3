@@ -32,7 +32,7 @@ public class Jugar  {
     int altura=0;
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)   
     int tipo=0;//tipo de bala seleccionada
-    double deltaTiempo = 0.1;
+    double deltaTiempo = 0.09;
     Stage stage;
     ListaJugadores listJugador;
     int alto = 400;
@@ -210,7 +210,6 @@ public class Jugar  {
         tipo=0;
     }    
     public Bala crear_bala(){
-        Bala nuevaBala = null;
         int danio=0;
         if(tipo==1){
             danio=30;
@@ -223,7 +222,7 @@ public class Jugar  {
         }
         cañonX = listJugador.getJugadorActual().getTanque().getCañonX();
         cañonY = listJugador.getJugadorActual().getTanque().getCañonY();
-        nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,danio,listJugador.getJugadorActual());
+        Bala nuevaBala = new Bala((int) cañonX, (int) cañonY, pixel , angulo, velocidad,0,danio,listJugador.getJugadorActual());
         return nuevaBala;
     }
     
@@ -415,7 +414,7 @@ public class Jugar  {
             }            
             terreno_random = nuevoTerreno;
             listJugador.getLista().clear();
-            listJugador.instanciarJugadores(Globales.jugadores_def,Globales.jugadores_bot);
+            listJugador.instanciarJugadores(Globales.jugadores_def,Globales.cantidad_def);
             iniciar_terreno();
             animacionCaida();        
             vidatanque1=100;
@@ -429,7 +428,6 @@ public class Jugar  {
     
     void definifirPosicion()
     {
-        //int largo = (ancho*pixel);
         int largo = Globales.alto_resolucion-200;
         int ancho_segmento=largo/Globales.jugadores_def;
         for(int i=0;i<Globales.jugadores_def;i++)
@@ -469,7 +467,7 @@ public class Jugar  {
     }
     public void elegir_bala_bot()
     {
-        int tipo_aux=random.nextInt(3)+1;;
+        int tipo_aux=random.nextInt(3)+1;
         tipo=tipo_aux;
     }
     public void animacionBala(Bala nuevaBala)
@@ -491,8 +489,13 @@ public class Jugar  {
                         impacto_jugador(impacto,nuevaBala.getDanio());
                     }
                     if (nuevaBala.eliminar()) {
-
+                        
                         System.out.println("Victoria = "+impacto);
+                        try {
+                            Thread.sleep(1000); // 1000 milisegundos = 1 segundo
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)
                         System.out.println("hola si se ejecuto colisicion_bala");
                         stop();
@@ -567,7 +570,9 @@ public class Jugar  {
             // Configuración del disparo del bot
             velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
             angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
-
+            
+            
+            
             // Crear y disparar la bala
             Bala nuevaBala = crear_bala();
             animacionBala(nuevaBala);
@@ -597,7 +602,4 @@ public class Jugar  {
             }
         }
     }
-
-
-
 }

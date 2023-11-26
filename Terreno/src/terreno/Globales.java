@@ -30,5 +30,11 @@ public class Globales {
         stage.setWidth(alto);
         stage.setHeight(alto);
     }
+    
+    public static void congelar(int segundos){
+        try{
+            Thread.sleep(1000*segundos); 
+        }catch (InterruptedException e) {}
+    }
 }
 

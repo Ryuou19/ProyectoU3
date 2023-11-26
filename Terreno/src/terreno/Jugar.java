@@ -94,15 +94,13 @@ public class Jugar  {
                 
                 interfaz.textcantidad.setVisible(false);
                 if (comprobarMunicion(tipo)) {//verifica si quedan balas del tipo seleccionado
-                    System.out.println("no quedan balas de ese tipo");
-                    HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!");
+                    HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
                     interfaz.canvasPane.getChildren().add(aviso);
                     aviso.setLayoutX(Globales.alto_resolucion/2-70);
                     aviso.setLayoutY(Globales.ancho_resolucion/2);
                     
-                    
                     if(revisarBalasDisponibles()){
-                        aviso=VentanaEmergente.aparecer("Finalizando Ronda...");
+                        aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
                         interfaz.canvasPane.getChildren().add(aviso);
                         aviso.setLayoutX(Globales.alto_resolucion/2-80);
                         aviso.setLayoutY(0);
@@ -182,6 +180,7 @@ public class Jugar  {
         Label alturaLabel = (Label) interfaz.boxaltura.getChildren().get(1);
         alturaLabel.setText(" ");           
     }
+    
     public void impacto_jugador(int jugadorImpactado, int danio) {
         jugadorImpactado = jugadorImpactado - 1; // Ajustar para acceder al índice
         Jugador jugador = listJugador.lista.get(jugadorImpactado);
@@ -201,11 +200,17 @@ public class Jugar  {
         if (jugador.vida <= 0) {
             listJugador.eliminarJugador(jugadorImpactado); // Marca al jugador como eliminado
             int marca_hitbox = jugadorImpactado + 1;
-            terrain.borrarHitboxJugador(marca_hitbox); // Elimina la hitbox del jugador muerto
+            HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
+            interfaz.canvasPane.getChildren().add(muerte);
+            muerte.setLayoutX(Globales.alto_resolucion-300);
+            muerte.setLayoutY(0);
+            
+             // Elimina la hitbox del jugador muerto
             if (listJugador.quedaUnoVivo()) { // Si queda un jugador, termina y reinicia
                 finalizarRonda();
             }
         }
+        
         imprimirVidaJugadores();
     }
 
@@ -507,9 +512,7 @@ public class Jugar  {
                     if (nuevaBala.eliminar()) {
                         
                         System.out.println("Victoria = "+impacto);
-                        try {
-                            Thread.sleep(1000); // 1000 milisegundos = 1 segundo
-                        } catch (InterruptedException e) {}
+                        Globales.congelar(1);
                         
                         colision_bala();//revisa la colision y calcula la explosion generada por la bala, para tambien calcular el daño de dicha explosion(si es que existe)
                         System.out.println("hola si se ejecuto colisicion_bala");
@@ -570,13 +573,28 @@ public class Jugar  {
                 balaEncontrada = !comprobarMunicion(tipo);
 
                 if (!balaEncontrada) {
-                    // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
+                    // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente               
                     tiposDisponibles.remove(indiceAleatorio);
+                    
                 }
+                
             }
 
             if (!balaEncontrada) { // ya se itero y el jugador no tiene mas balas
                 listJugador.generarTurnoAleatorio(); // se le sede el turno al proximo jugador
+                HBox bot=VentanaEmergente.aparecer("¡No le quedan mas balas\n   a este bot!",3);
+                if(revisarBalasDisponibles()){
+                    HBox aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
+                    interfaz.canvasPane.getChildren().add(aviso);
+                    aviso.setLayoutX(Globales.alto_resolucion/2-80);
+                    aviso.setLayoutY(0);
+                    Timeline delay = new Timeline(new KeyFrame(Duration.seconds(2), e -> finalizarRonda()));
+                    delay.play();
+                }
+                interfaz.canvasPane.getChildren().add(bot);
+                bot.setLayoutX(Globales.alto_resolucion/2-70);
+                bot.setLayoutY(Globales.ancho_resolucion);
+                
                 interfaz.mostrarJugador(listJugador.getJugadorActual());
 
                 if (listJugador.getJugadorActual().tipo.equals("bot")) {
@@ -589,8 +607,19 @@ public class Jugar  {
             velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
             angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
             
-            
-            
+            if(tipo==1){
+                interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad60()));
+            }
+            if(tipo==2){
+                interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad80()));
+            }
+            if(tipo==3){
+                interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad105()));
+            }
+            HBox textBot=VentanaEmergente.aparecer("Jugando un bot...",2);
+            interfaz.canvasPane.getChildren().add(textBot);
+            textBot.setLayoutX(Globales.alto_resolucion/2-70);
+            textBot.setLayoutY(0);
             // Crear y disparar la bala
             Bala nuevaBala = crear_bala();
             animacionBala(nuevaBala);

@@ -15,7 +15,7 @@ import javafx.util.Duration;
 
 public class VentanaEmergente {
 
-    public static HBox aparecer(String mensaje) {
+    public static HBox aparecer(String mensaje, int duracion) {
         HBox ventana = new HBox();
         ventana.setStyle("-fx-background-color: rgba(100, 100, 100, 0.7); -fx-background-radius: 10;");
         
@@ -25,7 +25,7 @@ public class VentanaEmergente {
         ventana.getChildren().addAll(label);      
         ventana.setVisible(true);
         
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        PauseTransition delay = new PauseTransition(Duration.seconds(duracion));
             delay.setOnFinished(e -> ventana.setVisible(false));
             delay.play();
              

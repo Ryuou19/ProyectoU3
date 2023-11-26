@@ -46,7 +46,7 @@ public class Bala {
             jugador.setCantidad80(jugador.getCantidad80()-1);
         }
         if(danio==50){
-            jugador.setCantidad60(jugador.getCantidad105()-1);
+            jugador.setCantidad105(jugador.getCantidad105()-1);
         }
         
         

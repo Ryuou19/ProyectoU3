@@ -605,10 +605,9 @@ public class Jugar  {
             }
 
             // Configuración del disparo del bot
-            //velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
-            //angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
-            velocidad=50;
-            angulo=270;
+            velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
+            angulo = 180 + random.nextDouble() * 180; // Ajusta estos valores según tu juego
+
             if(tipo==1){
                 interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad60()));
             }

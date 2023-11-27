@@ -199,13 +199,15 @@ public class Jugar  {
         }
         if (jugador.vida <= 0) {
             listJugador.eliminarJugador(jugadorImpactado); // Marca al jugador como eliminado
+            // Eliminr la hitbox del jugador muerto
             int marca_hitbox = jugadorImpactado + 1;
+            terrain.borrarHitboxJugador(marca_hitbox);
+
             HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
             interfaz.canvasPane.getChildren().add(muerte);
             muerte.setLayoutX(Globales.alto_resolucion-300);
             muerte.setLayoutY(0);
-            
-             // Elimina la hitbox del jugador muerto
+
             if (listJugador.quedaUnoVivo()) { // Si queda un jugador, termina y reinicia
                 finalizarRonda();
             }
@@ -575,7 +577,6 @@ public class Jugar  {
                 if (!balaEncontrada) {
                     // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente               
                     tiposDisponibles.remove(indiceAleatorio);
-                    
                 }
                 
             }
@@ -604,9 +605,10 @@ public class Jugar  {
             }
 
             // Configuración del disparo del bot
-            velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
-            angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
-            
+            //velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
+            //angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
+            velocidad=50;
+            angulo=270;
             if(tipo==1){
                 interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad60()));
             }
@@ -625,30 +627,7 @@ public class Jugar  {
             animacionBala(nuevaBala);
         }
     }
-
-
-
-
-    //se usa???
-    public void actualizarCanvas() {
-
-        if (terreno_random == 0) {
-            terrain.terreno_nieve(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
-        } else if (terreno_random == 1) {
-            terrain.terreno_desierto(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
-        } else if (terreno_random == 2) {
-            terrain.terreno_aram(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
-        }
-        terrain.borrarHitboxAnterior();
-        for (Jugador jugador : listJugador.getLista()) {
-            if (!jugador.estaEliminado()) {
-                Tank tanque = jugador.getTanque();
-                tanque.dibuarTanque(interfaz.gc);
-                tanque.modificarCañon(interfaz.gc, 0);
-                tanque.crearHitbox(interfaz.gc, terrain, jugador);
-            }
-        }
-    }
+    //no se usa
     
     public boolean revisarBalasDisponibles(){
         for(Jugador jugador : listJugador.getLista()){

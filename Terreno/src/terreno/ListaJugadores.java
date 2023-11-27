@@ -65,7 +65,9 @@ public class ListaJugadores {
             }
             Collections.shuffle(turnosDisponibles);
         }
-        indiceActual = turnosDisponibles.isEmpty() ? -1 : turnosDisponibles.remove(0);
+         else {
+            indiceActual = turnosDisponibles.remove(0);
+        }
     }
 
     public Jugador getJugadorActual() {
@@ -79,7 +81,8 @@ public class ListaJugadores {
         }
 
         lista.get(indiceJugador).eliminar();
-
+        turnosDisponibles.clear();
+        generarTurnoAleatorio(); // cambiamos el turno automaticamente
 
     }
     public boolean quedaUnoVivo()

@@ -67,12 +67,8 @@ public class Jugar  {
         interfaz.mostrarJugador(listJugador.getJugadorActual());
         iniciar_terreno();
         System.out.println("antes");
-        System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
-        System.out.println("lista de jugadores->"+listJugador.lista);
-        
         System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
         System.out.println("despues de desordenar la lista");
-        System.out.println("turnos que quedan -> "+listJugador.turnosDisponibles);
 
         //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
 
@@ -377,11 +373,12 @@ public class Jugar  {
                 }
                 if (todosEnSuelo) {
                     stop();
-                    contador_inicio++;
+
                     if (contador_inicio != 0) {
                         listJugador.generarTurnoAleatorio();//cambiamo turno
 
                     }
+                    contador_inicio++;
                     disparo_en_curso=false;
                     interfaz.mostrarJugador(listJugador.getJugadorActual());
                     if (listJugador.getJugadorActual().tipo.equals("bot")) {

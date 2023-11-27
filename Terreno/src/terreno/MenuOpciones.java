@@ -21,7 +21,7 @@ public class MenuOpciones {
     private final String[] cantidad = {"0","1", "2","3","4","5"};
     private int opcionActualResolucion = 0;
     private int opcionActualJugadores = 0;
-    private int opcionActualRondas = 0;
+    private int opcionActualRondas = 1;
     private int opcionActualEntorno = 0;
     private int opcionActualCantidad = 0;
     private Button opcion_resolucion;

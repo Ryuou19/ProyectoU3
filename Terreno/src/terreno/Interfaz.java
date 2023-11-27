@@ -252,7 +252,7 @@ public class Interfaz {
         //CANTIDAD BALAS
         textcantidad.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         boxcantidadbalas.getChildren().add(textcantidad);
-        boxcantidadbalas.setLayoutX(785);
+        boxcantidadbalas.setLayoutX(645);
         boxcantidadbalas.setLayoutY(620);
         
       

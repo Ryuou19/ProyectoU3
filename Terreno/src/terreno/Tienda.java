@@ -42,6 +42,9 @@ public class Tienda extends Pane {
         this.getChildren().add(imageView);
         HBox boxNombre= new HBox();
         Text textNombreJugador=new Text("JUGADOR-->"+jugador.nombre);
+        if(jugador.tipo.equals("bot")){
+            textNombreJugador.setText("JUGADOR--> BOT");
+        }   
         boxNombre.getChildren().add(textNombreJugador);
         textNombreJugador.setFont(font);
         textNombreJugador.setFill(Color.WHITE);

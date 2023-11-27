@@ -426,6 +426,7 @@ public class Jugar  {
     }
     
     public void reiniciar_partida(){
+        escenaTienda.inicializarInterfaz(stage, listJugador);
         contador_inicio=0;
         terrain.setContador(0);
             int nuevoTerreno = random.nextInt(3);         

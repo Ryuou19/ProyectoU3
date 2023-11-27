@@ -22,11 +22,11 @@ public class Globales {
     public Globales() {
     }    
     
-    public void cambiarEscena(Scene scene){
+    public static void cambiarEscena(Scene scene){
         stage.setScene(scene);
     }
     
-    public void cambiarResolucion(int alto, int ancho){
+    public static void cambiarResolucion(int alto, int ancho){
         stage.setWidth(alto);
         stage.setHeight(alto);
     }

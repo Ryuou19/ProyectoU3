@@ -36,6 +36,7 @@ public class MenuOpciones {
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
     Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg")); 
+    ImageView imageView = new ImageView(fondo); 
     Button volver = new Button("Menu Principal");
     Button flecha_derecha1 = new Button(">");
     Button flecha_izquierda1 = new Button("<");
@@ -61,54 +62,44 @@ public class MenuOpciones {
     Button flecha_izquierda4 = new Button("<");
     HBox menu_entorno = new HBox();
     Label labelEntorno = new Label("Efectos de Entorno");
-    HBox texto_entorno= new HBox();
-    
-    
-    Globales global=new Globales();   
+    HBox texto_entorno= new HBox();   
     Pane paneOpciones;
-    
     Button volverMenu;    
 
     public MenuOpciones() {
         
     }  
     
-    public void start(Stage stage, ListaJugadores list,Pane panel,ImageView imageView,ImageView titulo){
+    public void start(Stage stage, ListaJugadores list,Pane panel){
         
-        
-        paneOpciones=escenaOpciones(imageView,titulo);
+        paneOpciones=escenaOpciones();
         Globales.escena.setRoot(paneOpciones);
         paneOpciones.setPrefSize(Globales.alto_resolucion,Globales.ancho_resolucion);
+   
         volverMenu.setOnAction(e -> {
-            //detenerMusica();
             Globales.escena.setRoot(panel);
-            global.cambiarEscena(Globales.escena);         
+            Globales.cambiarEscena(Globales.escena);         
         }); 
-        stage.show();
-        
+        stage.show();      
     }
     
-    public Pane escenaOpciones(ImageView imageview,ImageView titulo){
-        PantallaInicial inicio=new PantallaInicial();
+    public Pane escenaOpciones(){
         Pane panel = new Pane();
-        
         //Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
-        
-        ImageView imageView = new ImageView(fondo);   
+     
         imageView.setPreserveRatio(false); 
         panel.getChildren().add(imageView);    
-        
-        
+              
         //VOLVER MENU PRINCIPAAL    
-        Font font = Font.font("Serif", FontWeight.NORMAL, 24);
         volver.setStyle(estilo_botones);
          
         //////////////////////////////////////////////////////////////////7
         //RESOLUCION     
         opcion_resolucion = new Button(resolucion[opcionActualResolucion]);   
-        opcion_resolucion.setStyle(estilo_botones);
-        
+        opcion_resolucion.setStyle(estilo_botones);        
         flecha_derecha1.setStyle(estilo_botones);
+        flecha_izquierda1.setStyle(estilo_botones);
+        
         flecha_derecha1.setOnAction(e -> {
             Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
@@ -127,12 +118,9 @@ public class MenuOpciones {
                 Globales.alto_resolucion=1920;
                 Globales.ancho_resolucion=1080;
             }
-            global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
-            //inicio.ajustarResolucion(imageview,titulo);
-            ajustarResolucion(imageView);
+            Globales.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
         });
         
-        flecha_izquierda1.setStyle(estilo_botones);
         flecha_izquierda1.setOnAction(e -> {
             Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
@@ -151,16 +139,15 @@ public class MenuOpciones {
                 Globales.alto_resolucion=1920;
                 Globales.ancho_resolucion=1080;
             }
-            global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
+            Globales.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
             //inicio.ajustarResolucion(imageview,titulo);
-            ajustarResolucion(imageView);
+            //ajustarResolucion(imageView);
             
         });
                
         menu_resoluciones.getChildren().addAll(flecha_izquierda1,opcion_resolucion, flecha_derecha1);    
         labelResolucion.setStyle("-fx-text-fill: white;");    
-        texto_resoluciones.getChildren().add(labelResolucion);
-             
+        texto_resoluciones.getChildren().add(labelResolucion);            
         /////////////////////////////////////////////////
         ///RESOLUCION
        
@@ -254,18 +241,113 @@ public class MenuOpciones {
         });
         
         
-        menu_entorno.getChildren().addAll(flecha_izquierda4,opcion_entorno, flecha_derecha4);
-        
-        labelEntorno.setStyle("-fx-text-fill: white;");
-        
-        
-        texto_entorno.getChildren().add(labelEntorno);
-        
+        menu_entorno.getChildren().addAll(flecha_izquierda4,opcion_entorno, flecha_derecha4);        
+        labelEntorno.setStyle("-fx-text-fill: white;");        
+        texto_entorno.getChildren().add(labelEntorno);     
         ///////////////////////////////////////////////
         //ENTORNO
         
-        ajustarResolucion(imageView);
-       
+        
+        //ajustarResolucion(imageView);
+        
+        panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double widthRatio = newWidth.doubleValue() / 800; 
+            imageView.setFitWidth(800*widthRatio);
+            volver.setPrefWidth(245*widthRatio);
+            volver.setLayoutX(275*widthRatio);
+            opcion_resolucion.setPrefWidth(140*widthRatio);
+            menu_resoluciones.setLayoutX(275*widthRatio);
+            texto_resoluciones.setLayoutX(352*widthRatio);
+            flecha_izquierda1.setPrefWidth(52*widthRatio);
+            flecha_derecha1.setPrefWidth(52*widthRatio);
+            
+            opcion_rondas.setPrefWidth(140*widthRatio);
+            menu_rondas.setLayoutX(275*widthRatio);
+            texto_rondas.setLayoutX(366*widthRatio);
+            flecha_izquierda2.setPrefWidth(52*widthRatio);
+            flecha_derecha2.setPrefWidth(52*widthRatio);
+            
+            opcion_jugadores.setPrefWidth(140*widthRatio);
+            menu_jugadores.setLayoutX(275*widthRatio);
+            texto_jugadores.setLayoutX(357*widthRatio);
+            flecha_izquierda3.setPrefWidth(52*widthRatio);
+            flecha_derecha3.setPrefWidth(52*widthRatio);
+           
+            opcion_cantidad.setPrefWidth(140*widthRatio);
+            menu_cantidad.setLayoutX(275*widthRatio);
+            texto_IA.setLayoutX(338*widthRatio);
+            flecha_izquierda5.setPrefWidth(52*widthRatio);
+            flecha_derecha5.setPrefWidth(52*widthRatio);
+            
+            opcion_entorno.setPrefWidth(140*widthRatio);
+            menu_entorno.setLayoutX(275*widthRatio);
+            texto_entorno.setLayoutX(338*widthRatio);
+            flecha_izquierda4.setPrefWidth(52*widthRatio);
+            flecha_derecha4.setPrefWidth(52*widthRatio);
+            
+        });
+    
+        
+        panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            double heightRatio = newHeight.doubleValue() / 800; 
+            Font font = Font.font("Serif", FontWeight.NORMAL, 19);
+            
+            imageView.setFitHeight(800* heightRatio);
+            volver.setPrefHeight(50*heightRatio);
+            volver.setLayoutY(600*heightRatio);
+            
+            opcion_resolucion.setPrefHeight(52*heightRatio);
+            menu_resoluciones.setLayoutY(120*heightRatio);
+            texto_resoluciones.setLayoutY(90*heightRatio);
+            flecha_izquierda1.setPrefHeight(52*heightRatio);
+            flecha_derecha1.setPrefHeight(52*heightRatio);
+            
+            opcion_rondas.setPrefHeight(52*heightRatio);
+            menu_rondas.setLayoutY(220*heightRatio);
+            texto_rondas.setLayoutY(190*heightRatio);
+            flecha_izquierda2.setPrefHeight(52*heightRatio);
+            flecha_derecha2.setPrefHeight(52*heightRatio);
+            
+            opcion_jugadores.setPrefHeight(52*heightRatio);
+            menu_jugadores.setLayoutY(320*heightRatio);
+            texto_jugadores.setLayoutY(290*heightRatio);
+            flecha_izquierda3.setPrefHeight(52*heightRatio);
+            flecha_derecha3.setPrefHeight(52*heightRatio);
+            
+            opcion_cantidad.setPrefHeight(52*heightRatio);
+            menu_cantidad.setLayoutY(420*heightRatio);
+            texto_IA.setLayoutY(390*heightRatio);
+            flecha_izquierda5.setPrefHeight(52*heightRatio);
+            flecha_derecha5.setPrefHeight(52*heightRatio);
+            
+            opcion_entorno.setPrefHeight(52*heightRatio);
+            menu_entorno.setLayoutY(520*heightRatio);
+            texto_entorno.setLayoutY(490*heightRatio);
+            flecha_izquierda4.setPrefHeight(52*heightRatio);
+            flecha_derecha4.setPrefHeight(52*heightRatio);
+            
+            if(opcionActualResolucion==0){
+                font = Font.font("Serif", FontWeight.NORMAL, 19);
+            }
+            if(opcionActualResolucion==1){
+                font = Font.font("Serif", FontWeight.NORMAL, 22);
+            }
+            if(opcionActualResolucion==2){
+                font = Font.font("Serif", FontWeight.NORMAL, 45);
+            }
+            volver.setFont(font);
+            opcion_resolucion.setFont(font);    
+            labelResolucion.setFont(font);
+            opcion_rondas.setFont(font);
+            labelRondas.setFont(font); 
+            opcion_jugadores.setFont(font);
+            labelJugadores.setFont(font);
+            opcion_cantidad.setFont(font);
+            labelIA.setFont(font);
+            opcion_entorno.setFont(font);
+            labelEntorno.setFont(font);
+        });
+        
         this.volverMenu=volver;
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
         texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno,
@@ -368,42 +450,12 @@ public class MenuOpciones {
         
         if(Globales.alto_resolucion==800){
             Font font = Font.font("Serif", FontWeight.NORMAL, 19);      
-            imagen.setFitWidth(800);
-            imagen.setFitHeight(750);
+        
             
-            volver.setLayoutX(275);
-            volver.setLayoutY(550);
-            volver.setPrefWidth(240);
-            volver.setPrefHeight(50);
-            volver.setFont(font);
             
-            opcion_resolucion.setPrefWidth(140);
-            opcion_resolucion.setPrefHeight(50);
-            opcion_resolucion.setFont(font);
-            menu_resoluciones.setLayoutX(275);
-            menu_resoluciones.setLayoutY(120);
-            labelResolucion.setFont(font);
-            texto_resoluciones.setLayoutX(352); 
-            texto_resoluciones.setLayoutY(90);  
             
-            flecha_izquierda1.setPrefWidth(50);           
-            flecha_izquierda1.setPrefHeight(50);           
-            flecha_derecha1.setPrefWidth(50);           
-            flecha_derecha1.setPrefHeight(50);
             
-            opcion_rondas.setPrefWidth(140);
-            opcion_rondas.setPrefHeight(50);
-            opcion_rondas.setFont(font);
-            menu_rondas.setLayoutX(275);
-            menu_rondas.setLayoutY(210);     
-            labelRondas.setFont(font);            
-            texto_rondas.setLayoutX(365); 
-            texto_rondas.setLayoutY(180); 
             
-            flecha_izquierda2.setPrefWidth(50);           
-            flecha_izquierda2.setPrefHeight(50);           
-            flecha_derecha2.setPrefWidth(50);           
-            flecha_derecha2.setPrefHeight(50);
             
             opcion_jugadores.setPrefWidth(140);
             opcion_jugadores.setPrefHeight(50);

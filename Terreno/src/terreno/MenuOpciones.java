@@ -128,7 +128,7 @@ public class MenuOpciones {
                 Globales.ancho_resolucion=1080;
             }
             global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
-            inicio.ajustarResolucion(imageview,titulo);
+            //inicio.ajustarResolucion(imageview,titulo);
             ajustarResolucion(imageView);
         });
         
@@ -152,7 +152,7 @@ public class MenuOpciones {
                 Globales.ancho_resolucion=1080;
             }
             global.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
-            inicio.ajustarResolucion(imageview,titulo);
+            //inicio.ajustarResolucion(imageview,titulo);
             ajustarResolucion(imageView);
             
         });
@@ -289,21 +289,12 @@ public class MenuOpciones {
             }
             opcionActual=opcionActualRondas;
         }
-        if(referencia == 3){ // Opción de jugadores
+        if(referencia==3){
             opcionActualJugadores = (opcionActualJugadores + desplazamiento) % tipo.length;
-            if(opcionActualJugadores < 0){
-                opcionActualJugadores = tipo.length - 1;
+            if(opcionActualJugadores<0){
+                opcionActualJugadores=tipo.length-1;
             }
-            opcionActual = opcionActualJugadores;
-
-            opcion.setText(tipo[opcionActual]);
-            var_opcion = opcion_def(tipo, opcionActual, var_opcion);
-
-            // Asegurarse de que la opción de cantidad no sea mayor que la opción de jugadores
-            if (var_opcion > Globales.jugadores_def) {
-                Globales.cantidad_def = Globales.jugadores_def;
-                opcion_cantidad.setText(String.valueOf(Globales.cantidad_def));
-            }
+            opcionActual=opcionActualJugadores;
         }
         if(referencia==4){
             opcionActualCantidad = (opcionActualCantidad + desplazamiento) % tipo.length;

@@ -22,6 +22,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.event.ActionListener;
+import javafx.stage.StageStyle;
 
 
 public class PantallaInicial extends Application {
@@ -58,38 +59,28 @@ public class PantallaInicial extends Application {
       
     @Override   
     public void start(Stage primaryStage) {
+        Globales.alto_resolucion=800;
+        Globales.ancho_resolucion=800;
         Globales.escena=new Scene(panel,Globales.alto_resolucion,Globales.ancho_resolucion); 
         Globales.stage=primaryStage;
         Globales.stage.setResizable(false);
         Globales.stage.getIcons().add(icono); 
         Globales.stage.setWidth(Globales.alto_resolucion);
         Globales.stage.setHeight(Globales.ancho_resolucion);    
-        musicPath = "src/terreno/music/BAIXO-SLOWED.wav";
-        //musica(musicPath); 
         
+        //Globales.stage.initStyle(StageStyle.UNDECORATED); usada para bloquear el movimiento con el cursor de la ventana
         
-        //imagen tanque inicial con sus propiedades y estilo        
-        imageView.setFitWidth(450);
-        imageView.setFitHeight(300);
-        titulo.setLayoutX(390); 
-        titulo.setLayoutY(150); 
-        
-        //titulo inicial con gif  
-        titulo.setLayoutX(390); 
-        titulo.setLayoutY(150); 
-        titulo.setFitWidth(600);
-        titulo.setFitHeight(150);
         
         //fondo   
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
         
-        //boton comenzar
-         
-        Font font = Font.font("Serif", FontWeight.NORMAL, 29);//fuente para el texto del boton
+        //boton comenzar       
+        Font font = Font.font("Serif", FontWeight.NORMAL, 26);//fuente para el texto del boton
         comenzar.setFont(font);
-        boxcomenzar.getChildren().add(comenzar);
-        comenzar.setLayoutX(510);
-        comenzar.setLayoutY(500);
+        comenzar.setMinHeight(10);
+        
+        
+        
         comenzar.setStyle(
             "-fx-background-color: #000000; " + 
             "-fx-text-fill: #FFFFFF;" + 
@@ -100,9 +91,8 @@ public class PantallaInicial extends Application {
         
         //boton opciones        
         opciones.setFont(font);
-        boxopciones.getChildren().add(opciones);
-        opciones.setLayoutX(518);
-        opciones.setLayoutY(580);
+        opciones.setMinHeight(10);
+        
         opciones.setStyle(
             "-fx-background-color: #000000; " + 
             "-fx-text-fill: #FFFFFF;" + 
@@ -133,9 +123,34 @@ public class PantallaInicial extends Application {
             }       
         });
         
-        ajustarResolucion(imageView,titulo);
+        // Agregar ChangeListener al ancho y alto del Pane principal
+        panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double widthRatio = newWidth.doubleValue() / 800; // 800 es el ancho original
+            titulo.setLayoutX(190 * widthRatio); // Reajustar la posición X
+            titulo.setFitWidth(420* widthRatio);
+            imageView.setLayoutX(160 * widthRatio); // Reajustar la posición X
+            imageView.setFitWidth(480* widthRatio);
+            comenzar.setLayoutX(310 * widthRatio); // Reajustar la posición X
+            comenzar.setPrefWidth(180 * widthRatio);
+            opciones.setLayoutX(310 * widthRatio); // Reajustar la posición X
+            opciones.setPrefWidth(180 * widthRatio);// Reajustar el ancho
+            // ... Puedes hacer ajustes similares para otros nodos
+        });
+
+        panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            double heightRatio = newHeight.doubleValue() / 800; // 600 es el alto original
+            titulo.setLayoutY(100 * heightRatio); // Reajustar la posición X
+            titulo.setFitHeight(120* heightRatio);
+            imageView.setLayoutY(220 * heightRatio); // Reajustar la posición X
+            imageView.setFitHeight(300* heightRatio);
+            comenzar.setLayoutY(540 * heightRatio); // Reajustar la posición X
+            comenzar.setPrefHeight(55* heightRatio);
+            opciones.setLayoutY(600 * heightRatio); // Reajustar la posición X
+            opciones.setPrefHeight(55* heightRatio);// Reajustar el ancho
+            // ... Puedes hacer ajustes similares para otros nodos
+        });
         
-        //se añade todo al panel
+        //se añade todo al panel(agregar imageView)
         panel.getChildren().addAll(marco,comenzar,imageView, titulo,opciones);    
                 
         Globales.stage.setScene(Globales.escena);
@@ -196,7 +211,7 @@ public class PantallaInicial extends Application {
         }
     }
     
-    public  void ajustarResolucion(ImageView imageView, ImageView titulo){
+    /*public  void ajustarResolucion(ImageView imageView, ImageView titulo){
         if(Globales.alto_resolucion==800){
             Font font = Font.font("Serif", FontWeight.NORMAL, 21);//fuente para el texto del boton               
             imageView.setFitWidth(350);
@@ -285,6 +300,6 @@ public class PantallaInicial extends Application {
             opciones.setLayoutY(610);
         }
         
-    }
+    }*/
     
 }

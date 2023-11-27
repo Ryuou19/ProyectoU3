@@ -6,8 +6,8 @@ import javafx.stage.Stage;
 
 
 public class Globales {
-    public static int alto_resolucion=800;
-    public static int ancho_resolucion=800;
+    public static int alto_resolucion;
+    public static int ancho_resolucion;
     public static int resolucion_def=0;
     public static int jugadores_def=3;
     public static int rondas_def=2;

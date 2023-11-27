@@ -232,14 +232,24 @@ public class Tienda extends Pane {
         if(jugador.saldo<1000){
             comprarBala60.setDisable(true);
         }
+        else if(jugador.saldo>=1000){
+            comprarBala60.setDisable(false);
+        }
         
         if(jugador.saldo<2500){
             comprarBala80.setDisable(true);
+        }
+        else if(jugador.saldo>=2500){
+            comprarBala80.setDisable(false);
         }
         
         if(jugador.saldo<4000){
             comprarBala105.setDisable(true);
         }
+        else if(jugador.saldo>=4000){
+            comprarBala105.setDisable(false);
+        }
+             
     }
     
 }

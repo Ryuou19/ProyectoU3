@@ -5,15 +5,15 @@ import javafx.scene.canvas.GraphicsContext;
 
 
 
-public class Jugador {
+public class  Jugador {
 
     String color = "";
     public int jugador;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
-    int cantidad105=3;
+    int cantidad105=5;
     int cantidad80=10;
-    int cantidad60=3;
+    int cantidad60=10;
     int vida;
     //SALDO DE CADA JUGADOR
     int saldo;
@@ -21,6 +21,12 @@ public class Jugador {
     int posicionInicialY=100;
     //hola
     int asesionatos;
+
+    public Random rand;
+    private Tank tanque;
+    int random;
+    String tipo;
+    public boolean eliminado = false;
 
     public int getVida() {
         return vida;
@@ -55,15 +61,13 @@ public class Jugador {
         this.cantidad60 = cantidad60;
     }
 
-    public Random rand;
-    private Tank tanque;
-    int random;
+
   
     public Tank getTanque() {
         return tanque;
     }
   
-    public Jugador(int jugador,String nombre){
+    public Jugador(int jugador,String nombre,String tipo){
         
         this.jugador = jugador;
         this.rand=new Random();
@@ -71,6 +75,7 @@ public class Jugador {
         this.saldo=10000;
         this.nombre=nombre;
         this.vida=100;
+        this.tipo=tipo;
         //de esta forma no pasamos como parametro la imagenes haciendo mas facil la inicializacion de la clase en la pantalla de inizicio 
         if (jugador==0)
         {
@@ -107,7 +112,14 @@ public class Jugador {
         tanque.agregarTanque(gc,this.random,vida,terreno,posicionInicalX,posicionInicialY);
         this.tanque=tanque;
     }
-    
+
+    public void eliminar() {
+        this.eliminado = true;
+    }
+
+    public boolean estaEliminado() {
+        return eliminado;
+    }
     public void agregar_saldo(int cantidad){
         this.saldo+=cantidad;
         System.out.println("Saldo disponible= "+this.saldo);

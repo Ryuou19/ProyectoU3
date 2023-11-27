@@ -299,7 +299,7 @@ public class Terreno{
                     radio=10;
                 }
                 if(tipo==3){
-                    radio=30;
+                    radio=20;
                 }
                 for (int i = x - radio; i <= x + radio; i++) {//realiza la explosion del disparo dependiendo del tipo de bala en base a un radio
                     for (int j = y - radio; j <= y + radio; j++) {
@@ -332,6 +332,15 @@ public class Terreno{
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 if (matriz[i][j] >= 2) {
+                    matriz[i][j] = 0;
+                }
+            }
+        }
+    }
+    public void borrarHitboxJugador(int indiceJugador) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                if (matriz[i][j]== indiceJugador) {
                     matriz[i][j] = 0;
                 }
             }

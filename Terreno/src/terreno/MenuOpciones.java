@@ -9,17 +9,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 
 public class MenuOpciones {
-    
-    String musicPath;//ruta de musica
-    AudioInputStream audioInput;//audio del sistema
-    float volume;//volumen
-    Clip clip;//reproductor
-    FloatControl control;//para controlar la musica
+   
     private final String[] resolucion = {"800x800", "900x900", "1920x1080"};
     private final String[] jugadores = {"2", "3","4","5","6"}; 
     private final String[] rondas = {"1","2","3","4","5","6","7","8",
@@ -27,7 +19,11 @@ public class MenuOpciones {
     "15","16","17","18","19","20"};
     private final String[] entorno={"Ninguno","Gravedad","Viento"};
     private final String[] cantidad = {"0","1", "2","3","4","5"};
-    private int opcionActual = 0;
+    private int opcionActualResolucion = 0;
+    private int opcionActualJugadores = 0;
+    private int opcionActualRondas = 0;
+    private int opcionActualEntorno = 0;
+    private int opcionActualCantidad = 0;
     private Button opcion_resolucion;
     private Button opcion_jugadores;
     private Button opcion_rondas;
@@ -109,24 +105,24 @@ public class MenuOpciones {
          
         //////////////////////////////////////////////////////////////////7
         //RESOLUCION     
-        opcion_resolucion = new Button(resolucion[opcionActual]);   
+        opcion_resolucion = new Button(resolucion[opcionActualResolucion]);   
         opcion_resolucion.setStyle(estilo_botones);
         
         flecha_derecha1.setStyle(estilo_botones);
         flecha_derecha1.setOnAction(e -> {
-            Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def);
+            Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
-            if(opcionActual==0){
+            if(opcionActualResolucion==0){
                 Globales.stage.setX(280);
                 Globales.alto_resolucion=800;
                 Globales.ancho_resolucion=800;
             }
-            if(opcionActual==1){
+            if(opcionActualResolucion==1){
                 Globales.stage.setX(230);
                 Globales.alto_resolucion=900;
                 Globales.ancho_resolucion=900;
             }
-            if(opcionActual==2){
+            if(opcionActualResolucion==2){
                 Globales.stage.setX(-20);
                 Globales.alto_resolucion=1920;
                 Globales.ancho_resolucion=1080;
@@ -138,19 +134,19 @@ public class MenuOpciones {
         
         flecha_izquierda1.setStyle(estilo_botones);
         flecha_izquierda1.setOnAction(e -> {
-            Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def);
+            Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
-            if(opcionActual==0){
+            if(opcionActualResolucion==0){
                 Globales.stage.setX(280);
                 Globales.alto_resolucion=800;
                 Globales.ancho_resolucion=800;
             }
-            if(opcionActual==1){
+            if(opcionActualResolucion==1){
                 Globales.stage.setX(230);
                 Globales.alto_resolucion=900;
                 Globales.ancho_resolucion=900;
             }
-            if(opcionActual==2){
+            if(opcionActualResolucion==2){
                 Globales.stage.setX(-20);
                 Globales.alto_resolucion=1920;
                 Globales.ancho_resolucion=1080;
@@ -170,18 +166,18 @@ public class MenuOpciones {
        
         /////////////////////////////////////////////////////
         //RONDAS
-        opcion_rondas = new Button(rondas[opcionActual]);       
+        opcion_rondas = new Button(rondas[opcionActualRondas]);       
         opcion_rondas.setStyle(estilo_botones);
         
         flecha_derecha2.setStyle(estilo_botones);
         flecha_derecha2.setOnAction(e -> {
-            Globales.rondas_def=cambiarOpcion(1,rondas,opcion_rondas,Globales.rondas_def);
+            Globales.rondas_def=cambiarOpcion(1,rondas,opcion_rondas,Globales.rondas_def,2);
             System.out.println("Actual = "+Globales.rondas_def);
         });
 
         flecha_izquierda2.setStyle(estilo_botones);
         flecha_izquierda2.setOnAction(e -> {
-            Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def);
+            Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def,2);
             System.out.println("Actual = "+Globales.rondas_def);
         });
                
@@ -195,18 +191,18 @@ public class MenuOpciones {
         
         /////////////////////////////////////////////////////
         //JUGADORES
-        opcion_jugadores = new Button(jugadores[opcionActual]);       
+        opcion_jugadores = new Button(jugadores[opcionActualJugadores]);       
         opcion_jugadores.setStyle(estilo_botones);
 
         flecha_derecha3.setStyle(estilo_botones);
         flecha_derecha3.setOnAction(e -> {
-            Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def);
+            Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
         });
 
         flecha_izquierda3.setStyle(estilo_botones);
         flecha_izquierda3.setOnAction(e -> {
-            Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def);
+            Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
         });
                 
@@ -219,18 +215,18 @@ public class MenuOpciones {
         
         ////////////////////////////////////////////
         //CANTIDAD IA´S
-        opcion_cantidad = new Button(cantidad[opcionActual]);        
+        opcion_cantidad = new Button(cantidad[opcionActualCantidad]);        
         opcion_cantidad.setStyle(estilo_botones);
       
         flecha_derecha5.setStyle(estilo_botones);
         flecha_derecha5.setOnAction(e -> {         
-            Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def);
+            Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
             System.out.println("Actual = "+Globales.cantidad_def); 
         });
         
         flecha_izquierda5.setStyle(estilo_botones);
         flecha_izquierda5.setOnAction(e -> {         
-            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def);
+            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
             System.out.println("Actual = "+Globales.cantidad_def); 
         });
                     
@@ -242,18 +238,18 @@ public class MenuOpciones {
         
         /////////////////////////////////////////
         //ENTORNO
-        opcion_entorno = new Button(entorno[opcionActual]);      
+        opcion_entorno = new Button(entorno[opcionActualEntorno]);      
         opcion_entorno.setStyle(estilo_botones);
                  
         flecha_derecha4.setStyle(estilo_botones);
         flecha_derecha4.setOnAction(e -> {
-            Globales.entorno_def=cambiarOpcion(1,entorno,opcion_entorno,Globales.entorno_def);
+            Globales.entorno_def=cambiarOpcion(1,entorno,opcion_entorno,Globales.entorno_def,5);
             System.out.println("Actual = "+Globales.entorno_def);    
         });
               
         flecha_izquierda4.setStyle(estilo_botones);
         flecha_izquierda4.setOnAction(e -> {
-            Globales.entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,Globales.entorno_def);
+            Globales.entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,Globales.entorno_def,5);
             System.out.println("Actual = "+Globales.entorno_def);      
         });
         
@@ -277,11 +273,54 @@ public class MenuOpciones {
         return panel;
     }
     
-    private int cambiarOpcion(int desplazamiento, String[] tipo, Button opcion, int var_opcion) {
-        opcionActual = (opcionActual + desplazamiento) % tipo.length;
-        if(opcionActual<0){
-            opcionActual=tipo.length-1;
-        }       
+    private int cambiarOpcion(int desplazamiento, String[] tipo, Button opcion, int var_opcion, int referencia) {
+        int opcionActual=0;
+        if(referencia==1){
+            opcionActualResolucion = (opcionActualResolucion + desplazamiento) % tipo.length;
+            if(opcionActualResolucion<0){
+                opcionActualResolucion=tipo.length-1;
+            }
+            opcionActual=opcionActualResolucion;
+        }
+        if(referencia==2){
+            opcionActualRondas = (opcionActualRondas + desplazamiento) % tipo.length;
+            if(opcionActualRondas<0){
+                opcionActualRondas=tipo.length-1;
+            }
+            opcionActual=opcionActualRondas;
+        }
+        if(referencia == 3){ // Opción de jugadores
+            opcionActualJugadores = (opcionActualJugadores + desplazamiento) % tipo.length;
+            if(opcionActualJugadores < 0){
+                opcionActualJugadores = tipo.length - 1;
+            }
+            opcionActual = opcionActualJugadores;
+
+            opcion.setText(tipo[opcionActual]);
+            var_opcion = opcion_def(tipo, opcionActual, var_opcion);
+
+            // Asegurarse de que la opción de cantidad no sea mayor que la opción de jugadores
+            if (var_opcion > Globales.jugadores_def) {
+                Globales.cantidad_def = Globales.jugadores_def;
+                opcion_cantidad.setText(String.valueOf(Globales.cantidad_def));
+            }
+        }
+        if(referencia==4){
+            opcionActualCantidad = (opcionActualCantidad + desplazamiento) % tipo.length;
+            if(opcionActualCantidad<0){
+                opcionActualCantidad=tipo.length-1;
+            }
+            opcionActual=opcionActualCantidad;
+        }
+        if(referencia==5){
+            opcionActualEntorno = (opcionActualEntorno + desplazamiento) % tipo.length;
+            if(opcionActualEntorno<0){
+                opcionActualEntorno=tipo.length-1;
+            }
+            opcionActual=opcionActualEntorno;
+        }
+        
+               
         opcion.setText(tipo[opcionActual]);
         var_opcion=opcion_def(tipo,opcionActual,var_opcion);
         return var_opcion;

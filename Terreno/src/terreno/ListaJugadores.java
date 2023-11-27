@@ -53,6 +53,7 @@ public class ListaJugadores {
             Jugador aux= new Jugador(i,"robarto","bot");
             lista.add(aux);
         }
+        generarTurnoAleatorio();
     }
 
 
@@ -60,15 +61,16 @@ public class ListaJugadores {
         if (turnosDisponibles.isEmpty()) {
             for (Jugador jugador : lista) {
                 if (!jugador.estaEliminado()) {
-                    turnosDisponibles.add(lista.indexOf(jugador));
+                    turnosDisponibles.add(jugador.jugador);
                 }
             }
-            Collections.shuffle(turnosDisponibles);
         }
-         else {
-            indiceActual = turnosDisponibles.remove(0);
-        }
+        Collections.shuffle(turnosDisponibles);
+        indiceActual = turnosDisponibles.remove(0);
     }
+
+
+
 
     public Jugador getJugadorActual() {
         return lista.get(indiceActual);

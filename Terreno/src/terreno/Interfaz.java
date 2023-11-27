@@ -47,7 +47,6 @@ public class Interfaz {
     Text textjugador=new Text("Turno Actual");
 
     //TANQUE 1
-    HBox boxtanque = new HBox();
     Image tanque1 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
     ImageView imagentanque1 = new ImageView(tanque1);
 
@@ -95,11 +94,14 @@ public class Interfaz {
     
     //BOTON REINICIAR
     HBox boxreiniciar= new HBox();
-    Button reiniciar = new Button("NUEVA PARTIDA");
-    
+    Button reiniciar = new Button();
+    Image image1 = new Image(getClass().getResourceAsStream("./img/botonReiniciar.png"));
+    ImageView imagenBotonReiniciar = new ImageView(image1);
     //BOTON FINALIZAR
     HBox boxfinalizar= new HBox();
-    Button finalizar = new Button("FINALIZAR JUEGO");
+    Button finalizar = new Button();
+    Image image = new Image(getClass().getResourceAsStream("./img/botonFinalizar.png"));
+    ImageView imagenBotonFinalizar = new ImageView(image);
       
     //BOTONES BALAS
     HBox tipos = new HBox();
@@ -209,31 +211,34 @@ public class Interfaz {
         
         
         //BOTON REINICIAR
-        Font font = Font.font("Serif", FontWeight.NORMAL, 20);
-        reiniciar.setFont(font);
+        imagenBotonReiniciar.setFitWidth(100);
+        imagenBotonReiniciar.setFitHeight(30);
+        imagenBotonReiniciar.setPreserveRatio(false);
+        
+        
+        reiniciar.setGraphic(imagenBotonReiniciar); 
         reiniciar.setStyle(
-            "-fx-background-color: #000000; " +
-            "-fx-text-fill: #FFFFFF;" +  
-            "-fx-border-color: #FF0000;" + 
-            "-fx-border-width: 3px;" +  
-            "-fx-background-radius: 0;"  
+            "-fx-background-color: transparent; " +
+            "-fx-border-color: transparent;"
         );
+        
         boxreiniciar.getChildren().add(reiniciar);
-        boxreiniciar.setLayoutX(200); 
+        boxreiniciar.setLayoutX(50); 
         boxreiniciar.setLayoutY(600);
         
         //BOTON FINALIZAR
-        finalizar.setFont(font);
+        imagenBotonFinalizar.setFitWidth(100);
+        imagenBotonFinalizar.setFitHeight(30);
+        imagenBotonFinalizar.setPreserveRatio(false);
+        
+        finalizar.setGraphic(imagenBotonFinalizar); 
         finalizar.setStyle(
-            "-fx-background-color: #000000; " +
-            "-fx-text-fill: #FFFFFF;" +  
-            "-fx-border-color: #FF0000;" + 
-            "-fx-border-width: 3px;" +  
-            "-fx-background-radius: 0;"  
+            "-fx-background-color: transparent; " +
+            "-fx-border-color: transparent;"
         );
         boxfinalizar.getChildren().add(finalizar);
-        boxfinalizar.setLayoutX(100); 
-        boxfinalizar.setLayoutY(600);
+        boxfinalizar.setLayoutX(50); 
+        boxfinalizar.setLayoutY(650);
         
         //BOTON BALAS
         tipos.setStyle("-fx-background-color: #C0C0C0;");
@@ -265,8 +270,30 @@ public class Interfaz {
             imagen.setVisible(false);
         }
         imagenes[jugador.jugador].setVisible(true);
+        
         barraDeVida.setProgress(jugador.getVida()/100.0);
-    }
-    
-    
+        
+        if(jugador.getVida()>=60){
+            barraDeVida.setStyle("-fx-control-inner-background: black; " +
+                             "-fx-accent: #00FF00; " +
+                             "-fx-background-color: black, black; " +
+                             "-fx-background-insets: 0, 2; " +
+                             "-fx-background-radius: 0.5em;");
+        } 
+        if(jugador.getVida()<60){
+            barraDeVida.setStyle("-fx-control-inner-background: black; " +
+                             "-fx-accent: #FFA500; " +
+                             "-fx-background-color: black, black; " +
+                             "-fx-background-insets: 0, 2; " +
+                             "-fx-background-radius: 0.5em;");
+        }
+        if(jugador.getVida()<25){
+            barraDeVida.setStyle("-fx-control-inner-background: black; " +
+                             "-fx-accent: red; " +
+                             "-fx-background-color: black, black; " +
+                             "-fx-background-insets: 0, 2; " +
+                             "-fx-background-radius: 0.5em;");
+        }
+              
+    }   
 }

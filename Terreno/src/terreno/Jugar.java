@@ -580,7 +580,7 @@ public class Jugar  {
             }
 
             if (!balaEncontrada) { // ya se itero y el jugador no tiene mas balas
-                listJugador.generarTurnoAleatorio(); // se le sede el turno al proximo jugador
+                //revisamos balas de los demas jugadores
                 HBox bot=VentanaEmergente.aparecer("¡No le quedan mas balas\n   a este bot!",3);
                 if(revisarBalasDisponibles()){
                     HBox aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
@@ -589,7 +589,10 @@ public class Jugar  {
                     aviso.setLayoutY(0);
                     Timeline delay = new Timeline(new KeyFrame(Duration.seconds(2), e -> finalizarRonda()));
                     delay.play();
+                    return;
                 }
+                //niciamos al otro bot :
+                listJugador.generarTurnoAleatorio(); // se le sede el turno al proximo jugador
                 interfaz.canvasPane.getChildren().add(bot);
                 bot.setLayoutX(Globales.alto_resolucion/2-70);
                 bot.setLayoutY(Globales.ancho_resolucion);

@@ -9,7 +9,7 @@ public class Globales {
     public static int alto_resolucion;
     public static int ancho_resolucion;
     public static int resolucion_def=0;
-    public static int jugadores_def=2;
+    public static int jugadores_def=4;
     public static int rondas_def=2;
     public static int entorno_def;
     public static int cantidad_def=0;

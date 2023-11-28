@@ -39,10 +39,9 @@ public class PantallaInicial extends Application {
         Globales.ancho_resolucion=800;
         Globales.escena=new Scene(panel,Globales.alto_resolucion,Globales.ancho_resolucion); 
         Globales.stage=primaryStage;
-        Globales.stage.setResizable(false);
+        //Globales.stage.setResizable(false);
         Globales.stage.getIcons().add(icono); 
-        Globales.stage.setWidth(Globales.alto_resolucion);
-        Globales.stage.setHeight(Globales.ancho_resolucion);    
+        Globales.cambiarResolucion(Globales.alto_resolucion, Globales.ancho_resolucion);
         
         //Globales.stage.initStyle(StageStyle.UNDECORATED); usada para bloquear el movimiento con el cursor de la ventana        
         //fondo   
@@ -74,7 +73,7 @@ public class PantallaInicial extends Application {
         comenzar.setOnAction(e -> {         
             list.instanciarJugadores(Globales.jugadores_def,Globales.cantidad_def);
             Tienda tienda=new Tienda();
-            tienda.inicializarInterfaz(Globales.stage, list);
+            tienda.inicializarInterfaz( list);
         });
         
         opciones.setOnAction(e -> {

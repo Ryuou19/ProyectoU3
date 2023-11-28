@@ -5,10 +5,6 @@ import java.util.Collections;
 
 public class ListaJugadores {
     private static ListaJugadores instance;    
-    private Jugador jugador1;
-    private Jugador jugador2;
-    private Jugador jugador3;
-    private Jugador jugador4;
     private Terreno terreno;
     public ArrayList<Jugador> lista= new ArrayList<>();
 
@@ -41,16 +37,54 @@ public class ListaJugadores {
     public void instanciarJugadores(int cantidadJugadores, int cantidadBots)
     {
         int cantidadNormales= cantidadJugadores-cantidadBots; //le quitamos la cantidad de bots a los jugadores
+        String nombre="";
         //agregamos la cantidad de jguadores normales,
         for(int i=0;i<cantidadNormales;i++)
-        {
-            Jugador aux = new Jugador(i,"Juan","jugador");
+        {   
+            if(i==0){
+                nombre="MESSI";
+            }
+            if(i==1){
+                nombre="ALEXIS";
+            }
+            if(i==2){
+                nombre="VIDAL";
+            }
+            if(i==3){
+                nombre="SUAZO";
+            }
+            if(i==4){
+                nombre="YONE";
+            }
+            if(i==5){
+                nombre="YASUO";
+            }
+            Jugador aux = new Jugador(i,nombre,"jugador");
             lista.add(aux);
         }
         //agregamos la cantidad de jguadors que seran bots
         for(int i=cantidadNormales;i<cantidadJugadores;i++)
-        {
-            Jugador aux= new Jugador(i,"robarto","bot");
+        {   
+            if(i==0){
+                nombre="MESSI";
+            }
+            if(i==1){
+                nombre="ALEXIS";
+            }
+            if(i==2){
+                nombre="VIDAL";
+            }
+            if(i==3){
+                nombre="SUAZO";
+            }
+            if(i==4){
+                nombre="YONE";
+            }
+            if(i==5){
+                nombre="YASUO";
+            }
+            
+            Jugador aux= new Jugador(i,nombre,"bot");
             lista.add(aux);
         }
         generarTurnoAleatorio();

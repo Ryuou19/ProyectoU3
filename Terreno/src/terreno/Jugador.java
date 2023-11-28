@@ -21,7 +21,6 @@ public class  Jugador {
     int posicionInicialY=100;
     //hola
     int asesionatos;
-
     public Random rand;
     private Tank tanque;
     int random;

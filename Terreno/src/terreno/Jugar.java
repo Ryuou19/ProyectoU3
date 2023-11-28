@@ -426,7 +426,7 @@ public class Jugar  {
     }
     
     public void reiniciar_partida(){
-        escenaTienda.inicializarInterfaz(stage, listJugador);
+        escenaTienda.inicializarInterfaz(listJugador);
         contador_inicio=0;
         terrain.setContador(0);
             int nuevoTerreno = random.nextInt(3);         
@@ -479,7 +479,7 @@ public class Jugar  {
         listJugador.revivir(); // marcamos todos los jugadores como vivos
         terrain.borrarHitboxAnterior(); // eliminamos las hitbox anteriores
         if(Globales.rondas_def>0){                   
-            escenaTienda.inicializarInterfaz(stage, listJugador);
+            escenaTienda.inicializarInterfaz(listJugador);
             System.out.println("Rondas="+Globales.rondas_def);
         }
         if(Globales.rondas_def==0){

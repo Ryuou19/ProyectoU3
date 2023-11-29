@@ -69,7 +69,7 @@ public class Jugar  {
             stage.close();
         }
         //deberia de tomar la variable con lo que hay en configuracion         
-        interfaz.iniciar_interfaz(stage,scene);
+        interfaz.iniciar_interfaz(scene);
         interfaz.mostrarJugador(listJugador.getJugadorActual());
         iniciar_terreno();
         System.out.println("antes");
@@ -437,8 +437,8 @@ public class Jugar  {
     }
     
     public void reiniciar_partida(){
-        Tienda tienda=new Tienda();
-        tienda.inicializarInterfaz(listJugador);
+        //Tienda tienda=new Tienda();
+        //tienda.inicializarInterfaz(listJugador);
         contador_inicio=0;
         terrain.setContador(0);
             int nuevoTerreno = random.nextInt(3);         

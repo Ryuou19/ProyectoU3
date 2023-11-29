@@ -1,11 +1,7 @@
 package terreno;
-import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Terreno{
     public int[][] matriz;
@@ -14,6 +10,7 @@ public class Terreno{
     public int [][] explosion;
     public int radio=0;
     private int contador=0;
+    public int reduccionHud=Globales.ancho_resolucion/8;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
@@ -75,7 +72,7 @@ public class Terreno{
         agregarImagenDeFondo(gc);
         
         for (int i = 0; i < alto/2; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -92,7 +89,7 @@ public class Terreno{
         amplitud = 0.21;
         frecuencia = 0.0485;
         for (int i = alto/2; i < 326; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -109,7 +106,7 @@ public class Terreno{
         amplitud = 0.2;
         frecuencia = 0.03;
         for (int i = alto*2/3; i < alto; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -142,7 +139,7 @@ public class Terreno{
         agregarImagenDeFondo(gc);
 
         for (int i = 0; i < alto; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -160,7 +157,7 @@ public class Terreno{
         double amplitud = 0.07;
         double frecuencia = 0.08;
         for (int i = 120; i < 180; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -191,7 +188,7 @@ public class Terreno{
         amplitud = 0.07;
         frecuencia = 0.1;
         for (int i = 0; i < 70; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -208,7 +205,7 @@ public class Terreno{
         amplitud = 0.21;
         frecuencia = 0.045;
         for (int i = 50; i < 330; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -225,7 +222,7 @@ public class Terreno{
         amplitud = 0.1;
         frecuencia = 0.045;
         for (int i = 130; i < 250; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
@@ -242,7 +239,7 @@ public class Terreno{
         amplitud = 0.3;
         frecuencia = 0.01;
         for (int i = 326; i < alto; i++) {
-            for (int j = 0; j < ancho; j++) {
+            for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;

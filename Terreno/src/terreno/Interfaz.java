@@ -12,11 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
  
 
 
@@ -33,13 +31,17 @@ public class Interfaz {
     public Label textodistancia;//distancia maxima mostrada en la interfaz a traves de la variable distancia
     public Label textoaltura;//altura maxima mostrada en la interfaz a traves de la variable altura
     
+    Image imagenHud= new Image(getClass().getResourceAsStream("./img/hud.jpg"));
+    ImageView hud= new ImageView(imagenHud);
+    
     //ANGULO
     HBox boxangulo = new HBox();
     Text text1 = new Text("Angulo");
     TextField entradaangulo = new TextField();
-
+    
     //VELOCIDAD
     HBox boxvelocidad = new HBox();
+    Text text2 = new Text("Velocidad");
     TextField entradavelocidad = new TextField();
 
     //JUGADOR
@@ -85,8 +87,7 @@ public class Interfaz {
     HBox boxaltura=new HBox();
     Text textaltura= new Text("Altura = ");
     
-    //MARCO
-    Rectangle marco = new Rectangle(300, 560+25, 520, 100);
+    
     
     //VIDA
     HBox boxvida= new HBox();      
@@ -116,8 +117,8 @@ public class Interfaz {
     GraphicsContext gc;
     Pane canvasPane = new Pane();
     
-    public void iniciar_interfaz(Stage primaryStage, Scene escena){//inicia todo lo visual e interactivo de la interfaz de juego         
-        
+    public void iniciar_interfaz( Scene escena){//inicia todo lo visual e interactivo de la interfaz de juego         
+        Globales.cambiarResolucion(Globales.alto_resolucion-1, Globales.ancho_resolucion-1);
         canvasPane.setPrefSize(alto, ancho);       
         
         
@@ -127,40 +128,30 @@ public class Interfaz {
         
         escena.setRoot(canvasPane);
         canvasPane.getChildren().add(canvas);
-        primaryStage.setScene(escena);
+        Globales.stage.setScene(escena);
         int mover=25;
-           
+        
+        //FONDO HUD
+        hud.setPreserveRatio(false);      
+        canvasPane.getChildren().add(hud);
         //ANGULO
-        boxangulo.setSpacing(10);
-        text1.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        entradaangulo.setPrefWidth(40);
+        boxangulo.setSpacing(10);    
         boxangulo.getChildren().addAll(text1, entradaangulo);
-        boxangulo.setLayoutX(350); 
-        boxangulo.setLayoutY(585+mover);
+        
                
         //VELOCIDAD
         boxvelocidad.setSpacing(10);
-        Text text2 = new Text("Velocidad");
-        text2.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        entradavelocidad.setPrefWidth(40);
         boxvelocidad.getChildren().addAll(text2, entradavelocidad);
-        boxvelocidad.setLayoutX(325); 
-        boxvelocidad.setLayoutY(615+mover);
+        
                     
         //JUGADOR
         boxjugador.getChildren().add(textjugador);
-        textjugador.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        boxjugador.setLayoutX(498); 
-        boxjugador.setLayoutY(570+mover);
         
         //TANQUES
-        for (ImageView imagen : imagenes) {
-            imagen.setFitWidth(120);
-            imagen.setFitHeight(120);
-            imagen.setLayoutX(500);
-            imagen.setLayoutY(575);
-            canvasPane.getChildren().add(imagen); // Agrega cada imagen al Pane
+        for (ImageView imagen : imagenes) {              
+            canvasPane.getChildren().add(imagen); //agrega cada imagen al pane
         }
+        
             
         //DISPARO
         disparar.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
@@ -191,10 +182,7 @@ public class Interfaz {
         boxaltura.setLayoutX(31);
         boxaltura.setLayoutY(30);
                
-        //MARCO
-        marco.setFill(null); // Relleno transparente
-        marco.setStroke(Color.SKYBLUE); // Color de la línea del marco
-        canvasPane.getChildren().add(marco);
+        
 
         //VIDA
         barraDeVida.setPrefWidth(120);  
@@ -256,13 +244,58 @@ public class Interfaz {
         boxcantidadbalas.setLayoutY(620);
         
       
+        canvasPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double widthRatio = newWidth.doubleValue() / 800;
+            hud.setFitWidth(800*widthRatio);       
+            hud.setLayoutX(0);
+            
+            text1.setFont(Font.font("Arial",FontWeight.BOLD, 20*widthRatio)); 
+            entradaangulo.setPrefWidth(40*widthRatio);
+            boxangulo.setLayoutX(180*widthRatio); 
+            
+            text2.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
+            entradavelocidad.setPrefWidth(40*widthRatio);
+            boxvelocidad.setLayoutX(155*widthRatio); 
+        
+            textjugador.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
+            boxjugador.setLayoutX(360*widthRatio); 
+            
+            for (ImageView imagen : imagenes) {
+                imagen.setFitWidth(120*widthRatio);               
+                imagen.setLayoutX(355*widthRatio);               
+            } 
+            
+            
+        });
+         
+        canvasPane.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            double heightRatio = newHeight.doubleValue() / 800; 
+            hud.setFitHeight(800/2*heightRatio);
+            hud.setLayoutY(630*heightRatio);
+                    
+            entradaangulo.setPrefHeight(30*heightRatio);
+            boxangulo.setLayoutY(650*heightRatio);
+            
+            entradavelocidad.setPrefHeight(30*heightRatio);
+            boxvelocidad.setLayoutY(690*heightRatio);
+            
+            boxjugador.setLayoutY(625*heightRatio);
+            
+            for (ImageView imagen : imagenes) {
+                imagen.setFitHeight(120*heightRatio);
+                imagen.setLayoutY(630*heightRatio);
+            } 
+            
+        });
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
                 boxjugador,boxdisparo, boxdistancia, boxaltura, boxvida, 
                 boxreiniciar, boxfinalizar, tipos, boxcantidadbalas);
         
         
-        boxvida.setVisible(true);
+        
+        
+        
     }
     
     public void mostrarJugador(Jugador jugador){

@@ -1,6 +1,7 @@
 package terreno;
 
 import java.util.ArrayList;
+import java.util.Random;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -59,15 +60,27 @@ public class Tienda  {
     }
        
     public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores){
+        if(jugador.tipo.equals("bot")){
+            comprarBot(listJugadores.lista.get(jugadorActual));           
+            jugadorActual++;   
+            if(jugadorActual==listJugadores.lista.size()){
+                Globales.rondas_def--;  
+                if(Globales.rondas_def<=0){
+                    Globales.stage.close();
+                }
+                Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
+                juego.start(Globales.escena);
+            }
+            tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+            
+        } 
+        
         Pane panel=new Pane();
         
         Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
         Scene escena=new Scene(panel, Globales.alto_resolucion,Globales.ancho_resolucion);
         Globales.stage.setTitle("Tienda de Armas");
-        if(jugador.tipo.equals("bot")){
-            panel.getChildren().clear();
-            tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
-        }            
+                   
         
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
                     
@@ -336,5 +349,25 @@ public class Tienda  {
             comprarBala105.setDisable(false);
         }
              
+    }
+    
+    public void comprarBot(Jugador jugador){
+        Random random = new Random();
+        while(jugador.saldo>=1000){
+            int opcion = random.nextInt(3) + 1;    
+            if (opcion == 1 && jugador.saldo >= 1000) {
+                jugador.saldo -= 1000;
+                jugador.setCantidad60(jugador.getCantidad60() + 1);
+                System.out.println("Bala 60 comprada por el bot");
+            } else if (opcion == 2 && jugador.saldo >= 2500) {
+                jugador.saldo -= 2500;
+                jugador.setCantidad80(jugador.getCantidad80() + 1);
+                System.out.println("Bala 80 comprada por el bot");
+            } else if (opcion == 3 && jugador.saldo >= 4000) {
+                jugador.saldo -= 4000;
+                jugador.setCantidad105(jugador.getCantidad105() + 1);
+                System.out.println("Bala 105 comprada por el bot");
+            } 
+        }     
     }
 }

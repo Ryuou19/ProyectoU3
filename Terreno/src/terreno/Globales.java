@@ -12,7 +12,7 @@ public class Globales {
     public static int jugadores_def=4;
     public static int rondas_def=2;
     public static int entorno_def;
-    public static int cantidad_def=0;
+    public static int cantidad_def=2;
     public static Scene escena;
     public static Stage stage;
     public static final int FPS = 80; // Ajusta esto a la cantidad deseada de FPS

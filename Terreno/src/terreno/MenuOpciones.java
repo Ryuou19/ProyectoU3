@@ -17,18 +17,21 @@ public class MenuOpciones {
     private final String[] rondas = {"1","2","3","4","5","6","7","8",
     "9","10","11","12","13","14",
     "15","16","17","18","19","20"};
-    private final String[] entorno={"Ninguno","Gravedad","Viento"};
+    private final String[] gravedad={"Normal","15,81","5,81"};
     private final String[] cantidad = {"0","1", "2","3","4","5"};
+    private final String[] viento={"-NO-","-SI-"};
     private int opcionActualResolucion = 0;
     private int opcionActualJugadores = 0;
     private int opcionActualRondas = 1;
-    private int opcionActualEntorno = 0;
+    private int opcionActualGravedad = 0;
     private int opcionActualCantidad = 0;
+    private int opcionActualViento = 0;
     private Button opcion_resolucion;
     private Button opcion_jugadores;
     private Button opcion_rondas;
-    private Button opcion_entorno;
+    private Button opcion_gravedad;
     private Button opcion_cantidad;
+    private Button opcion_viento;
     String estilo_botones = 
     "-fx-background-color: #000000; " + 
     "-fx-text-fill: #FFFFFF;" + 
@@ -58,11 +61,20 @@ public class MenuOpciones {
     HBox menu_cantidad = new HBox();
     Label labelIA = new Label("Jug. Artificiales");
     HBox texto_IA= new HBox();
+    
+    Label labelEntorno = new Label("Efectos de Entorno");
+    
+    Label labelGravedad = new Label("Gravedad");  
+    HBox menu_gravedad = new HBox();
+    HBox texto_gravedad= new HBox(); 
     Button flecha_derecha4 = new Button(">");
     Button flecha_izquierda4 = new Button("<");
-    HBox menu_entorno = new HBox();
-    Label labelEntorno = new Label("Efectos de Entorno");
-    HBox texto_entorno= new HBox();   
+    
+    Label labelViento = new Label("Viento");  
+    HBox menu_viento = new HBox();
+    HBox texto_viento= new HBox(); 
+    Button flecha_derecha6 = new Button(">");
+    Button flecha_izquierda6 = new Button("<");
     Pane paneOpciones;
     Button volverMenu;    
 
@@ -222,33 +234,57 @@ public class MenuOpciones {
         texto_IA.getChildren().add(labelIA);
         
         
-        
+        labelEntorno.setStyle("-fx-text-fill: white;"); 
         /////////////////////////////////////////
-        //ENTORNO
-        opcion_entorno = new Button(entorno[opcionActualEntorno]);      
-        opcion_entorno.setStyle(estilo_botones);
+        //GRAVEDAD
+        opcion_gravedad = new Button(gravedad[opcionActualGravedad]);      
+        opcion_gravedad.setStyle(estilo_botones);
                  
         flecha_derecha4.setStyle(estilo_botones);
         flecha_derecha4.setOnAction(e -> {
-            Globales.entorno_def=cambiarOpcion(1,entorno,opcion_entorno,Globales.entorno_def,5);
-            System.out.println("Actual = "+Globales.entorno_def);    
+            Globales.gravedad_def=cambiarOpcion(1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
+            System.out.println("Actual = "+Globales.gravedad_def);    
         });
               
         flecha_izquierda4.setStyle(estilo_botones);
         flecha_izquierda4.setOnAction(e -> {
-            Globales.entorno_def=cambiarOpcion(-1,entorno,opcion_entorno,Globales.entorno_def,5);
-            System.out.println("Actual = "+Globales.entorno_def);      
+            Globales.gravedad_def=cambiarOpcion(-1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
+            System.out.println("Actual = "+Globales.gravedad_def);      
         });
         
-        
-        menu_entorno.getChildren().addAll(flecha_izquierda4,opcion_entorno, flecha_derecha4);        
-        labelEntorno.setStyle("-fx-text-fill: white;");        
-        texto_entorno.getChildren().add(labelEntorno);     
+        labelGravedad.setStyle("-fx-text-fill: white;");
+        menu_gravedad.getChildren().addAll(flecha_izquierda4,opcion_gravedad, flecha_derecha4);                   
+        texto_gravedad.getChildren().add(labelGravedad);     
         ///////////////////////////////////////////////
-        //ENTORNO
+        //GRAVEDAD
         
         
-        //ajustarResolucion(imageView);
+        
+        //VIENTO
+        opcion_viento = new Button(viento[opcionActualViento]);      
+        opcion_viento.setStyle(estilo_botones);
+                 
+        flecha_derecha6.setStyle(estilo_botones);
+        flecha_derecha6.setOnAction(e -> {
+            Globales.viento_def=cambiarOpcion(1,viento,opcion_viento,Globales.viento_def,6);
+            System.out.println("Actual = "+Globales.viento_def);    
+        });
+              
+        flecha_izquierda6.setStyle(estilo_botones);
+        flecha_izquierda6.setOnAction(e -> {
+            Globales.viento_def=cambiarOpcion(-1,viento,opcion_viento,Globales.viento_def,6);
+            System.out.println("Actual = "+Globales.viento_def);      
+        });
+        
+        labelViento.setStyle("-fx-text-fill: white;");
+        menu_viento.getChildren().addAll(flecha_izquierda6,opcion_viento, flecha_derecha6);                   
+        texto_viento.getChildren().add(labelViento);     
+        ///////////////////////////////////////////////
+        //VIENTO
+        
+        
+        
+        
         
         panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800; 
@@ -279,11 +315,17 @@ public class MenuOpciones {
             flecha_izquierda5.setPrefWidth(52*widthRatio);
             flecha_derecha5.setPrefWidth(52*widthRatio);
             
-            opcion_entorno.setPrefWidth(140*widthRatio);
-            menu_entorno.setLayoutX(275*widthRatio);
-            texto_entorno.setLayoutX(338*widthRatio);
+            opcion_gravedad.setPrefWidth(140*widthRatio);
+            menu_gravedad.setLayoutX(275*widthRatio);
+            texto_gravedad.setLayoutX(355*widthRatio);
             flecha_izquierda4.setPrefWidth(52*widthRatio);
-            flecha_derecha4.setPrefWidth(52*widthRatio);           
+            flecha_derecha4.setPrefWidth(52*widthRatio);
+            
+            opcion_viento.setPrefWidth(140*widthRatio);
+            menu_viento.setLayoutX(275*widthRatio);
+            texto_viento.setLayoutX(355*widthRatio);
+            flecha_izquierda6.setPrefWidth(52*widthRatio);
+            flecha_derecha6.setPrefWidth(52*widthRatio); 
         });
          
         panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
@@ -292,7 +334,7 @@ public class MenuOpciones {
             
             imageView.setFitHeight(800* heightRatio);
             volver.setPrefHeight(50*heightRatio);
-            volver.setLayoutY(600*heightRatio);
+            volver.setLayoutY(670*heightRatio);
             
             opcion_resolucion.setPrefHeight(52*heightRatio);
             menu_resoluciones.setLayoutY(120*heightRatio);
@@ -318,11 +360,17 @@ public class MenuOpciones {
             flecha_izquierda5.setPrefHeight(52*heightRatio);
             flecha_derecha5.setPrefHeight(52*heightRatio);
             
-            opcion_entorno.setPrefHeight(52*heightRatio);
-            menu_entorno.setLayoutY(520*heightRatio);
-            texto_entorno.setLayoutY(490*heightRatio);
+            opcion_gravedad.setPrefHeight(52*heightRatio);
+            menu_gravedad.setLayoutY(520*heightRatio);
+            texto_gravedad.setLayoutY(490*heightRatio);
             flecha_izquierda4.setPrefHeight(52*heightRatio);
             flecha_derecha4.setPrefHeight(52*heightRatio);
+            
+            opcion_viento.setPrefHeight(52*heightRatio);
+            menu_viento.setLayoutY(620*heightRatio);
+            texto_viento.setLayoutY(590*heightRatio);
+            flecha_izquierda6.setPrefHeight(52*heightRatio);
+            flecha_derecha6.setPrefHeight(52*heightRatio);
             
             if(opcionActualResolucion==0){
                 font = Font.font("Serif", FontWeight.NORMAL, 19);
@@ -342,14 +390,17 @@ public class MenuOpciones {
             labelJugadores.setFont(font);
             opcion_cantidad.setFont(font);
             labelIA.setFont(font);
-            opcion_entorno.setFont(font);
             labelEntorno.setFont(font);
+            opcion_gravedad.setFont(font);
+            labelGravedad.setFont(font);
+            opcion_viento.setFont(font);
+            labelViento.setFont(font);
         });
         
         this.volverMenu=volver;
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
-        texto_rondas,menu_jugadores,texto_jugadores,menu_entorno,texto_entorno,
-        menu_cantidad,texto_IA,volver);                 
+        texto_rondas,menu_jugadores,texto_jugadores,menu_gravedad,texto_gravedad,
+        menu_cantidad,texto_IA,menu_viento,texto_viento,volver);                 
         return panel;
     }
     
@@ -384,11 +435,19 @@ public class MenuOpciones {
             opcionActual=opcionActualCantidad;
         }
         if(referencia==5){
-            opcionActualEntorno = (opcionActualEntorno + desplazamiento) % tipo.length;
-            if(opcionActualEntorno<0){
-                opcionActualEntorno=tipo.length-1;
+            opcionActualGravedad = (opcionActualGravedad + desplazamiento) % tipo.length;
+            if(opcionActualGravedad<0){
+                opcionActualGravedad=tipo.length-1;
             }
-            opcionActual=opcionActualEntorno;
+            opcionActual=opcionActualGravedad;
+        }
+        
+        if(referencia==6){
+            opcionActualViento = (opcionActualViento + desplazamiento) % tipo.length;
+            if(opcionActualViento<0){
+                opcionActualViento=tipo.length-1;
+            }
+            opcionActual=opcionActualViento;
         }
         
                
@@ -405,13 +464,15 @@ public class MenuOpciones {
                 if(tipo[i].length()>2){
                     opcion_str=tipo[i];
                     System.out.println("ELECCION STR= "+opcion_str);
-                    if(opcion_str.equals("800x800")||opcion_str.equals("Ninguno")){
+                    if(opcion_str.equals("800x800")||opcion_str.equals("Normal")
+                            ||opcion_str.equals("-NO-")){
                         opcion=0;
                     }
-                    if(opcion_str.equals("900x900")||opcion_str.equals("Gravedad")){
+                    if(opcion_str.equals("900x900")||opcion_str.equals("Gravedad")
+                            ||opcion_str.equals("-SI-")||opcion_str.equals("15,81")){
                         opcion=1;
                     }
-                    if(opcion_str.equals("1200x900")||opcion_str.equals("Viento")){
+                    if(opcion_str.equals("1920x1080")||opcion_str.equals("5,81")){
                         opcion=2;
                     }              
                 }

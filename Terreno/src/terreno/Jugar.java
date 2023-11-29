@@ -55,7 +55,14 @@ public class Jugar  {
    
     public void start(Scene scene) {
         stage=Globales.stage;
+        System.out.println("global gravedad= "+Globales.gravedad_def);
         stage.setResizable(true);
+        if(Globales.gravedad_def==1){
+            Globales.gravedad=-15.98;
+        }
+        if(Globales.gravedad_def==2){
+            Globales.gravedad=-5.98;
+        }
 
 
         if(Globales.rondas_def==0){
@@ -92,6 +99,16 @@ public class Jugar  {
                     interfaz.canvasPane.getChildren().add(aviso);
                     aviso.setLayoutX(Globales.alto_resolucion/2-70);
                     aviso.setLayoutY(Globales.ancho_resolucion/2);
+                    if(comprobarMunicion(1)&&comprobarMunicion(2)&&comprobarMunicion(3)){
+                        aviso=VentanaEmergente.aparecer("Jugador se quedo sin balas....",3);
+                        interfaz.canvasPane.getChildren().add(aviso);
+                        aviso.setLayoutX(Globales.alto_resolucion/2-120);
+                        aviso.setLayoutY(0);
+                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> animacionCaida()));
+                        delay.play();
+                        return;
+                    }
+                    tipo=0;
                     
                     if(revisarBalasDisponibles()){
                         aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
@@ -101,18 +118,10 @@ public class Jugar  {
                         Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> finalizarRonda()));
                         delay.play();
                     }
-                    else{
-                        aviso=VentanaEmergente.aparecer("Jugador se quedo sin balas....",3);
-                        interfaz.canvasPane.getChildren().add(aviso);
-                        aviso.setLayoutX(Globales.alto_resolucion/2-120);
-                        aviso.setLayoutY(0);
-                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> animacionCaida()));
-                        delay.play();
-                        return;
-                    }                            
+                                                
                 }
                 
-                if(tipo==0){//si no se selecciono nada
+                if(tipo==0){//si no se selecciono nada o se equivoco
                     return;
                 }
                 ingresar_disparo();//ingresa los label que guardaran el valor de angulo y velocidad

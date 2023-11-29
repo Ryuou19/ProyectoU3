@@ -49,35 +49,28 @@ public class Tienda  {
     
     public void inicializarInterfaz( ListaJugadores listJugadores) {      
         tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+        
     }
        
     public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores){
+        System.out.println("GLOBALES: "+Globales.jugadores_def);
         
-         Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
+        Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
         if(jugador.tipo.equals("bot")){
             comprarBot(listJugadores.lista.get(jugadorActual));           
             jugadorActual++;   
             if (jugadorActual == listJugadores.lista.size()) {  
-                return;
-                
-            }
-            
+                return;   
+            }          
             tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
         }
         Pane panel=new Pane();
-        
-       
+              
         Scene escena=new Scene(panel, Globales.alto_resolucion,Globales.ancho_resolucion);
         Globales.stage.setTitle("Tienda de Armas");
-                   
-        
+                           
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
-  
-        
-        
-        
-        
-        
+     
         textNombreJugador=new Text(jugador.nombre);   
         textNombreJugador.setFill(Color.WHITE);
    
@@ -225,8 +218,9 @@ public class Tienda  {
                 Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
                 juego.start(Globales.escena);
                 
-            } 
-            else {          
+            }
+            
+            if (jugadorActual < Globales.jugadores_def/*listJugadores.lista.size()/2*/) {
                 panel.getChildren().clear();
                 if(cambio==1){
                     cambio--;
@@ -235,8 +229,10 @@ public class Tienda  {
                  cambio++;   
                 }
                 
-                tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+                tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);          
             }
+            
+                   
         });
         
         widthListener= (obs, oldWidth, newWidth) -> {

@@ -36,7 +36,6 @@ public class Jugar  {
     int pixel = 3;
     int contador_inicio=0;
     int vidatanque1=100;
-    int tipo_jugador; // si es 0 es un un bot si es 1 es un normal
     private boolean disparo_en_curso = false;
     
 
@@ -86,7 +85,6 @@ public class Jugar  {
 
         
         interfaz.disparar.setOnAction(event ->{
-            
                 
                 interfaz.textcantidad.setVisible(false);
                 if (comprobarMunicion(tipo)) {//verifica si quedan balas del tipo seleccionado
@@ -100,14 +98,18 @@ public class Jugar  {
                         interfaz.canvasPane.getChildren().add(aviso);
                         aviso.setLayoutX(Globales.alto_resolucion/2-80);
                         aviso.setLayoutY(0);
-                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(2), e -> finalizarRonda()));
+                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> finalizarRonda()));
                         delay.play();
                     }
                     else{
+                        aviso=VentanaEmergente.aparecer("Jugador se quedo sin balas....",3);
+                        interfaz.canvasPane.getChildren().add(aviso);
+                        aviso.setLayoutX(Globales.alto_resolucion/2-120);
+                        aviso.setLayoutY(0);
+                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> animacionCaida()));
+                        delay.play();
                         return;
-                    }
-                    
-                    
+                    }                            
                 }
                 
                 if(tipo==0){//si no se selecciono nada
@@ -426,7 +428,8 @@ public class Jugar  {
     }
     
     public void reiniciar_partida(){
-        escenaTienda.inicializarInterfaz(listJugador);
+        Tienda tienda=new Tienda();
+        tienda.inicializarInterfaz(listJugador);
         contador_inicio=0;
         terrain.setContador(0);
             int nuevoTerreno = random.nextInt(3);         
@@ -434,11 +437,10 @@ public class Jugar  {
                 nuevoTerreno = random.nextInt(3);
             }            
             terreno_random = nuevoTerreno;
-            listJugador.getLista().clear();
-            listJugador.instanciarJugadores(Globales.jugadores_def,Globales.cantidad_def);
+            
             iniciar_terreno();
             animacionCaida();        
-            vidatanque1=100;
+            
            
             
     }

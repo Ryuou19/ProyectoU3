@@ -89,29 +89,29 @@ public class PantallaInicial extends Application {
         
         // Agregar ChangeListener al ancho y alto del Pane principal
         panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-            double widthRatio = newWidth.doubleValue() / 800; // 800 es el ancho original
-            titulo.setLayoutX(190 * widthRatio); // Reajustar la posición X
+            double widthRatio = newWidth.doubleValue() / 800; 
+            titulo.setLayoutX(190 * widthRatio); 
             titulo.setFitWidth(420* widthRatio);
-            imageView.setLayoutX(160 * widthRatio); // Reajustar la posición X
+            imageView.setLayoutX(160 * widthRatio); 
             imageView.setFitWidth(480* widthRatio);
-            comenzar.setLayoutX(310 * widthRatio); // Reajustar la posición X
+            comenzar.setLayoutX(310 * widthRatio); 
             comenzar.setPrefWidth(180 * widthRatio);
-            opciones.setLayoutX(310 * widthRatio); // Reajustar la posición X
-            opciones.setPrefWidth(180 * widthRatio);// Reajustar el ancho
-            // ... Puedes hacer ajustes similares para otros nodos
+            opciones.setLayoutX(310 * widthRatio); 
+            opciones.setPrefWidth(180 * widthRatio);
+            
         });
 
         panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-            double heightRatio = newHeight.doubleValue() / 800; // 600 es el alto original
-            titulo.setLayoutY(100 * heightRatio); // Reajustar la posición X
+            double heightRatio = newHeight.doubleValue() / 800; 
+            titulo.setLayoutY(100 * heightRatio); 
             titulo.setFitHeight(120* heightRatio);
-            imageView.setLayoutY(220 * heightRatio); // Reajustar la posición X
+            imageView.setLayoutY(220 * heightRatio); 
             imageView.setFitHeight(300* heightRatio);
-            comenzar.setLayoutY(540 * heightRatio); // Reajustar la posición X
+            comenzar.setLayoutY(540 * heightRatio);
             comenzar.setPrefHeight(55* heightRatio);
-            opciones.setLayoutY(600 * heightRatio); // Reajustar la posición X
-            opciones.setPrefHeight(55* heightRatio);// Reajustar el ancho
-            // ... Puedes hacer ajustes similares para otros nodos
+            opciones.setLayoutY(600 * heightRatio);
+            opciones.setPrefHeight(55* heightRatio);
+            
         });
         
         //se añade todo al panel(agregar imageView)

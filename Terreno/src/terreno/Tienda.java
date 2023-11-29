@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,17 +15,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class Tienda  {
-    
-    Canvas canvas = new Canvas(Globales.alto_resolucion, Globales.ancho_resolucion);
-    GraphicsContext gc = canvas.getGraphicsContext2D();
+       
     Rectangle marco = new Rectangle(1920, 1080);  
-    Font font = Font.font("Monospaced", FontWeight.BOLD, 20);
     int jugadorActual = 0;
     int ultimaOpcion;
     public ArrayList<Integer> carrito = new ArrayList<>();
-    
-    
-    
+          
     Text textNombreJugador;
     String imagen;
     Image tanque;
@@ -46,7 +39,6 @@ public class Tienda  {
     
     private ChangeListener<Number> widthListener;
     private ChangeListener<Number> heightListener;
-    
     int cambio=1;
     
     public Tienda() {
@@ -60,30 +52,32 @@ public class Tienda  {
     }
        
     public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores){
+        
+         Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
         if(jugador.tipo.equals("bot")){
             comprarBot(listJugadores.lista.get(jugadorActual));           
             jugadorActual++;   
-            if(jugadorActual==listJugadores.lista.size()){
-                Globales.rondas_def--;  
-                if(Globales.rondas_def<=0){
-                    Globales.stage.close();
-                }
-                Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
-                juego.start(Globales.escena);
+            if (jugadorActual == listJugadores.lista.size()) {  
+                return;
+                
             }
-            tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
             
-        } 
-        
+            tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+        }
         Pane panel=new Pane();
         
-        Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
+       
         Scene escena=new Scene(panel, Globales.alto_resolucion,Globales.ancho_resolucion);
         Globales.stage.setTitle("Tienda de Armas");
                    
         
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
-                    
+  
+        
+        
+        
+        
+        
         textNombreJugador=new Text(jugador.nombre);   
         textNombreJugador.setFill(Color.WHITE);
    
@@ -279,7 +273,10 @@ public class Tienda  {
             revertirCompra.setPrefWidth(150*widthRatio);
             
             finalizarTienda.setLayoutX(72*widthRatio);
-            finalizarTienda.setPrefWidth(150*widthRatio);        
+            finalizarTienda.setPrefWidth(150*widthRatio);
+            
+           
+            
         };
 
         heightListener=(obs, oldHeight, newHeight) -> {
@@ -315,6 +312,8 @@ public class Tienda  {
             
             finalizarTienda.setLayoutY(440*heightRatio);       
             finalizarTienda.setPrefHeight(40*heightRatio);
+            
+            
         };
         // Después de configurar los ChangeListeners, forzar una actualización inicial
         widthListener.changed(null, null, panel.getWidth());
@@ -353,7 +352,7 @@ public class Tienda  {
     
     public void comprarBot(Jugador jugador){
         Random random = new Random();
-        while(jugador.saldo>=1000){
+        while(jugador.saldo >= 1000 || jugador.saldo >= 2500 || jugador.saldo >= 4000) {
             int opcion = random.nextInt(3) + 1;    
             if (opcion == 1 && jugador.saldo >= 1000) {
                 jugador.saldo -= 1000;
@@ -367,7 +366,19 @@ public class Tienda  {
                 jugador.saldo -= 4000;
                 jugador.setCantidad105(jugador.getCantidad105() + 1);
                 System.out.println("Bala 105 comprada por el bot");
-            } 
+            }
+            
         }     
     }
+    
+    /*   public void iniciarJuego(ListaJugadores listJugadores) {
+    // Iniciar el juego con la lista de jugadores
+    Jugar juego = new Jugar(listJugadores);
+    juego.start(Globales.escena);
+
+    // Después de iniciar el juego, limpiar y cerrar la escena actual de la tienda
+    limpiarTienda();
+    Globales.cerrarEscenaActual(); // Debes definir este método en tu clase Globales para cerrar la escena actual. 
+    }
+    */
 }

@@ -142,6 +142,7 @@ public class Jugar  {
                     System.out.println("no quedan mas balas ");
                 }
                 else{
+                    System.out.println("disparo en curso->"+disparo_en_curso);
                     if(!disparo_en_curso)
                     {
                         animacionBala(nuevaBala);
@@ -194,6 +195,7 @@ public class Jugar  {
         jugador.ajustar_vida(jugador.getVida(), danio);
 
         // Verifica si el jugador actual es diferente del jugador impactado
+        boolean es_el_mismo=false;
         if (listJugador.getJugadorActual() != jugador) {
             listJugador.getJugadorActual().saldo += 10; // Damos monedas al tanque actual por impactar
             if (jugador.vida <= 0) {
@@ -203,18 +205,27 @@ public class Jugar  {
             }
         } else {
             // Caso donde el jugador se impacta a sí mismo no hacmos nada
+            es_el_mismo=true;
         }
         if (jugador.vida <= 0) {
-            listJugador.eliminarJugador(jugadorImpactado); // Marca al jugador como eliminado
-            // Eliminr la hitbox del jugador muerto
             int marca_hitbox = jugadorImpactado + 1;
             terrain.borrarHitboxJugador(marca_hitbox);
-
-            HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
-            interfaz.canvasPane.getChildren().add(muerte);
-            muerte.setLayoutX(Globales.alto_resolucion-300);
-            muerte.setLayoutY(0);
-
+            if(!es_el_mismo){
+                listJugador.eliminarJugador(jugadorImpactado); // Marca al jugador como eliminado
+                HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
+                interfaz.canvasPane.getChildren().add(muerte);
+                muerte.setLayoutX(Globales.alto_resolucion-300);
+                muerte.setLayoutY(0);
+            }
+            else {
+                // si no es el mismo
+                listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
+                HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" se a suicidado..."+"contador de suicidios->"+jugador.suicidios, 3);
+                interfaz.canvasPane.getChildren().add(muerte);
+                muerte.setLayoutX(Globales.alto_resolucion-300);
+                muerte.setLayoutY(0);
+                listJugador.eliminarJugador(jugadorImpactado);
+            }
             if (listJugador.quedaUnoVivo()) { // Si queda un jugador, termina y reinicia
                 finalizarRonda();
             }
@@ -370,11 +381,59 @@ public class Jugar  {
                             if (alturaCaida > tanque.dañoAltura) { // daño altura es de 10, tiene que caer de 10 de altura para hacer el daño
                                 int dañoPorCaida = calcularDañoPorAltura(alturaCaida);
                                 jugador.ajustar_vida(jugador.getVida(), dañoPorCaida);
+                                if(jugador.vida<=0) // si el daño de la caida mato al tanque
+                                {
+                                    stop();
+                                    disparo_en_curso=false;
+                                    listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
+                                    HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" se a suicidado..."+"contador de suicidios->"+jugador.suicidios, 3);
+                                    interfaz.canvasPane.getChildren().add(muerte);
+                                    muerte.setLayoutX(Globales.alto_resolucion-300);
+                                    muerte.setLayoutY(0);
+                                    listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
+                                    listJugador.generarTurnoAleatorio();
+                                    interfaz.mostrarJugador(listJugador.getJugadorActual());
+                                    if (listJugador.getJugadorActual().tipo.equals("bot")) {
+                                        iniciar_bot();
+                                    }
+
+                                    if(listJugador.quedaUnoVivo()) // si queda uno vivo terminamos la ronda
+                                    {
+                                        finalizarRonda();
+                                    }
+                                    animacionCaida();
+                                    return;
+                                }
                             }
                         }
                         tanque.dibuarTanque(interfaz.gc);
                         tanque.modificarCañon(interfaz.gc, 0);
+                        if(contador_inicio!=0){
+                            if(!tanque.esta_dentro_de_terreno(terrain))
+                            {
+                                stop();
+                                disparo_en_curso=false;
+                                HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
+                                interfaz.canvasPane.getChildren().add(muerte);
+                                muerte.setLayoutX(Globales.alto_resolucion-300);
+                                muerte.setLayoutY(0);
+                                listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
+                                System.out.println("suicidios de jugador"+listJugador.getJugadorActual().jugador+":"+listJugador.getJugadorActual().suicidios);
+                                listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
+                                listJugador.generarTurnoAleatorio();
+                                interfaz.mostrarJugador(listJugador.getJugadorActual());
+                                if (listJugador.getJugadorActual().tipo.equals("bot")) {
+                                    iniciar_bot();
+                                }
 
+                                if(listJugador.quedaUnoVivo()) // si queda uno vivo terminamos la ronda
+                                {
+                                    finalizarRonda();
+                                }
+                                animacionCaida();
+                                return;
+                            }
+                        }
                         if (todosEnSuelo) {
                              // eliminamos hitboxes anteriores
                             tanque.crearHitbox(interfaz.gc, terrain,jugador);
@@ -384,7 +443,25 @@ public class Jugar  {
                 }
                 if (todosEnSuelo) {
                     stop();
+                    if(!tiene_balas())
+                    {
+                        listJugador.desactivarJugador(listJugador.indiceActual); // marcamos el jugador como desactivado
+                        disparo_en_curso=false;
+                        HBox muerte=VentanaEmergente.aparecer("Jugador "+listJugador.getJugadorActual().nombre+" no podra jugar...", 3);
+                        interfaz.canvasPane.getChildren().add(muerte);
+                        muerte.setLayoutX(Globales.alto_resolucion-300);
+                        muerte.setLayoutY(0);
+                        interfaz.mostrarJugador(listJugador.getJugadorActual());
+                        if (listJugador.getJugadorActual().tipo.equals("bot")) {
+                            iniciar_bot();
+                        }
 
+                        if(listJugador.quedaUnoActivo()) // si queda uno activo (osea que aun hay 1 con balas) terminamos la ronda
+                        {
+                            finalizarRonda();
+                        }
+                        return;
+                    }
                     if (contador_inicio != 0) {
                         listJugador.generarTurnoAleatorio();//cambiamo turno
 
@@ -654,4 +731,12 @@ public class Jugar  {
         }
         return true;
     }
+    public boolean tiene_balas(){ // comprobamos si el jugador actual le quedan balas
+       if( listJugador.getJugadorActual().getCantidad60()==0 && listJugador.getJugadorActual().getCantidad80()==0 && listJugador.getJugadorActual().getCantidad105()==0)
+       {
+           return false;
+       }
+        return true;
+    }
+
 }

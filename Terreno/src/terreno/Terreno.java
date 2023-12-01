@@ -144,8 +144,8 @@ public class Terreno{
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
                     double altura_dunas = nivel_mar + amplitud1 * Math.sin(frecuencia1 * nx * alto)
-                            + amplitud2 * Math.sin(frecuencia2 * nx * alto)
-                            + amplitud3 * Math.sin(frecuencia3 * nx * alto);
+                            
+                            ;
                     if (ny >= altura_dunas) {
                         gc.setFill(Color.rgb(128, 64, 0));
                         gc.fillRect(i * escala, j * escala, escala, escala);

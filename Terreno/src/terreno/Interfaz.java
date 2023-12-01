@@ -76,7 +76,6 @@ public class Interfaz {
     ImageView[] imagenes={imagentanque1,imagentanque2,imagentanque3,imagentanque4,imagentanque5,imagentanque6};
     
     //DISPARO
-    HBox boxdisparo= new HBox();
     Button disparar = new Button("!DISPARAR!");
 
     //DISTANCIA
@@ -155,9 +154,8 @@ public class Interfaz {
             
         //DISPARO
         disparar.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
-        boxdisparo.getChildren().add(disparar);
-        boxdisparo.setLayoutX(660); 
-        boxdisparo.setLayoutY(590+mover);
+        
+       
                        
         //DISTANCIA   
         boxdistancia.setSpacing(6);
@@ -258,12 +256,15 @@ public class Interfaz {
             boxvelocidad.setLayoutX(155*widthRatio); 
         
             textjugador.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
-            boxjugador.setLayoutX(360*widthRatio); 
+            boxjugador.setLayoutX(350*widthRatio); 
             
             for (ImageView imagen : imagenes) {
                 imagen.setFitWidth(120*widthRatio);               
                 imagen.setLayoutX(355*widthRatio);               
             } 
+            disparar.setPrefWidth(200*widthRatio);
+            disparar.setLayoutX(660*widthRatio); 
+            
             
             
         });
@@ -279,17 +280,19 @@ public class Interfaz {
             entradavelocidad.setPrefHeight(30*heightRatio);
             boxvelocidad.setLayoutY(690*heightRatio);
             
-            boxjugador.setLayoutY(625*heightRatio);
+            boxjugador.setLayoutY(635*heightRatio);
             
             for (ImageView imagen : imagenes) {
                 imagen.setFitHeight(120*heightRatio);
                 imagen.setLayoutY(630*heightRatio);
-            } 
+            }
+            disparar.setPrefHeight(50*heightRatio);
+            disparar.setLayoutY(620*heightRatio);
             
         });
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
-                boxjugador,boxdisparo, boxdistancia, boxaltura, boxvida, 
+                boxjugador,disparar, boxdistancia, boxaltura, boxvida, 
                 boxreiniciar, boxfinalizar, tipos, boxcantidadbalas);
         
         

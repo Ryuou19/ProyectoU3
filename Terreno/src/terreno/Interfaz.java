@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -85,34 +86,31 @@ public class Interfaz {
     //ALTURA
     HBox boxaltura=new HBox();
     Text textaltura= new Text("Altura = ");
-    
-    
-    
-    //VIDA
-    HBox boxvida= new HBox();      
+
+    //VIDA    
     ProgressBar barraDeVida = new ProgressBar();
     
     //BOTON REINICIAR
-    HBox boxreiniciar= new HBox();
     Button reiniciar = new Button();
     Image image1 = new Image(getClass().getResourceAsStream("./img/botonReiniciar.png"));
     ImageView imagenBotonReiniciar = new ImageView(image1);
     //BOTON FINALIZAR
-    HBox boxfinalizar= new HBox();
     Button finalizar = new Button();
     Image image = new Image(getClass().getResourceAsStream("./img/botonFinalizar.png"));
     ImageView imagenBotonFinalizar = new ImageView(image);
       
     //BOTONES BALAS
-    HBox tipos = new HBox();
+    VBox tipos = new VBox();
     Button bala1 = new Button("60mm");  
     Button bala2 = new Button("80mm");  
     Button bala3 = new Button("105mm");
     
     
     //CANTIDAD BALAS
-    HBox boxcantidadbalas=new HBox();
-    Label textcantidad= new Label("");
+    VBox cantidad = new VBox(8);
+    Text textcantidad1= new Text("");
+    Text textcantidad2= new Text("");
+    Text textcantidad3= new Text("");
     GraphicsContext gc;
     Pane canvasPane = new Pane();
     
@@ -128,7 +126,6 @@ public class Interfaz {
         escena.setRoot(canvasPane);
         canvasPane.getChildren().add(canvas);
         Globales.stage.setScene(escena);
-        int mover=25;
         
         //FONDO HUD
         hud.setPreserveRatio(false);      
@@ -160,45 +157,46 @@ public class Interfaz {
         //DISTANCIA   
         boxdistancia.setSpacing(6);
         textodistancia = new Label(0 + " Metros");
-        textdistancia.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        
         textdistancia.setFill(Color.BLACK);
         textodistancia.setTextFill(Color.RED);
-        textodistancia.setFont(Font.font("Arial", 16));
+        
         textdistancia.setTranslateY(-1); 
         boxdistancia.getChildren().addAll(textdistancia,textodistancia);
-        boxdistancia.setLayoutY(5);
+        
               
+        
+        
+        
+        
         //ALTURA
         boxaltura.setSpacing(6);
         textoaltura = new Label(0 + " Metros");      
-        textaltura.setFont(Font.font("Arial", FontWeight.BOLD, 20));       
+             
         textaltura.setFill(Color.BLACK);       
         textoaltura.setTextFill(Color.RED);
-        textoaltura.setFont(Font.font("Arial", 16));                
+                     
         textaltura.setTranslateY(-1);   
         boxaltura.getChildren().addAll(textaltura,textoaltura);
-        boxaltura.setLayoutX(31);
-        boxaltura.setLayoutY(30);
+       
                
         
-
+        
         //VIDA
-        barraDeVida.setPrefWidth(120);  
+         
         barraDeVida.setStyle("-fx-control-inner-background: black; " +
                              "-fx-accent: #00FF00; " +
                              "-fx-background-color: black, black; " +
                              "-fx-background-insets: 0, 2; " +
                              "-fx-background-radius: 0.5em;");
-        boxvida.getChildren().addAll(barraDeVida);     
-        boxvida.setLayoutX(660);
-        boxvida.setLayoutY(565+mover);
+         
+        
         
         
         
         
         //BOTON REINICIAR
-        imagenBotonReiniciar.setFitWidth(100);
-        imagenBotonReiniciar.setFitHeight(30);
+        
         imagenBotonReiniciar.setPreserveRatio(false);
         
         
@@ -208,13 +206,11 @@ public class Interfaz {
             "-fx-border-color: transparent;"
         );
         
-        boxreiniciar.getChildren().add(reiniciar);
-        boxreiniciar.setLayoutX(50); 
-        boxreiniciar.setLayoutY(600);
+        
+        
         
         //BOTON FINALIZAR
-        imagenBotonFinalizar.setFitWidth(100);
-        imagenBotonFinalizar.setFitHeight(30);
+        
         imagenBotonFinalizar.setPreserveRatio(false);
         
         finalizar.setGraphic(imagenBotonFinalizar); 
@@ -222,26 +218,25 @@ public class Interfaz {
             "-fx-background-color: transparent; " +
             "-fx-border-color: transparent;"
         );
-        boxfinalizar.getChildren().add(finalizar);
-        boxfinalizar.setLayoutX(50); 
-        boxfinalizar.setLayoutY(650);
+        
+        
+        
+        
         
         //BOTON BALAS
         tipos.setStyle("-fx-background-color: #C0C0C0;");
         bala1.setStyle("-fx-background-color: " + "Green" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
         bala2.setStyle("-fx-background-color: " + "Blue" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
-        bala3.setStyle("-fx-background-color: " + "Red" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;"); 
-        tipos.setLayoutX(642);
-        tipos.setLayoutY(650);
+        bala3.setStyle("-fx-background-color: " + "Red" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");        
         tipos.getChildren().addAll(bala1,bala2,bala3);
         
-        //CANTIDAD BALAS
-        textcantidad.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        boxcantidadbalas.getChildren().add(textcantidad);
-        boxcantidadbalas.setLayoutX(645);
-        boxcantidadbalas.setLayoutY(620);
+        //CANTIDAD BALAS       
+        textcantidad1.setFill(Color.GREEN);       
+        textcantidad2.setFill(Color.BLUE);     
+        textcantidad3.setFill(Color.RED);
+        cantidad.getChildren().addAll(textcantidad1,textcantidad2,textcantidad3);
         
-      
+        
         canvasPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800;
             hud.setFitWidth(800*widthRatio);       
@@ -262,10 +257,29 @@ public class Interfaz {
                 imagen.setFitWidth(120*widthRatio);               
                 imagen.setLayoutX(355*widthRatio);               
             } 
-            disparar.setPrefWidth(200*widthRatio);
-            disparar.setLayoutX(660*widthRatio); 
+            disparar.setPrefWidth(120*widthRatio);
+            disparar.setLayoutX(500*widthRatio); 
             
+            boxaltura.setLayoutX(30*widthRatio);
             
+            barraDeVida.setPrefWidth(120*widthRatio);
+            barraDeVida.setLayoutX(500*widthRatio);    
+            
+            imagenBotonReiniciar.setFitWidth(100*widthRatio);
+            reiniciar.setLayoutX(25*widthRatio); 
+        
+            imagenBotonFinalizar.setFitWidth(100*widthRatio);            
+            finalizar.setLayoutX(25*widthRatio); 
+            
+            tipos.setLayoutX(680*widthRatio);
+            bala1.setPrefWidth(70*widthRatio);
+            bala2.setPrefWidth(70*widthRatio);
+            bala3.setPrefWidth(70*widthRatio);
+            
+            cantidad.setLayoutX(660*widthRatio);
+            textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
+            textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
+            textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
             
         });
          
@@ -275,25 +289,51 @@ public class Interfaz {
             hud.setLayoutY(630*heightRatio);
                     
             entradaangulo.setPrefHeight(30*heightRatio);
-            boxangulo.setLayoutY(650*heightRatio);
+            boxangulo.setLayoutY(660*heightRatio);
             
             entradavelocidad.setPrefHeight(30*heightRatio);
-            boxvelocidad.setLayoutY(690*heightRatio);
+            boxvelocidad.setLayoutY(700*heightRatio);
             
-            boxjugador.setLayoutY(635*heightRatio);
+            boxjugador.setLayoutY(645*heightRatio);
             
             for (ImageView imagen : imagenes) {
                 imagen.setFitHeight(120*heightRatio);
                 imagen.setLayoutY(630*heightRatio);
             }
-            disparar.setPrefHeight(50*heightRatio);
-            disparar.setLayoutY(620*heightRatio);
+            disparar.setPrefHeight(30*heightRatio);
+            disparar.setLayoutY(690*heightRatio);
             
+            textdistancia.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
+            textodistancia.setFont(Font.font("Arial", 16*heightRatio));
+            boxdistancia.setLayoutY(2*heightRatio);
+            
+            textaltura.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));  
+            textoaltura.setFont(Font.font("Arial", 16*heightRatio));   
+            boxaltura.setLayoutY(30*heightRatio);
+            
+            barraDeVida.setLayoutY(660*heightRatio);
+            barraDeVida.setPrefHeight(20*heightRatio);
+            
+            imagenBotonReiniciar.setFitHeight(30*heightRatio);
+            reiniciar.setLayoutY(650*heightRatio);
+            
+            imagenBotonFinalizar.setFitHeight(30*heightRatio);
+            finalizar.setLayoutY(700*heightRatio);
+            
+            tipos.setLayoutY(650*heightRatio);
+            bala1.setPrefHeight(30*heightRatio);
+            bala2.setPrefHeight(30*heightRatio);
+            bala3.setPrefHeight(30*heightRatio);
+            
+            cantidad.setLayoutY(655*heightRatio);
+            textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
+            textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
+            textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
         });
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
-                boxjugador,disparar, boxdistancia, boxaltura, boxvida, 
-                boxreiniciar, boxfinalizar, tipos, boxcantidadbalas);
+                boxjugador,disparar, boxdistancia, boxaltura, barraDeVida, 
+                reiniciar, finalizar, tipos, cantidad);
         
         
         
@@ -306,6 +346,10 @@ public class Interfaz {
             imagen.setVisible(false);
         }
         imagenes[jugador.jugador].setVisible(true);
+        
+        textcantidad1.setText(Integer.toString(jugador.cantidad60));
+        textcantidad2.setText(Integer.toString(jugador.cantidad80));
+        textcantidad3.setText(Integer.toString(jugador.cantidad105));
         
         barraDeVida.setProgress(jugador.getVida()/100.0);
         

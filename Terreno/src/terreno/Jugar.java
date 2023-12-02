@@ -93,7 +93,7 @@ public class Jugar  {
         
         interfaz.disparar.setOnAction(event ->{
                 
-                interfaz.textcantidad.setVisible(false);
+                
                 if (comprobarMunicion(tipo)) {//verifica si quedan balas del tipo seleccionado
                     HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
                     interfaz.canvasPane.getChildren().add(aviso);
@@ -485,29 +485,26 @@ public class Jugar  {
               
 
         interfaz.bala1.setOnAction(event -> {//escoge bala 1
-            interfaz.textcantidad.setVisible(true);
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
-            interfaz.textcantidad.setText(int_string);//muestra la cantidad de balas disponibles
-            interfaz.textcantidad.setStyle("-fx-text-fill: green;");       
+            interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
             tipo=1;//ajusta el tipo          
+            interfaz.disparar.setStyle("-fx-text-fill: green;-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });
             
-        interfaz.bala2.setOnAction(event -> {//escoge bala 2
-            interfaz.textcantidad.setVisible(true);
+        interfaz.bala2.setOnAction(event -> {//escoge bala 2           
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad80());
-            interfaz.textcantidad.setText(int_string);//lo mismo de bala1
-            interfaz.textcantidad.setStyle("-fx-text-fill: blue;");     
-            tipo=2;//ajusta el tipo       
+            interfaz.textcantidad2.setText(int_string);//lo mismo de bala1
+            tipo=2;//ajusta el tipo   
+            interfaz.disparar.setStyle("-fx-text-fill: blue;-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });
             
-        interfaz.bala3.setOnAction(event -> {//escoge bala 3
-            interfaz.textcantidad.setVisible(true);
+        interfaz.bala3.setOnAction(event -> {//escoge bala 3           
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad105());
-            interfaz.textcantidad.setText(int_string);
-            interfaz.textcantidad.setStyle("-fx-text-fill: red;");        
+            interfaz.textcantidad3.setText(int_string);
             tipo=3;//ajusta el tipo       
+            interfaz.disparar.setStyle("-fx-text-fill: red;-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });         
               
@@ -698,13 +695,13 @@ public class Jugar  {
             angulo = 180 + random.nextDouble() * 180; // Ajusta estos valores según tu juego
 
             if(tipo==1){
-                interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad60()));
+                interfaz.textcantidad1.setText(Integer.toString(listJugador.getJugadorActual().getCantidad60()));
             }
             if(tipo==2){
-                interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad80()));
+                interfaz.textcantidad2.setText(Integer.toString(listJugador.getJugadorActual().getCantidad80()));
             }
             if(tipo==3){
-                interfaz.textcantidad.setText(Integer.toString(listJugador.getJugadorActual().getCantidad105()));
+                interfaz.textcantidad3.setText(Integer.toString(listJugador.getJugadorActual().getCantidad105()));
             }
             HBox textBot=VentanaEmergente.aparecer("Jugando un bot...",2);
             interfaz.canvasPane.getChildren().add(textBot);

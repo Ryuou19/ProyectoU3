@@ -10,10 +10,10 @@ public class Terreno{
     public int [][] explosion;
     public int radio=0;
     private int contador=0;
-    public int reduccionHud=Globales.ancho_resolucion/8;
+    public int reduccionHud=Globales.ancho_resolucion/12;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
-    Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
+    Image lol = new Image(getClass().getResourceAsStream("./img/prueba_bosque.jpg"));//imagen bosque
     ListaJugadores listJugador=ListaJugadores.getInstance();
 
 
@@ -22,11 +22,9 @@ public class Terreno{
 
     public Terreno(int alto, int ancho, int pixel,GraphicsContext gc ) {
         this.pixel=pixel;
-        
         this.matriz=new int[alto][ancho];
         this.dunas=new int[alto][ancho];
         this.explosion=new int[alto][ancho];
-
     }
 
     public void setContador(int contador) {
@@ -52,13 +50,13 @@ public class Terreno{
     }
     public void agregarImagenDeFondo(GraphicsContext gc) {//agregamos las imagenes de fondo
         if (Jugar.getRandom() == 0) {
-            gc.drawImage(nieve, 0, 0, 500 * pixel, 320 * pixel);
+            gc.drawImage(nieve, 0, 0, Globales.alto_resolucion, Globales.ancho_resolucion);
         }
         if (Jugar.getRandom() == 1) {
-            gc.drawImage(desierto, 0, 0, 500 * pixel, 320 * pixel);
+            gc.drawImage(desierto, 0, -100, Globales.alto_resolucion, Globales.ancho_resolucion);
         }
         if (Jugar.getRandom() == 2) {
-            gc.drawImage(lol, 0, 0, 500 * pixel, 320 * pixel);
+            gc.drawImage(lol, 0, 0, Globales.alto_resolucion, Globales.ancho_resolucion-200);
         }
 
     }
@@ -67,8 +65,8 @@ public class Terreno{
         
         int escala = this.pixel;
         double nivel_mar = 0.5;
-        double amplitud = 0.15;
-        double frecuencia = 0.03;
+        double amplitud = 0.08;
+        double frecuencia = 0.087;
         agregarImagenDeFondo(gc);
         
         for (int i = 0; i < alto/2; i++) {
@@ -85,10 +83,10 @@ public class Terreno{
                 }
             }
         }
-
+        nivel_mar=0.4;
         amplitud = 0.21;
         frecuencia = 0.0485;
-        for (int i = alto/2; i < 326; i++) {
+        for (int i = alto/2; i < alto; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
@@ -102,7 +100,7 @@ public class Terreno{
                 }
             }
         }
-
+/*
         amplitud = 0.2;
         frecuencia = 0.03;
         for (int i = alto*2/3; i < alto; i++) {
@@ -118,7 +116,7 @@ public class Terreno{
                     }
                 }
             }
-        }
+        }*/
         if(contador==0){
             colocarTanquesTerreno(gc, angulo, vida, validar, terreno, alto, ancho);
         }
@@ -128,42 +126,38 @@ public class Terreno{
     public void terreno_desierto(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho) {//terreno desertico
      
         int escala = this.pixel;
-        double nivel_mar = 0.5;
-        double frecuencia1 = 0.05;
-        double frecuencia2 = 0.04;
-        double frecuencia3 = 0.06;
-        double amplitud1 = 0.14;
-        double amplitud2 = 0.12;
-        double amplitud3 = 0.16;
+        double nivel_mar = 0.55;
+        double frecuencia = 0.095;
+        double amplitud = 0.08;
 
         agregarImagenDeFondo(gc);
 
-        for (int i = 0; i < alto; i++) {
+        for (int i = 0; i < alto/2; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
-                    double altura_dunas = nivel_mar + amplitud1 * Math.sin(frecuencia1 * nx * alto)
+                    double altura_dunas = nivel_mar + amplitud * Math.sin(frecuencia * nx * alto)
                             
                             ;
                     if (ny >= altura_dunas) {
-                        gc.setFill(Color.rgb(128, 64, 0));
+                        gc.setFill(Color.rgb(230, 190, 130));
                         gc.fillRect(i * escala, j * escala, escala, escala);
                         dunas[i][j] = 1;
                     }
                 }
             }
         }
-        double amplitud = 0.07;
-        double frecuencia = 0.08;
-        for (int i = 120; i < 180; i++) {
+        amplitud = 0.05;
+        frecuencia = 0.06;
+        nivel_mar = 0.5;
+        for (int i = alto/2; i < alto; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
                     double ny = (double) j / ancho;
                     double altura_dunas = nivel_mar + amplitud * Math.sin(frecuencia * nx * alto);
-                    if (ny >= altura_dunas) {
-                        gc.setFill(Color.rgb(128, 64, 0));
+                    if (ny >= altura_dunas) {                     
                         gc.fillRect(i * escala, j * escala, escala, escala);
                         dunas[i][j] = 1;
                     }
@@ -180,14 +174,14 @@ public class Terreno{
        
         int escala = this.pixel;
         double nivel_mar = 0.5;
-        double amplitud = 0.17;
-        double frecuencia = 0.03;
+        double amplitud = 0.07;
+        double frecuencia = 0.1;
         agregarImagenDeFondo(gc);
 
 
         amplitud = 0.07;
         frecuencia = 0.1;
-        for (int i = 0; i < 70; i++) {
+        for (int i = 0; i < alto/4; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
@@ -204,7 +198,7 @@ public class Terreno{
 
         amplitud = 0.21;
         frecuencia = 0.045;
-        for (int i = 50; i < 330; i++) {
+        for (int i = alto/4; i < alto/2; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
@@ -221,7 +215,7 @@ public class Terreno{
 
         amplitud = 0.1;
         frecuencia = 0.045;
-        for (int i = 130; i < 250; i++) {
+        for (int i = alto/2; i < alto*3/4; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
@@ -236,9 +230,9 @@ public class Terreno{
             }
         }
 
-        amplitud = 0.3;
-        frecuencia = 0.01;
-        for (int i = 326; i < alto; i++) {
+        amplitud = 0.07;
+        frecuencia = 0.1;
+        for (int i = alto*3/4; i < alto; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
                     double nx = (double) i / alto;
@@ -261,7 +255,7 @@ public class Terreno{
     public int colision_terreno(GraphicsContext gc, Bala bala, int dunas[][], int matriz[][], int tipo) {
         int x = (int) bala.ejeX / pixel;//traspasamos la posicion x a relacion escala de la matriz y no de los pixeles
         int y = (int) bala.ejeY / pixel;//traspasamos la posicion y a relacion escala de la matriz y no de los pixeles
-        if (x >= 0 && x < 500 && y >= 0 && y < 300) {
+        if (x >= 0 && x < matriz.length && y >= 0 && y < matriz[1].length) {
             int valorMatriz=matriz[x][y];
             //System.out.println("el valor en la matriz es ->"+valorMatriz);
             if (valorMatriz>=2) {

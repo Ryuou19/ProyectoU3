@@ -47,7 +47,7 @@ public class Jugar  {
           
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     static{
-        terreno_random = 2;//random.nextInt(3);
+        terreno_random = 1;//random.nextInt(3);
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();
@@ -329,10 +329,10 @@ public class Jugar  {
         area = Math.round(area / 2);//se divide a la mitad ya que la hitbox del tanque tiene 200 valores, y la vida del tanque es 100, para hacerlo mas preciso
         if(area>terrain.radio){//en caso de que el area sea mayor al daño propio de la bala, se inflinge el daño base de la bala partido a la mitad, ya que no fue un disparo directo como tal
             switch (terrain.radio) {
-                case 5 -> area=30/2;
-                case 10 -> area=40/2;
-                case 15 -> area=50/2;
-                default -> {
+                case 5 : area=30/2;
+                case 10 : area=40/2;
+                case 15 : area=50/2;
+                default : {
                 }
             }
         }
@@ -504,7 +504,7 @@ public class Jugar  {
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
             interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
             tipo=1;//ajusta el tipo          
-            interfaz.disparar.setStyle("-fx-text-fill: green;-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
+            interfaz.disparar.setStyle("-fx-text-fill: green;-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });
             
@@ -512,7 +512,7 @@ public class Jugar  {
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad80());
             interfaz.textcantidad2.setText(int_string);//lo mismo de bala1
             tipo=2;//ajusta el tipo   
-            interfaz.disparar.setStyle("-fx-text-fill: blue;-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
+            interfaz.disparar.setStyle("-fx-text-fill: blue;-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });
             
@@ -520,7 +520,7 @@ public class Jugar  {
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad105());
             interfaz.textcantidad3.setText(int_string);
             tipo=3;//ajusta el tipo       
-            interfaz.disparar.setStyle("-fx-text-fill: red;-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
+            interfaz.disparar.setStyle("-fx-text-fill: red;-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });         
               
@@ -582,10 +582,24 @@ public class Jugar  {
         terrain.borrarHitboxAnterior(); // eliminamos las hitbox anteriores
         if(Globales.rondas_def>0){                   
             escenaTienda.inicializarInterfaz(listJugador);
+            pagar_ronda();
             System.out.println("Rondas="+Globales.rondas_def);
         }
         if(Globales.rondas_def==0){
             Platform.exit();
+        }
+        
+    }
+    
+    public void pagar_ronda(){
+        for(Jugador jugador: listJugador.lista){
+            jugador.saldo+=10000;
+            if(jugador.asesionatos!=0){
+                jugador.saldo+=5000*jugador.asesionatos;
+            }
+            if(jugador.suicidios!=0){
+                jugador.saldo-=5000*jugador.suicidios;
+            }
         }
     }
     public void elegir_bala_bot()
@@ -710,7 +724,7 @@ public class Jugar  {
                     interfaz.canvasPane.getChildren().add(aviso);
                     aviso.setLayoutX(Globales.alto_resolucion/2-80);
                     aviso.setLayoutY(0);
-                    Timeline delay = new Timeline(new KeyFrame(Duration.seconds(2), e -> finalizarRonda()));
+                    Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> finalizarRonda()));
                     delay.play();
                     return;
                 }

@@ -10,9 +10,9 @@ public class Globales {
     public static int alto_resolucion;
     public static int ancho_resolucion;
     public static int resolucion_def=0;
-    public static int jugadores_def=4;
+    public static int jugadores_def=3;
     public static int rondas_def=2;
-    public static int cantidad_def=0;
+    public static int cantidad_def=2;
     public static int gravedad_def=0;
     public static double gravedad=-9.85;
     public static int viento_def=0;
@@ -40,6 +40,9 @@ public class Globales {
         }catch (InterruptedException e) {}
     }
     public static void cambiarViento() {
+        if(Globales.viento_def==0){
+            return;
+        }
         Random random = new Random();
         int viento_actual = random.nextInt(10) + 1; // Genera un número entre 1 y 10
         viento_actual+=19;

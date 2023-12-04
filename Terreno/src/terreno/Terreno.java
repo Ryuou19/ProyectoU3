@@ -13,7 +13,7 @@ public class Terreno{
     public int reduccionHud=Globales.ancho_resolucion/12;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
-    Image lol = new Image(getClass().getResourceAsStream("./img/prueba_bosque.jpg"));//imagen bosque
+    Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
     ListaJugadores listJugador=ListaJugadores.getInstance();
 
 
@@ -188,7 +188,7 @@ public class Terreno{
                     double ny = (double) j / ancho;
                     double altura_dunas = nivel_mar + amplitud * Math.sin(frecuencia * nx * alto);
                     if (ny >= altura_dunas) {
-                        gc.setFill(Color.rgb(210, 180, 140));
+                        gc.setFill(Color.rgb(139, 69, 19));
                         gc.fillRect(i * escala, j * escala, escala, escala);
                         dunas[i][j] = 1;
                     }
@@ -205,7 +205,7 @@ public class Terreno{
                     double ny = (double) j / ancho;
                     double altura_dunas = nivel_mar + amplitud * Math.sin(frecuencia * nx * alto);
                     if (ny >= altura_dunas) {
-                        gc.setFill(Color.rgb(210, 180, 140));
+                        
                         gc.fillRect(i * escala, j * escala, escala, escala);
                         dunas[i][j] = 1;
                     }
@@ -222,7 +222,7 @@ public class Terreno{
                     double ny = (double) j / ancho;
                     double altura_dunas = nivel_mar + amplitud * Math.sin(frecuencia * nx * alto);
                     if (ny >= altura_dunas) {
-                        gc.setFill(Color.rgb(210, 180, 140));
+                        
                         gc.fillRect(i * escala, j * escala, escala, escala);
                         dunas[i][j] = 1;
                     }
@@ -239,7 +239,7 @@ public class Terreno{
                     double ny = (double) j / ancho;
                     double altura_dunas = nivel_mar + amplitud * Math.sin(frecuencia * nx * alto);
                     if (ny >= altura_dunas) {
-                        gc.setFill(Color.rgb(210, 180, 140));
+                        
                         gc.fillRect(i * escala, j * escala, escala, escala);
                         dunas[i][j] = 1;
                     }

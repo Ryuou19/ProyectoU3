@@ -150,7 +150,7 @@ public class Interfaz {
         
             
         //DISPARO
-        disparar.setStyle("-fx-font-size: 16px; -fx-font-family: 'Monospaced'; ");
+        disparar.setStyle("-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
         
        
                        

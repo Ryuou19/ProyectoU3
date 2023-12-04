@@ -139,7 +139,7 @@ public class Tank{
                     if(terreno.dunas[posXMatriz][posYMatriz] == 1) {
                         contadorDunas++;
                     }
-                    if(contadorDunas==5)
+                    if(contadorDunas==3)
                     {
                         return true;
                     }

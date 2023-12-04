@@ -132,7 +132,7 @@
             }
             lista.get(indiceJugador).descativar();
             turnosDisponibles.clear();
-            generarTurnoAleatorio(); // cambiamos el turno automaticamente
+
         }
         public boolean quedaUnoVivo()
         {
@@ -144,7 +144,8 @@
                     cantidadMuetos++;
                 }
             }
-            if(cantidadMuetos==lista.size()-1)
+            int cantidadMaximaDeMuertos=lista.size()-1;
+            if(cantidadMuetos==cantidadMaximaDeMuertos)
             {
                 return true;
             }
@@ -159,7 +160,8 @@
                 {
                     cantidadMuetos++;
                 }
-                if(cantidadMuetos==lista.size())
+                int cantidadMaximaDeMuertos=lista.size();
+                if(cantidadMuetos==cantidadMaximaDeMuertos)
                 {
                     return true;
                 }
@@ -171,7 +173,7 @@
             for (Jugador aux : lista)
             {
                 aux.eliminado=false; // no esta eliminado
-                aux.activo=true;
+                aux.activo=true; // lo marcamos como activo
                 aux.setVida(100);
             }
         }

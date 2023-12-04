@@ -15,7 +15,7 @@ public class  Jugador {
     //BALAS INICIALES DE CADA JUGADOR
     int cantidad105=0;
     int cantidad80=0;
-    int cantidad60=1;
+    int cantidad60=0;
     int vida;
     //SALDO DE CADA JUGADOR
     int saldo;

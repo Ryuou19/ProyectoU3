@@ -290,7 +290,7 @@ public class Terreno{
                 bala.marcar();
                 matriz[x][y] = 0;
                 if(tipo==1){
-                    radio=10;
+                    radio=15;
                 }
                 if(tipo==2){
                     radio=10;

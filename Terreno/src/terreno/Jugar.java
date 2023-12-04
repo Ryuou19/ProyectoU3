@@ -25,15 +25,16 @@ public class Jugar  {
     int impacto;//colision con un tanque
     int distancia=0;
     int altura=0;
+    int pixel = 3;
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)   
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.09;
     Stage stage;
     ListaJugadores listJugador;
-    int alto = 400;
-    int ancho=300;
+    int alto = (Globales.alto_resolucion/pixel);
+    int ancho=(Globales.ancho_resolucion/pixel);
     Interfaz interfaz=new Interfaz(Globales.alto_resolucion,Globales.ancho_resolucion);
-    int pixel = 3;
+    
     int contador_inicio=0;
     int vidatanque1=100;
     private boolean disparo_en_curso = false;
@@ -46,9 +47,9 @@ public class Jugar  {
           
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     static{
-        terreno_random = random.nextInt(3);
+        terreno_random = 2;//random.nextInt(3);
     }
-    Terreno terrain = new Terreno(alto,ancho, pixel,interfaz.gc);
+    Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();
     
 
@@ -63,7 +64,6 @@ public class Jugar  {
         if(Globales.gravedad_def==2){
             Globales.gravedad=-5.98;
         }
-
 
         if(Globales.rondas_def==0){
             stage.close();

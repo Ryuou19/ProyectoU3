@@ -38,7 +38,7 @@ public class MenuOpciones {
     "-fx-border-color: #FF0000;" + 
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
-    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg")); 
+    Image fondo = new Image(getClass().getResourceAsStream("./img/prueba_bosque.jpg")); 
     ImageView imageView = new ImageView(fondo); 
     Button volver = new Button("Menu Principal");
     Button flecha_derecha1 = new Button(">");

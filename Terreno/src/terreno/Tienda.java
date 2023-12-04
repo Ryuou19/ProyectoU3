@@ -54,7 +54,6 @@ public class Tienda  {
        
     public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores){
         System.out.println("GLOBALES: "+Globales.jugadores_def);
-        
         Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
         if(jugador.tipo.equals("bot")){
             comprarBot(listJugadores.lista.get(jugadorActual));           
@@ -214,6 +213,9 @@ public class Tienda  {
                 Globales.rondas_def--;  
                 if(Globales.rondas_def<=0){
                     Globales.stage.close();
+                }
+                if(cambio==1){
+                    Globales.alto_resolucion--;
                 }
                 Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
                 juego.start(Globales.escena);

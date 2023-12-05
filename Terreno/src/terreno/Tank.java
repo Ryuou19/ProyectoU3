@@ -116,6 +116,17 @@ public class Tank{
             }
         }
     }
+    public boolean esta_dentro_de_terreno(Terreno terreno) {
+        int limiteDerecho = terreno.matriz.length * 3; // Límite derecho de la matriz
+        int limiteInferior = terreno.matriz[0].length * 3; // Límite inferior de la matriz
+
+        if (posicionX >= 0 && posicionY >= 0) {
+            if (posicionX + ancho <= limiteDerecho && posicionY + alto <= limiteInferior) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean estaSobreDuna(Terreno terreno) {
         int hitboxAncho = 1;
         int contadorDunas = 0;
@@ -128,7 +139,7 @@ public class Tank{
                     if(terreno.dunas[posXMatriz][posYMatriz] == 1) {
                         contadorDunas++;
                     }
-                    if(contadorDunas==5)
+                    if(contadorDunas==3)
                     {
                         return true;
                     }

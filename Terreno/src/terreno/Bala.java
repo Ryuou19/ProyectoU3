@@ -17,7 +17,7 @@ public class Bala {
     public double velocidadX;
     public double velocidadY;
     public boolean eliminar=false;
-    public final double gravedad=-9.81;
+    public int factorViento = 6;
     public int contador;
     //cambio-----
     public int getDanio() {
@@ -73,11 +73,12 @@ public class Bala {
     public boolean eliminar(){
         return eliminar;
     }
-      
-    
+
+
      public void actualizarPosicion(double deltaTiempo, Bala player, int distancia, int altura,  HBox boxdistancia, HBox boxaltura,double posicionInicialY,double posicionInicialX){
-        ejeX += velocidadX * deltaTiempo;       
-        velocidadY -= gravedad * deltaTiempo;       
+        // de uno a 1 metros por segundo
+         ejeX += (velocidadX) * deltaTiempo;
+         velocidadY -= Globales.gravedad * deltaTiempo;
         ejeY += velocidadY * deltaTiempo;
         double nuevaPosX = player.ejeX + player.velocidadX * deltaTiempo;
         double nuevaPosY = player.ejeY + player.velocidadY * deltaTiempo;
@@ -99,7 +100,7 @@ public class Bala {
                 {
                     alturaActual = Math.max(alturaActual, 0); // Asegura que la altura no sea negativa
                     alturaMaxima = Math.max(alturaMaxima, alturaActual);
-                }             
+                }
         }
         else
         {
@@ -107,13 +108,14 @@ public class Bala {
             // Calcula la altura actual
             alturaActual = Math.max(alturaActual, 0); // Asegura que la altura no sea negativa
             alturaMaxima = Math.max(alturaMaxima, alturaActual);
-            
+
         }
         Label distanciaLabel = (Label) boxdistancia.getChildren().get(1);
         distanciaLabel.setText(distancia + " Metros");
-        Label alturaLabel = (Label) boxaltura.getChildren().get(1); 
+        Label alturaLabel = (Label) boxaltura.getChildren().get(1);
         alturaLabel.setText(alturaMaxima   + " Metros");
         this.contador++;
-         
+
     }
+
 }

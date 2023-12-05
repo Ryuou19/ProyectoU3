@@ -9,11 +9,13 @@ public class  Jugador {
 
     String color = "";
     public int jugador;
+    public  int suicidios=0;
+    public boolean activo=true;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
-    int cantidad105=5;
-    int cantidad80=10;
-    int cantidad60=10;
+    int cantidad105=0;
+    int cantidad80=0;
+    int cantidad60=0;
     int vida;
     //SALDO DE CADA JUGADOR
     int saldo;
@@ -21,7 +23,6 @@ public class  Jugador {
     int posicionInicialY=100;
     //hola
     int asesionatos;
-
     public Random rand;
     private Tank tanque;
     int random;
@@ -62,7 +63,6 @@ public class  Jugador {
     }
 
 
-  
     public Tank getTanque() {
         return tanque;
     }
@@ -112,7 +112,10 @@ public class  Jugador {
         tanque.agregarTanque(gc,this.random,vida,terreno,posicionInicalX,posicionInicialY);
         this.tanque=tanque;
     }
-
+    public void descativar()
+    {
+        this.activo=false;
+    }
     public void eliminar() {
         this.eliminado = true;
     }

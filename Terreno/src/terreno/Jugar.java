@@ -546,10 +546,8 @@ public class Jugar  {
     public static int getRandom(){
         return terreno_random;
     }
-    
-    
-    void definifirPosicion()
-    {
+       
+    void definifirPosicion(){
         int largo = Globales.alto_resolucion-200;
         int ancho_segmento=largo/Globales.jugadores_def;
         for(int i=0;i<Globales.jugadores_def;i++)
@@ -558,13 +556,10 @@ public class Jugar  {
             int max=ancho_segmento*(i+1);
             int posicion_inicial=random.nextInt(max-min)+min;
             listJugador.getLista().get(i).posicionInicalX=posicion_inicial;
-
         }
-
     }
 
     public int calcularDañoPorAltura(int altura) {
-
         return (int) (altura * Math.abs(Globales.gravedad)/ 100);
     }
     
@@ -578,8 +573,8 @@ public class Jugar  {
     }
     
     public void finalizarRonda(){
-        listJugador.revivir(); // marcamos todos los jugadores como vivos
-        terrain.borrarHitboxAnterior(); // eliminamos las hitbox anteriores
+        listJugador.revivir(); //marcamos todos los jugadores como vivos
+        terrain.borrarHitboxAnterior();// eliminamos las hitbox anteriores
         if(Globales.rondas_def>0){                   
             escenaTienda.inicializarInterfaz(listJugador);
             pagar_ronda();
@@ -602,10 +597,8 @@ public class Jugar  {
             }
         }
     }
-    public void elegir_bala_bot()
-    {
-        int tipo_aux=random.nextInt(3)+1;
-        tipo=tipo_aux;
+    public void elegir_bala_bot(){
+        tipo=random.nextInt(3)+1;
     }
 
     public void animacionBala(Bala nuevaBala) {
@@ -665,36 +658,6 @@ public class Jugar  {
             }
         }.start();
     }
-
-
-
-
-
-    // esta funcion es de forma general para una bala de tipo 1 en esta
-    /*public void iniciar_bot() {
-        if (!disparo_en_curso) {
-            tipo = 1; // Siempre usa la bala de tipo 1
-
-            if (comprobarMunicion(tipo)) { // Verifica si hay municiones para el tipo 1
-                listJugador.generarTurnoAleatorio();
-                interfaz.mostrarJugador(listJugador.getJugadorActual());
-
-                if (listJugador.getJugadorActual().tipo.equals("bot")) {
-                    iniciar_bot();
-                }
-                return; // Termina la ejecución del método aquí
-            }
-
-            // Configuración del disparo del bot
-            //velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
-            //angulo = random.nextDouble() * 360; // Ajusta estos valores según tu juego
-            velocidad=60;
-            angulo=250;
-            // Crear y disparar la bala
-            Bala nuevaBala = crear_bala();
-            animacionBala(nuevaBala);
-        }
-    }*/
 
     public void iniciar_bot() {
         if (!disparo_en_curso) {

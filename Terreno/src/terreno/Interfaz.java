@@ -211,8 +211,7 @@ public class Interfaz {
         
         //BOTON FINALIZAR
         
-        imagenBotonFinalizar.setPreserveRatio(false);
-        
+        imagenBotonFinalizar.setPreserveRatio(false);     
         finalizar.setGraphic(imagenBotonFinalizar); 
         finalizar.setStyle(
             "-fx-background-color: transparent; " +

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -18,6 +19,7 @@ public class Tienda  {
        
     Rectangle marco = new Rectangle(1920, 1080);  
     int jugadorActual = 0;
+    Jugador jugador;
     int ultimaOpcion;
     public ArrayList<Integer> carrito = new ArrayList<>();
           
@@ -36,10 +38,41 @@ public class Tienda  {
     Button comprarBala105;
     Button finalizarTienda;
     Button revertirCompra;
+    Button cambiarJugadorDerecha;
+    Button cambiarJugadorIzquierda;
+    HBox cambiar=new HBox(2);
+    
     
     private ChangeListener<Number> widthListener;
     private ChangeListener<Number> heightListener;
     int cambio=1;
+    
+    //TANQUE 1
+    Image tanque1 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
+    ImageView imagentanque1 = new ImageView(tanque1);
+
+    //TANQUE 2
+    Image tanque2 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
+    ImageView imagentanque2 = new ImageView(tanque2);
+    
+    //TANQUE 3
+    Image tanque3 = new Image(getClass().getResourceAsStream("./img/tanque3.png"));
+    ImageView imagentanque3 = new ImageView(tanque3);
+        
+    //TANQUE 4
+    Image tanque4 = new Image(getClass().getResourceAsStream("./img/tanque4.png"));
+    ImageView imagentanque4 = new ImageView(tanque4);
+    
+    //TANQUE 5
+    Image tanque5 = new Image(getClass().getResourceAsStream("./img/tanque5.png"));
+    ImageView imagentanque5 = new ImageView(tanque5);
+        
+    //TANQUE 6
+    Image tanque6 = new Image(getClass().getResourceAsStream("./img/tanque6.png"));
+    ImageView imagentanque6 = new ImageView(tanque6);
+       
+    //LISTA TANQUES
+    ImageView[] imagenes={imagentanque1,imagentanque2,imagentanque3,imagentanque4,imagentanque5,imagentanque6};
     
     public Tienda() {
         
@@ -48,24 +81,24 @@ public class Tienda  {
     
     
     public void inicializarInterfaz( ListaJugadores listJugadores) {      
-        tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+        tiendaJugador(listJugadores);
         
     }
        
-    public void tiendaJugador(Jugador jugador,ListaJugadores listJugadores){
+    public void tiendaJugador(ListaJugadores listJugadores){
+        cambiarJugador(listJugadores);
         System.out.println("GLOBALES: "+Globales.jugadores_def);
         Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
-        if(jugador.tipo.equals("bot")){
-            comprarBot(listJugadores.lista.get(jugadorActual));           
-            jugadorActual++;   
-            if (jugadorActual == listJugadores.lista.size()) {  
-                return;   
-            }          
-            tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);
+        
+        for(Jugador jugadorBot:listJugadores.lista){
+            if(jugadorBot.tipo.equals("bot")){
+            comprarBot(jugadorBot);           
+            }
         }
+        
         Pane panel=new Pane();
               
-        Scene escena=new Scene(panel, Globales.alto_resolucion,Globales.ancho_resolucion);
+        
         Globales.stage.setTitle("Tienda de Armas");
                            
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
@@ -90,7 +123,7 @@ public class Tienda  {
         textBalas105.setFill(Color.WHITE);      
         
         
-        comprarBala60 = new Button("COMPRAR");
+        comprarBala60 = new Button("$1000");
         comprarBala60.setStyle(
             "-fx-background-color: #000000; " +
             "-fx-text-fill: #FFFFFF;" +  
@@ -99,7 +132,7 @@ public class Tienda  {
             "-fx-background-radius: 0;"  
         );
         
-        comprarBala80 = new Button("COMPRAR");
+        comprarBala80 = new Button("$2500");
         comprarBala80.setStyle(
             "-fx-background-color: #000000; " +
             "-fx-text-fill: #FFFFFF;" +  
@@ -108,7 +141,7 @@ public class Tienda  {
             "-fx-background-radius: 0;"  
         );       
         
-        comprarBala105 = new Button("COMPRAR");
+        comprarBala105 = new Button("$4000");
         comprarBala105.setStyle(
             "-fx-background-color: #000000; " +
             "-fx-text-fill: #FFFFFF;" +  
@@ -117,7 +150,7 @@ public class Tienda  {
             "-fx-background-radius: 0;"  
         );
         
-        finalizarTienda = new Button("TERMINAR COMPRA");
+        finalizarTienda = new Button("TERMINAR");
         finalizarTienda.setLayoutX(400);
         finalizarTienda.setLayoutY(400);
         finalizarTienda.setStyle(
@@ -128,7 +161,7 @@ public class Tienda  {
             "-fx-background-radius: 0;"  
         );
         
-        revertirCompra = new Button("DEVOLVER COMPRA");       
+        revertirCompra = new Button("DEVOLVER");       
         revertirCompra.setStyle(
             "-fx-background-color: #000000; " +
             "-fx-text-fill: #FFFFFF;" +  
@@ -136,6 +169,27 @@ public class Tienda  {
             "-fx-border-width: 3px;" +  
             "-fx-background-radius: 0;"  
         );
+        
+        cambiarJugadorDerecha = new Button(">");       
+        cambiarJugadorDerecha.setStyle(
+            "-fx-background-color: #000000; " +
+            "-fx-text-fill: #FFFFFF;" +  
+            "-fx-border-color: #FFFFFF;" + 
+            "-fx-border-width: 3px;" +  
+            "-fx-background-radius: 0;"  
+        );
+        
+        cambiarJugadorIzquierda = new Button("<");       
+        cambiarJugadorIzquierda.setStyle(
+            "-fx-background-color: #000000; " +
+            "-fx-text-fill: #FFFFFF;" +  
+            "-fx-border-color: #FFFFFF;" + 
+            "-fx-border-width: 3px;" +  
+            "-fx-background-radius: 0;"  
+        );
+        
+        cambiar.getChildren().addAll(cambiarJugadorIzquierda,cambiarJugadorDerecha);
+        
         
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         comprarBala60.setOnAction(event -> {            
@@ -145,7 +199,7 @@ public class Tienda  {
             jugador.setCantidad60(jugador.getCantidad60()+1);
             textBalas60.setText("60mm -- "+String.valueOf(jugador.getCantidad60()));
             ultimaOpcion=1;
-            carrito.add(ultimaOpcion);
+            jugador.carrito.add(ultimaOpcion);
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
             
         });
@@ -157,7 +211,7 @@ public class Tienda  {
             jugador.setCantidad80(jugador.getCantidad80()+1);
             textBalas80.setText("80mm -- "+String.valueOf(jugador.getCantidad80()));
             ultimaOpcion=2;
-            carrito.add(ultimaOpcion);
+            jugador.carrito.add(ultimaOpcion);
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);                      
         });
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);    
@@ -168,16 +222,16 @@ public class Tienda  {
             jugador.setCantidad105(jugador.getCantidad105()+1);
             textBalas105.setText("105mm -- "+String.valueOf(jugador.getCantidad105()));  
             ultimaOpcion=3;
-            carrito.add(ultimaOpcion);
+            jugador.carrito.add(ultimaOpcion);
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         });
         
         revertirCompra.setOnAction(event -> {  
             
-            if (carrito.size()-1 >= 0) { // Verificar si la lista tiene al menos un elemento
-                ultimaOpcion=carrito.get(carrito.size()-1);
+            if (jugador.carrito.size()-1 >= 0) { // Verificar si la lista tiene al menos un elemento
+                ultimaOpcion=jugador.carrito.get(jugador.carrito.size()-1);
             }
-            if(carrito.size()-1<0){
+            if(jugador.carrito.size()-1<0){
                 return;
             }
             if(ultimaOpcion==1){
@@ -195,46 +249,47 @@ public class Tienda  {
                 jugador.setCantidad105(jugador.getCantidad105()-1);
                 textBalas105.setText("105mm -- "+String.valueOf(jugador.getCantidad105()));  
             }
-            carrito.remove(carrito.size()-1);
+            jugador.carrito.remove(jugador.carrito.size()-1);
             ultimaOpcion=0;
             textSaldoJugador.setText("$"+jugador.saldo);
             bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         });
         
+        cambiarJugadorDerecha.setOnAction(event -> {                   
+            jugadorActual++;
+            if(jugadorActual==listJugadores.lista.size()){
+                jugadorActual=0;
+            }
+            cambiarJugador(listJugadores);
+            cambiarValores(listJugadores);
+            bloquearBoton(comprarBala60,comprarBala80,comprarBala105,listJugadores.lista.get(jugadorActual));
+        });
+        
+        cambiarJugadorIzquierda.setOnAction(event -> {                   
+            jugadorActual--;
+            if(jugadorActual<0){
+                jugadorActual=listJugadores.lista.size()-1;
+            }
+            cambiarJugador(listJugadores);
+            cambiarValores(listJugadores);
+            bloquearBoton(comprarBala60,comprarBala80,comprarBala105,listJugadores.lista.get(jugadorActual));
+        });
+        
         finalizarTienda.setOnAction(event -> {            
-            jugadorActual++; 
-            carrito.clear();
-            System.out.println("JugadorActual= "+jugadorActual);
-            System.out.println("Tamanio lista= "+listJugadores.lista.size());
             
+            for(Jugador jugadorlimpio:listJugadores.lista){
+                jugadorlimpio.carrito.clear();
+            }                
             panel.widthProperty().removeListener(widthListener);
             panel.heightProperty().removeListener(heightListener);
-            if (jugadorActual >= Globales.jugadores_def/*listJugadores.lista.size()/2*/) {
-                Globales.rondas_def--;  
-                if(Globales.rondas_def<=0){
-                    Globales.stage.close();
-                }
-                if(cambio==1){
-                    Globales.alto_resolucion--;
-                }
-                Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
-                juego.start();
-                
-            }
+
+            Globales.rondas_def--;  
             
-            if (jugadorActual < Globales.jugadores_def/*listJugadores.lista.size()/2*/) {
-                panel.getChildren().clear();
-                if(cambio==1){
-                    cambio--;
-                }
-                else{
-                 cambio++;   
-                }
-                
-                tiendaJugador(listJugadores.lista.get(jugadorActual),listJugadores);          
+            if(cambio==1){
+                Globales.alto_resolucion--;
             }
-            
-                   
+            Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
+            juego.start();              
         });
         
         widthListener= (obs, oldWidth, newWidth) -> {
@@ -260,20 +315,29 @@ public class Tienda  {
                     
             comprarBala60.setLayoutX(300*widthRatio);
             comprarBala60.setPrefWidth(120*widthRatio);
+            comprarBala60.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 18*widthRatio));
             
             comprarBala80.setLayoutX(450*widthRatio);
             comprarBala80.setPrefWidth(120*widthRatio);
+            comprarBala80.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 18*widthRatio));
             
             comprarBala105.setLayoutX(600*widthRatio);
             comprarBala105.setPrefWidth(120*widthRatio);
+            comprarBala105.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 18*widthRatio));
             
             revertirCompra.setLayoutX(435*widthRatio);
             revertirCompra.setPrefWidth(150*widthRatio);
+            revertirCompra.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 15*widthRatio));
             
             finalizarTienda.setLayoutX(72*widthRatio);
             finalizarTienda.setPrefWidth(150*widthRatio);
+            finalizarTienda.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 15*widthRatio));
             
-           
+            cambiar.setLayoutX(95*widthRatio);
+            cambiarJugadorDerecha.setPrefWidth(50*widthRatio);
+            cambiarJugadorDerecha.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 15*widthRatio));
+            cambiarJugadorIzquierda.setPrefWidth(50*widthRatio);
+            cambiarJugadorIzquierda.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 15*widthRatio));
             
         };
 
@@ -281,20 +345,18 @@ public class Tienda  {
             double heightRatio = newHeight.doubleValue() / 800;       
                     
             textNombreJugador.setLayoutY(320*heightRatio);
-            textNombreJugador.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 20*heightRatio));
             
             imagentanque.setFitHeight(150*heightRatio);   
             imagentanque.setLayoutY(270*heightRatio);
             
             textSaldoJugador.setLayoutY(420*heightRatio);
-            textSaldoJugador.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 20*heightRatio));
             
             textBalas60.setLayoutY(335*heightRatio);
-            textBalas60.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 20*heightRatio));
+            
             textBalas80.setLayoutY(335*heightRatio);
-            textBalas80.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 20*heightRatio));
+          
             textBalas105.setLayoutY(335*heightRatio);
-            textBalas105.setFont(Font.font(textNombreJugador.getFont().getFamily(),FontWeight.BOLD, 20*heightRatio));
+            
             
             comprarBala60.setLayoutY(360*heightRatio);
             comprarBala60.setPrefHeight(40*heightRatio);
@@ -311,17 +373,22 @@ public class Tienda  {
             finalizarTienda.setLayoutY(440*heightRatio);       
             finalizarTienda.setPrefHeight(40*heightRatio);
             
+            cambiar.setLayoutY(240*heightRatio);
+            cambiarJugadorDerecha.setPrefHeight(30*heightRatio);        
+            cambiarJugadorIzquierda.setPrefHeight(30*heightRatio);
+            
             
         };
-        // Después de configurar los ChangeListeners, forzar una actualización inicial
+        //despues de configurar los ChangeListeners, forzar una actualización inicial
         widthListener.changed(null, null, panel.getWidth());
         heightListener.changed(null, null, panel.getHeight()); 
         panel.widthProperty().addListener(widthListener);
         panel.heightProperty().addListener(heightListener);
         
         panel.getChildren().addAll(marco,comprarBala60,comprarBala80,comprarBala105,imagentanque,
-          textSaldoJugador, textBalas60,textBalas80,textBalas105,finalizarTienda,revertirCompra,textNombreJugador);        
-        Globales.cambiarEscena(escena);        
+          textSaldoJugador, textBalas60,textBalas80,textBalas105,finalizarTienda,revertirCompra,textNombreJugador,
+          cambiar);        
+        Globales.escena.setRoot(panel);        
     }
     
     public void bloquearBoton(Button comprarBala60,Button comprarBala80,Button comprarBala105,Jugador jugador){
@@ -367,6 +434,21 @@ public class Tienda  {
             }
             
         }     
+    }
+    
+    public void cambiarJugador(ListaJugadores listJugadores){
+        jugador=listJugadores.lista.get(jugadorActual);
+        
+    }
+    
+    public void cambiarValores(ListaJugadores listJugadores){
+        textNombreJugador.setText(listJugadores.lista.get(jugadorActual).nombre);
+        textSaldoJugador.setText("$"+listJugadores.lista.get(jugadorActual).saldo);
+        textBalas60.setText("60mm -- "+listJugadores.lista.get(jugadorActual).cantidad60);
+        textBalas80.setText("80mm -- "+listJugadores.lista.get(jugadorActual).cantidad80);
+        textBalas105.setText("105mm -- "+listJugadores.lista.get(jugadorActual).cantidad105);          
+        tanque = new Image(getClass().getResourceAsStream(jugador.color));
+        imagentanque.setImage(tanque);
     }
     
     /*   public void iniciarJuego(ListaJugadores listJugadores) {

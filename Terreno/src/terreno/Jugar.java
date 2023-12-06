@@ -27,7 +27,7 @@ public class Jugar  {
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)   
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.09;
-    Stage stage;
+    
     ListaJugadores listJugador;
     int alto = (Globales.alto_resolucion/pixel);
     int ancho=(Globales.ancho_resolucion/pixel);
@@ -56,9 +56,8 @@ public class Jugar  {
         if(revisarEstado()){
             return;
         }
-        stage=Globales.stage;
         System.out.println("global gravedad= "+Globales.gravedad_def);
-        stage.setResizable(true);
+        Globales.stage.setResizable(true);
         if(Globales.gravedad_def==1){
             Globales.gravedad=-15.98;
         }
@@ -67,7 +66,7 @@ public class Jugar  {
         }
 
         if(Globales.rondas_def==0){
-            stage.close();
+            Globales.stage.close();
         }
         //deberia de tomar la variable con lo que hay en configuracion         
         interfaz.iniciar_interfaz();
@@ -162,7 +161,7 @@ public class Jugar  {
             terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
             animacionCaida();
         }
-        stage.show();       
+        Globales.stage.show();       
     }   
     
     public void impacto_jugador(int jugadorImpactado, int danio) {

@@ -72,6 +72,7 @@ public class PantallaInicial extends Application {
              
         comenzar.setOnAction(e -> {         
             list.instanciarJugadores(Globales.jugadores_def,Globales.cantidad_def);
+            Globales.rondas_def++;
             Tienda tienda=new Tienda();
             tienda.inicializarInterfaz( list);
         });

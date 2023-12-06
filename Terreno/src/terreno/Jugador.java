@@ -1,5 +1,6 @@
 package terreno;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -26,6 +27,7 @@ public class  Jugador {
     private Tank tanque;
     int random;
     String tipo;
+    public ArrayList <Integer> carrito=new ArrayList<>();
     public boolean eliminado = false;
 
     public int getVida() {

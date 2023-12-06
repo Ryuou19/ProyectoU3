@@ -75,7 +75,6 @@ public class Jugar  {
         definifirPosicion();
         iniciar_terreno();
         comprobarBalasJugador();
-        revisarJugadores();
         Globales.cambiarViento();
         System.out.println("antes");
         System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
@@ -162,7 +161,11 @@ public class Jugar  {
             terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
             animacionCaida();
         }
-        stage.show();       
+        stage.show();
+        if(!disparo_en_curso)
+        {
+            revisarJugadores();
+        }
     }   
     
     public void impacto_jugador(int jugadorImpactado, int danio) {
@@ -428,7 +431,7 @@ public class Jugar  {
         }
         if (!disparo_en_curso){
             if(!Jugador.tiene_balas(listJugador)){
-                listJugador.desactivarJugador(listJugador.indiceActual); // marcamos el jugador como desactivado
+                listJugador.desactivarJugador(listJugador.getJugadorActual().jugador); // marcamos el jugador como desactivado
                 disparo_en_curso=false;
                 listJugador.generarTurnoAleatorio(); // cambiamos el turno automaticamente
                 interfaz.mostrarJugador(listJugador.getJugadorActual());
@@ -560,10 +563,11 @@ public class Jugar  {
                     }
 
                     if (nuevaBala.eliminar()) {
+
                         System.out.println("Victoria = " + impacto);
                         Globales.congelar(1);
-                        colision_bala();
                         stop();
+                        colision_bala();
                         disparo_en_curso = false;
                         if (Jugador.revisarBalasDisponibles(listJugador)) {
                             finalizarRonda();
@@ -604,8 +608,9 @@ public class Jugar  {
                 
             }
 
-            if (!balaEncontrada) { // ya se itero y el jugador no tiene mas balas
+            if (!balaEncontrada) { // ya se itero y el boty no tiene mas balas para escoger
                 //revisamos balas de los demas jugadores
+                revisarJugadores();
                 HBox bot=VentanaEmergente.aparecer("¡No le quedan mas balas\n   a este bot!",3);
                 if(Jugador.revisarBalasDisponibles(listJugador)){
                     HBox aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
@@ -659,6 +664,7 @@ public class Jugar  {
         for(Jugador jugador : listJugador.lista){
             if(jugador.getCantidad105()==0 && jugador.getCantidad80()==0 && jugador.getCantidad60()==0){
                 jugador.activo=false;
+                listJugador.desactivarJugador(jugador.jugador);
                 contador++;
             }
         }

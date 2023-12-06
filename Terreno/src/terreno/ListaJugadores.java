@@ -10,9 +10,9 @@
 
         public ArrayList<Integer> turnosDisponibles = new ArrayList<>();
         public int indiceActual;
-        public static int contador=0;
-
-
+        public int ultimo_indice=0;
+        public int ultimo_indice_lista=0;
+        public int contador_lista_turnos=0;
         private ListaJugadores()
         {}
 
@@ -89,52 +89,51 @@
                 Jugador aux= new Jugador(i,nombre,"bot");
                 lista.add(aux);
             }
-            generarTurnoAleatorio();
         }
 
 
         public void generarTurnoAleatorio() {
-
-            if(contador!=0){
-                if (turnosDisponibles.isEmpty()) {
-                    ArrayList<Integer> indicesNormales = new ArrayList<>();
-                    ArrayList<Integer> indicesBots = new ArrayList<>();
-                    for (Jugador jugador : lista) {
-                        if (!jugador.estaEliminado()) {
-                            if(jugador.activo){
-                                if ("jugador".equals(jugador.tipo)) {
-                                    indicesNormales.add(jugador.jugador);
-                                } else if ("bot".equals(jugador.tipo)) {
-                                    indicesBots.add(jugador.jugador);
-                                }
+            if (turnosDisponibles.isEmpty()) {
+                ArrayList<Integer> indicesNormales = new ArrayList<>();
+                ArrayList<Integer> indicesBots = new ArrayList<>();
+                for (Jugador jugador : lista) {
+                    if (!jugador.estaEliminado()) {
+                        if(jugador.activo){
+                            if ("jugador".equals(jugador.tipo)) {
+                                indicesNormales.add(jugador.jugador);
+                            } else if ("bot".equals(jugador.tipo)) {
+                                indicesBots.add(jugador.jugador);
                             }
                         }
                     }
-                    turnosDisponibles.addAll(indicesNormales);
-                    turnosDisponibles.addAll(indicesBots);
-                    turnosDisponiblesAux = new ArrayList<>(turnosDisponibles);
-                }
-                if (!turnosDisponibles.isEmpty()) {
-                    Collections.shuffle(turnosDisponibles);
-                    if(turnosDisponiblesAux.size()>1 && turnosDisponibles.size()==lista.size()){
-                        while(se_repite_indice(turnosDisponibles,turnosDisponiblesAux))
-                        {
-                            Collections.shuffle(turnosDisponibles);
-                        }
-                    }
-                    turnosDisponiblesAux = new ArrayList<>(turnosDisponibles);
-                    indiceActual = turnosDisponibles.remove(0);
-                    System.out.println("lista de turnos ->" + turnosDisponibles);
-                    System.out.println("lista de jugadores largo ->" + turnosDisponibles.size());
-                    for(Jugador jugar : lista)
-                    {
-                        System.out.println("jugador:"+jugar.jugador+"saldo"+jugar.saldo);
-                    }
                 }
 
-                contador++;
+                Collections.shuffle(indicesNormales);
+                Collections.shuffle(indicesBots);
+
+                turnosDisponibles.addAll(indicesNormales);
+                turnosDisponibles.addAll(indicesBots);
+                if(turnosDisponibles.size()>1){
+                    while (turnosDisponibles.get(0) == ultimo_indice_lista) {
+                        Collections.shuffle(turnosDisponibles);
+                    }
+
+                    // Actualizar el último índice después de la mezcla
+                    ultimo_indice_lista = turnosDisponibles.get(turnosDisponibles.size() - 1);
+
+                }else {Collections.shuffle(turnosDisponibles);}
+
+                System.out.println("Lista de turnos creada -> " + turnosDisponibles);
             }
-            contador++;
+            if (!turnosDisponibles.isEmpty()) {
+                indiceActual = turnosDisponibles.remove(0);
+                System.out.println("lista de turnos una vez actualizada ->"+turnosDisponibles);
+                for(Jugador jugar : lista)
+                {
+                    System.out.println("jugador:"+jugar.jugador+"saldo"+jugar.saldo);
+                }
+            }
+
         }
 
 
@@ -183,6 +182,7 @@
         }
         public boolean quedaUnoActivo()
         {
+            int cantidadMaximaDeMuertos=lista.size();
             int cantidad_inactivos=0;
             for(Jugador aux: lista)
             {
@@ -190,7 +190,7 @@
                 {
                     cantidad_inactivos++;
                 }
-                int cantidadMaximaDeMuertos=lista.size();
+
                 if(cantidad_inactivos==cantidadMaximaDeMuertos)
                 {
                     return true;
@@ -221,5 +221,5 @@
 
             return false;
         }
-        
+
     }

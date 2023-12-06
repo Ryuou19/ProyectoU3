@@ -298,6 +298,7 @@ public class Jugar  {
     }
 
     public void animacionCaida() {
+
         if(revisarEstado()){
             return;
         }
@@ -345,6 +346,10 @@ public class Jugar  {
                                     muerte.setLayoutX(Globales.alto_resolucion-300);
                                     muerte.setLayoutY(0);
                                     listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
+                                    Boolean terminar=revisarJugadores();
+                                    if(terminar){
+                                        return;
+                                    }
                                     listJugador.generarTurnoAleatorio();
                                     interfaz.mostrarJugador(listJugador.getJugadorActual());
                                     if (listJugador.getJugadorActual().tipo.equals("bot")) {
@@ -363,6 +368,7 @@ public class Jugar  {
                                 if(!tanque.esta_dentro_de_terreno(terrain))
                                 {
                                     stop();
+
                                     disparo_en_curso=false;
                                     HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
                                     interfaz.canvasPane.getChildren().add(muerte);
@@ -370,6 +376,10 @@ public class Jugar  {
                                     muerte.setLayoutY(0);
                                     listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
                                     listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
+                                    Boolean terminar=revisarJugadores();
+                                    if(terminar){
+                                        return;
+                                    }
                                     listJugador.generarTurnoAleatorio();
                                     interfaz.mostrarJugador(listJugador.getJugadorActual());
                                     if (listJugador.getJugadorActual().tipo.equals("bot")) {
@@ -397,7 +407,10 @@ public class Jugar  {
                 if (todosEnSuelo) {
                     disparo_en_curso=false;
                     stop();
-                    revisarJugadores();// marcamos a los jugadores que no podran jugar
+                    Boolean terminar=revisarJugadores();// marcamos a los jugadores que no podran jugar
+                    if(terminar) {
+                        return;
+                    }
                     System.out.println("animacion bala ->");
                     listJugador.generarTurnoAleatorio();//cambiamo turno
                     contador_inicio++;
@@ -504,6 +517,7 @@ public class Jugar  {
         Globales.cambiarViento();//cambiamos la dirección del viento
         System.out.println("viento de la bala->"+Globales.viento_def);
         new AnimationTimer() {
+
             long lastWindChangeTime = 0; // Variable para almacenar la última vez que cambió la dirección del viento
             int windChangeInterval = 50_000_000; // Cambiar la dirección del viento cada 1/20 de segundo
             double vientoIncremento = Globales.viento_def / 20.0; // Reducir la cantidad que se suma al eje x a 1/20
@@ -540,7 +554,6 @@ public class Jugar  {
                         stop();
                         colision_bala();
                         disparo_en_curso = false;
-                        revisarJugadores();// marcamos a los jugadores que no tengan balas (esta funcion reinicia la ronda sola)
                         animacionCaida();
                     }
                 }
@@ -553,7 +566,7 @@ public class Jugar  {
             return;
         }
         if (!disparo_en_curso) {
-            revisarJugadores();
+
             List<Integer> tiposDisponibles = new ArrayList<>();
             tiposDisponibles.add(1);tiposDisponibles.add(2);tiposDisponibles.add(3);
 
@@ -595,17 +608,19 @@ public class Jugar  {
         }
     }
   
-    public void revisarJugadores(){
+    public Boolean revisarJugadores(){
         for(Jugador jugador : listJugador.lista){
-            if(jugador.getCantidad105()==0 && jugador.getCantidad80()==0 && jugador.getCantidad60()==0){
+            if(jugador.getCantidad105()<=0 && jugador.getCantidad80()<=0 && jugador.getCantidad60()<=0){
+                System.out.println(" se desactivo ->"+jugador.jugador);
                 listJugador.desactivarJugador(jugador.jugador);
-
             }
         }
         if(listJugador.quedaUnoActivo())
         {
             finalizarRonda();
+            return true;
         }
+        return false;
     }
    
     public boolean revisarEstado(){

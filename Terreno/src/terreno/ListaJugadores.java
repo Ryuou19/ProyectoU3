@@ -102,8 +102,16 @@
                     }
                 }
             }
-            Collections.shuffle(turnosDisponibles);
-            indiceActual = turnosDisponibles.remove(0);
+            if (!turnosDisponibles.isEmpty()) {
+                Collections.shuffle(turnosDisponibles);
+                indiceActual = turnosDisponibles.remove(0);
+                System.out.println("lista de turnos ->" + turnosDisponibles);
+                System.out.println("lista de jugadores largo ->" + turnosDisponibles.size());
+                for(Jugador jugar : lista)
+                {
+                    System.out.println("jugador:"+jugar.jugador+"saldo"+jugar.saldo);
+                }
+            }
         }
 
 
@@ -121,7 +129,6 @@
 
             lista.get(indiceJugador).eliminar();
             turnosDisponibles.clear();
-            generarTurnoAleatorio(); // cambiamos el turno automaticamente
 
         }
         public void desactivarJugador(int indiceJugador)
@@ -153,15 +160,15 @@
         }
         public boolean quedaUnoActivo()
         {
-            int cantidadMuetos=0;
+            int cantidad_inactivos=0;
             for(Jugador aux: lista)
             {
                 if(!aux.activo)
                 {
-                    cantidadMuetos++;
+                    cantidad_inactivos++;
                 }
                 int cantidadMaximaDeMuertos=lista.size();
-                if(cantidadMuetos==cantidadMaximaDeMuertos)
+                if(cantidad_inactivos==cantidadMaximaDeMuertos)
                 {
                     return true;
                 }

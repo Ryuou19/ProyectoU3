@@ -68,17 +68,14 @@ public class Jugar  {
         if(Globales.rondas_def==0){
             Globales.stage.close();
         }
-        //deberia de tomar la variable con lo que hay en configuracion         
+        //deberia de tomar la variable con lo que hay en configuracion
         interfaz.iniciar_interfaz();
-        interfaz.mostrarJugador(listJugador.getJugadorActual());     
-        definifirPosicion();
+        definirPosicion();
         iniciar_terreno();
-        comprobarBalasJugador();
-        revisarJugadores();
-        Globales.cambiarViento();
-        System.out.println("antes");
-        System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
-        System.out.println("despues de desordenar la lista");
+
+        interfaz.mostrarJugador(listJugador.getJugadorActual());     
+
+
 
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
             finalizarRonda();
@@ -366,27 +363,23 @@ public class Jugar  {
                                 //revisamos si esta en fuera de terreno
                                 if(!tanque.esta_dentro_de_terreno(terrain))
                                 {
+                                    stop();
                                     disparo_en_curso=false;
                                     HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
                                     interfaz.canvasPane.getChildren().add(muerte);
                                     muerte.setLayoutX(Globales.alto_resolucion-300);
                                     muerte.setLayoutY(0);
                                     listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
-                                    System.out.println("suicidios de jugador"+listJugador.getJugadorActual().jugador+":"+listJugador.getJugadorActual().suicidios);
                                     listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
                                     listJugador.generarTurnoAleatorio();
                                     interfaz.mostrarJugador(listJugador.getJugadorActual());
                                     if (listJugador.getJugadorActual().tipo.equals("bot")) {
-                                        stop();
                                         iniciar_bot();
                                     }
-
                                     if(listJugador.quedaUnoVivo()) // si queda uno vivo terminamos la ronda
                                     {
-                                        stop();
                                         finalizarRonda();
                                     }
-                                    Globales.cambiarViento();
                                     animacionCaida();// para que se redibujen los tanques
                                     return;
                                 }
@@ -405,41 +398,19 @@ public class Jugar  {
                 if (todosEnSuelo) {
                     disparo_en_curso=false;
                     stop();
-                    if (contador_inicio != 0) {
-                        listJugador.generarTurnoAleatorio();//cambiamo turno
-                        comprobarBalasJugador();
-                    }
+                    revisarJugadores();// marcamos a los jugadores que no podran jugar
+                    System.out.println("animacion bala ->");
+                    listJugador.generarTurnoAleatorio();//cambiamo turno
                     contador_inicio++;
-
                     interfaz.mostrarJugador(listJugador.getJugadorActual());
                     if (listJugador.getJugadorActual().tipo.equals("bot")) {
                         iniciar_bot();
                     }
-
                 }
             }
         }.start();
     }
 
-    private void comprobarBalasJugador() {
-        if(revisarEstado()){
-            return;
-        }
-        if (!disparo_en_curso){
-            if(!Jugador.tiene_balas(listJugador)){
-                listJugador.desactivarJugador(listJugador.indiceActual); // marcamos el jugador como desactivado
-                disparo_en_curso=false;
-                listJugador.generarTurnoAleatorio(); // cambiamos el turno automaticamente
-                interfaz.mostrarJugador(listJugador.getJugadorActual());
-                if(listJugador.quedaUnoActivo()){ //si queda uno activo (osea que aun hay 1 con balas) terminamos la ronda              
-                    finalizarRonda();
-                }
-                if (listJugador.getJugadorActual().tipo.equals("bot")) {
-                    iniciar_bot();
-                }              
-            }
-        }
-    }
 
     public void elegir_bala(){
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
@@ -477,12 +448,13 @@ public class Jugar  {
         return terreno_random;
     }
        
-    void definifirPosicion(){
+    void definirPosicion(){
         if(revisarEstado()){
             return;
         }
         int largo = Globales.alto_resolucion-200;
         int ancho_segmento=largo/Globales.jugadores_def;
+        System.out.println("jugadores def es -> cantidad de jugadores"+Globales.jugadores_def);
         for(int i=0;i<Globales.jugadores_def;i++){
             int min=ancho_segmento*i;
             int max=ancho_segmento*(i+1);
@@ -559,20 +531,14 @@ public class Jugar  {
                     }
 
                     if (nuevaBala.eliminar()) {
+
                         System.out.println("Victoria = " + impacto);
-                        Globales.congelar(1);
-                        colision_bala();
+                        Globales.congelar(10);
                         stop();
+                        colision_bala();
                         disparo_en_curso = false;
-                        if (Jugador.revisarBalasDisponibles(listJugador)) {
-                            finalizarRonda();
-                        }
-                        if(revisarEstado()){
-                            return;
-                        }
+                        revisarJugadores();// marcamos a los jugadores que no tengan balas (esta funcion reinicia la ronda sola)
                         animacionCaida();
-                        System.out.println("Turnos que quedan -> " + listJugador.turnosDisponibles);
-                        interfaz.mostrarJugador(listJugador.getJugadorActual());
                     }
                 }
             }
@@ -584,6 +550,7 @@ public class Jugar  {
             return;
         }
         if (!disparo_en_curso) {
+            revisarJugadores();
             List<Integer> tiposDisponibles = new ArrayList<>();
             tiposDisponibles.add(1);tiposDisponibles.add(2);tiposDisponibles.add(3);
 
@@ -597,39 +564,12 @@ public class Jugar  {
                 balaEncontrada = !Jugador.comprobarMunicion(tipo,listJugador);
 
                 if (!balaEncontrada) {
-                    // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente               
+                    // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
                     tiposDisponibles.remove(indiceAleatorio);
                 }
-                
             }
 
-            if (!balaEncontrada) { // ya se itero y el jugador no tiene mas balas
-                //revisamos balas de los demas jugadores
-                HBox bot=VentanaEmergente.aparecer("¡No le quedan mas balas\n   a este bot!",3);
-                if(Jugador.revisarBalasDisponibles(listJugador)){
-                    HBox aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
-                    interfaz.canvasPane.getChildren().add(aviso);
-                    aviso.setLayoutX(Globales.alto_resolucion/2-80);
-                    aviso.setLayoutY(0);
-                    Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> finalizarRonda()));
-                    delay.play();
-                    return;
-                }
-                //niciamos al otro bot :
-                listJugador.generarTurnoAleatorio(); // se le sede el turno al proximo jugador
-                interfaz.canvasPane.getChildren().add(bot);
-                bot.setLayoutX(Globales.alto_resolucion/2-70);
-                bot.setLayoutY(Globales.ancho_resolucion);
-                
-                interfaz.mostrarJugador(listJugador.getJugadorActual());
-
-                if (listJugador.getJugadorActual().tipo.equals("bot")) {
-                    iniciar_bot();
-                }
-                return; // Termina la ejecución del método aquí
-            }
-
-            // Configuración del disparo del bot
+            // Configuración del disparo de la bala para el bot
             velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
             angulo = 180 + random.nextDouble() * 180; // Ajusta estos valores según tu juego
 
@@ -657,13 +597,14 @@ public class Jugar  {
         int cantidadMaxJugadores=listJugador.lista.size();
         for(Jugador jugador : listJugador.lista){
             if(jugador.getCantidad105()==0 && jugador.getCantidad80()==0 && jugador.getCantidad60()==0){
-                jugador.activo=false;
-                contador++;
+
+                listJugador.desactivarJugador(jugador.jugador);
+
             }
         }
-        if(contador==cantidadMaxJugadores)
+        if(listJugador.quedaUnoActivo())
         {
-            finalizarRonda();
+            reiniciar_partida();
         }
     }
    

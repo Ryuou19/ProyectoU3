@@ -4,20 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Scene;
 import javafx.util.Duration;
 
 
 
 public class Jugar  {  
     static Random random = new Random();
-    private int turno = 1;
+    public boolean jugando=true;
     double angulo;
     double velocidad;
     double cañonX;//posicion del angulo del cañon X
@@ -25,7 +23,7 @@ public class Jugar  {
     int impacto;//colision con un tanque
     int distancia=0;
     int altura=0;
-    int pixel = 3;
+    final int pixel = 3;
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)   
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.09;
@@ -54,7 +52,10 @@ public class Jugar  {
     
 
    
-    public void start(Scene scene) {
+    public void start() {
+        if(revisarEstado()){
+            return;
+        }
         stage=Globales.stage;
         System.out.println("global gravedad= "+Globales.gravedad_def);
         stage.setResizable(true);
@@ -69,31 +70,28 @@ public class Jugar  {
             stage.close();
         }
         //deberia de tomar la variable con lo que hay en configuracion         
-        interfaz.iniciar_interfaz(scene);
-        interfaz.mostrarJugador(listJugador.getJugadorActual());
+        interfaz.iniciar_interfaz();
+        interfaz.mostrarJugador(listJugador.getJugadorActual());     
+        definifirPosicion();
         iniciar_terreno();
+        comprobarBalasJugador();
+        revisarJugadores();
+        Globales.cambiarViento();
         System.out.println("antes");
         System.out.println("le toca al "+ (listJugador.getJugadorActual().jugador+1));
         System.out.println("despues de desordenar la lista");
-
-        //ahora el codigo se operara con el jugador que este en su turno -> listJugador.getJugadorActual();
 
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
             finalizarRonda();
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
             reiniciar_partida();
-        });
-        
+        });        
         tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
-        //Seleccion del tipo----------------------------------------------------------------------------------
-
         elegir_bala();
-
-        
+       
         interfaz.disparar.setOnAction(event ->{
-                
-                
+                              
                 if (comprobarMunicion(tipo)) {//verifica si quedan balas del tipo seleccionado
                     HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
                     interfaz.canvasPane.getChildren().add(aviso);
@@ -108,8 +106,7 @@ public class Jugar  {
                         delay.play();
                         return;
                     }
-                    tipo=0;
-                    
+                    tipo=0;                   
                     if(revisarBalasDisponibles()){
                         aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
                         interfaz.canvasPane.getChildren().add(aviso);
@@ -117,15 +114,12 @@ public class Jugar  {
                         aviso.setLayoutY(0);
                         Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> finalizarRonda()));
                         delay.play();
-                    }
-                                                
-                }
-                
+                    }                                               
+                }              
                 if(tipo==0){//si no se selecciono nada o se equivoco
                     return;
                 }
-                ingresar_disparo();//ingresa los label que guardaran el valor de angulo y velocidad
-                //--------------------------------------------------------------------------------------
+                interfaz.ingresar_disparo();//ingresa los label que guardaran el valor de angulo y velocidad
                 String anguloTexto = interfaz.entradaangulo.getText();
                 String velocidadTexto = interfaz.entradavelocidad.getText();       
                 if(anguloTexto.isEmpty() || velocidadTexto.isEmpty() || anguloTexto.equals("0") || velocidadTexto.equals("0")){//verifica las entradas             
@@ -134,7 +128,6 @@ public class Jugar  {
                 }
                 angulo = -Double.parseDouble(anguloTexto);
                 velocidad = Double.parseDouble(velocidadTexto);
-
                 System.out.println("la velocidad es->"+velocidad);
                 Bala nuevaBala = crear_bala();//creamos nueva bala con el tipo seleciconado
                 //comprobamos si la bala esta vacia
@@ -145,19 +138,18 @@ public class Jugar  {
                     System.out.println("disparo en curso->"+disparo_en_curso);
                     disparo_en_curso = false;
                     animacionBala(nuevaBala);
-
                 }     
             interfaz.entradaangulo.setText("");
             interfaz.entradavelocidad.setText("");
             }           
-        );
-        
+        );      
     } 
     
     public void iniciar_terreno(){//inicializa la matriz del terreno y la dibuja dependiendo de la eleccion random
-        
-        terrain.iniciar();
-        definifirPosicion();
+        if(revisarEstado()){
+            return;
+        }
+        terrain.iniciar();       
         validar=0;
         if(terreno_random == 0) {
             terrain.terreno_nieve(interfaz.gc, 0.0, 100,validar, terrain,alto,ancho);
@@ -171,33 +163,17 @@ public class Jugar  {
             terrain.terreno_aram(interfaz.gc, 0.0, 100,validar,terrain,alto,ancho);
             animacionCaida();
         }
-        stage.show();
-        /*System.out.println("posicion del tanque1 x e y -> x"+listJugador.getJugador1().getTanque().getCañonX()+"y"+listJugador.getJugador1().getTanque().getCañonY());
-        System.out.println("posicion del cañon x e y -> x"+listJugador.getJugador1().getTanque().getPosicionX()+"y"+listJugador.getJugador1().getTanque().getPosicionY());
-        System.out.println("posicion del tanque2 x e y -> x"+listJugador.getJugador2().getTanque().getCañonX()+"y"+listJugador.getJugador2().getTanque().getCañonY());
-        System.out.println("posicion del cañon x e y -> x"+listJugador.getJugador2().getTanque().getPosicionX()+"y"+listJugador.getJugador2().getTanque().getPosicionY());*/
-        validar=1;
-        imprimirVidaJugadores();
-        //revisamos las balas de los jugadores
-        comprobarBalasJugador();
-        revisarJugadores();// revisamos las balas de los jugadores
-        Globales.cambiarViento();
-    }
-    
-    public void ingresar_disparo(){
-        interfaz.disparar.setDisable(true);
-        Label distanciaLabel = (Label) interfaz.boxdistancia.getChildren().get(1);
-        distanciaLabel.setText(" ");                               
-        Label alturaLabel = (Label) interfaz.boxaltura.getChildren().get(1);
-        alturaLabel.setText(" ");           
-    }
+        stage.show();       
+    }   
     
     public void impacto_jugador(int jugadorImpactado, int danio) {
-        jugadorImpactado = jugadorImpactado - 1; // Ajustar para acceder al índice
+        if(revisarEstado()){
+            return;
+        }
+        jugadorImpactado--;// Ajustar para acceder al índice
         Jugador jugador = listJugador.lista.get(jugadorImpactado);
         jugador.ajustar_vida(jugador.getVida(), danio);
-
-        // Verifica si el jugador actual es diferente del jugador impactado
+        //verifica si el jugador actual es diferente del jugador impactado
         boolean es_el_mismo=false;
         if (listJugador.getJugadorActual() != jugador) {
             listJugador.getJugadorActual().saldo += 10; // Damos monedas al tanque actual por impactar
@@ -206,13 +182,12 @@ public class Jugar  {
                 listJugador.getJugadorActual().saldo += 5000;
                 System.out.println("Asesinatos del jugador = " + listJugador.getJugadorActual().asesionatos);
             }
-        } else {
-            // Caso donde el jugador se impacta a sí mismo no hacmos nada
+        } 
+        else {
             es_el_mismo=true;
         }
         if (jugador.vida <= 0) {
-            int marca_hitbox = jugadorImpactado + 1;
-            terrain.borrarHitboxJugador(marca_hitbox);
+            terrain.borrarHitboxJugador(jugadorImpactado + 1);//valor de representacion en la hitbox del jugador
             if(!es_el_mismo){
                 listJugador.eliminarJugador(jugadorImpactado); // Marca al jugador como eliminado
                 HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
@@ -220,8 +195,7 @@ public class Jugar  {
                 muerte.setLayoutX(Globales.alto_resolucion-300);
                 muerte.setLayoutY(0);
             }
-            else {
-                // si no es el mismo
+            else{//si no es el mismo
                 listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
                 HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" se a suicidado..."+"contador de suicidios->"+jugador.suicidios, 3);
                 interfaz.canvasPane.getChildren().add(muerte);
@@ -229,17 +203,17 @@ public class Jugar  {
                 muerte.setLayoutY(0);
                 listJugador.eliminarJugador(jugadorImpactado);
             }
-            if (listJugador.quedaUnoVivo()) { // Si queda un jugador, termina y reinicia
+            if (listJugador.quedaUnoVivo()) {//Si queda un jugador, termina y reinicia
                 finalizarRonda();
             }
-        }
-        
-        imprimirVidaJugadores();
+        }       
+        //imprimirVidaJugadores();
     }
-
-    
-    
+   
     public void colision_bala(){
+        if(revisarEstado()){
+            return;
+        }
         calcular_explosion();
         if(terreno_random == 0) {
             terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
@@ -252,8 +226,12 @@ public class Jugar  {
         }
         interfaz.disparar.setDisable(false);       
         tipo=0;
-    }    
+    } 
+    
     public Bala crear_bala(){
+        if(revisarEstado()){
+            return null;
+        }
         int danio=0;
         if(tipo==1){
             danio=30;
@@ -270,8 +248,7 @@ public class Jugar  {
         return nuevaBala;
     }
     
-    public Boolean comprobarMunicion(int tipo)//comprueba si es que las balas que posee el jugador estan vacias
-    {
+    public Boolean comprobarMunicion(int tipo){//comprueba si es que ls bala ingresada que posee el jugador esta vacia 
         switch (tipo){
             case 1:
                 return listJugador.getJugadorActual().getCantidad60() == 0;
@@ -282,78 +259,69 @@ public class Jugar  {
             default:
                 break;
         }
-
         return false;
     }
 
     public void calcular_explosion(){//calcula la explosion en base a un area que se genera con el contacto entre la explosion y la hitbox del tanque(para efectos mas realistas)
+        if(revisarEstado()){
+            return;
+        }
         int area=0;
         int tanque=0;
-        int choque=0;
+        int choque;
         for(int i=0;i<terrain.matriz.length;i++){
             for(int j=0;j<terrain.matriz[i].length;j++){
                 choque=terrain.matriz[i][j];
                 if(terrain.explosion[i][j]==1 && choque==2){
                     area++;
-                    tanque=1;
-                
+                    tanque=1;           
                 }
                 if(terrain.explosion[i][j]==1 && choque==3){
                     area++;
                     tanque=2;
-                 
                 }
                 if(terrain.explosion[i][j]==1 && choque==4){
                     area++;
                     tanque=3;
-                
                 }
                 if(terrain.explosion[i][j]==1 && choque==5){
                     area++;
                     tanque=4;
-                    
                 }
                 if(terrain.explosion[i][j]==1 && choque==6){
                     area++;
                     tanque=5;
-                    
                 }
                 if(terrain.explosion[i][j]==1 && choque==7){
                     area++;
                     tanque=6;
-                    
                 }
             }
         }
         System.out.println("el area es "+area);
         area = Math.round(area / 2);//se divide a la mitad ya que la hitbox del tanque tiene 200 valores, y la vida del tanque es 100, para hacerlo mas preciso
         if(area>terrain.radio){//en caso de que el area sea mayor al daño propio de la bala, se inflinge el daño base de la bala partido a la mitad, ya que no fue un disparo directo como tal
-            switch (terrain.radio) {
-                case 5 : area=30/2;
-                case 10 : area=40/2;
-                case 15 : area=50/2;
-                default : {
-                }
+            if(terrain.radio==5){ 
+                area=30/2;
             }
+            if(terrain.radio==10){ 
+                area=40/2;
+            }
+            if(terrain.radio==15){ 
+                area=50/2;
+            }    
         }
         if(tanque!=0){
-            impacto_jugador(tanque,area);//realiza el impacto  a todos los tanques
+            impacto_jugador(tanque,area);//realiza el impacto al tanque
             System.out.println("daño de area");
-            imprimirVidaJugadores();
         }
-        reiniciar_matriz(terrain.explosion);//reinicia la matriz de explosion para que asi no guarde valores de explosiones anteriores     
-    }
-    
-    public void reiniciar_matriz(int explosion[][]) {
-        for (int i = 0; i < explosion.length; i++) {
-            for (int j = 0; j < explosion[i].length; j++) {
-                explosion[i][j] = 0;
-            }
-        }
+        terrain.reiniciar_matriz(terrain.explosion);//reinicia la matriz de explosion para que asi no guarde valores de explosiones anteriores     
     }
 
     public void animacionCaida() {
-
+        if(revisarEstado()){
+            return;
+        }
         new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -471,10 +439,11 @@ public class Jugar  {
     }
 
     private void comprobarBalasJugador() {
-        if (!disparo_en_curso)
-        {
-            if(!tiene_balas())
-            {
+        if(revisarEstado()){
+            return;
+        }
+        if (!disparo_en_curso){
+            if(!tiene_balas()){
                 listJugador.desactivarJugador(listJugador.indiceActual); // marcamos el jugador como desactivado
                 disparo_en_curso=false;
                 listJugador.generarTurnoAleatorio(); // cambiamos el turno automaticamente
@@ -486,21 +455,16 @@ public class Jugar  {
                 if (listJugador.getJugadorActual().tipo.equals("bot")) {
                     iniciar_bot();
                 }
-
-                if(listJugador.quedaUnoActivo()) // si queda uno activo (osea que aun hay 1 con balas) terminamos la ronda
-                {
+                if(listJugador.quedaUnoActivo()){ //si queda uno activo (osea que aun hay 1 con balas) terminamos la ronda              
                     finalizarRonda();
                 }
             }
         }
     }
 
-
     public void elegir_bala(){
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
-              
-
-        interfaz.bala1.setOnAction(event -> {//escoge bala 1
+            interfaz.bala1.setOnAction(event -> {//escoge bala 1
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
             interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
             tipo=1;//ajusta el tipo          
@@ -527,27 +491,18 @@ public class Jugar  {
     }
     
     public void reiniciar_partida(){
-        //Tienda tienda=new Tienda();
-        //tienda.inicializarInterfaz(listJugador);
-        contador_inicio=0;
-        terrain.setContador(0);
-            int nuevoTerreno = random.nextInt(3);         
-            while (nuevoTerreno == terreno_random) {
-                nuevoTerreno = random.nextInt(3);
-            }            
-            terreno_random = nuevoTerreno;
-            
-            iniciar_terreno();
-            animacionCaida();        
-            
-           
-            
+        jugando=false;
+        escenaTienda.inicializarInterfaz(listJugador);
+        //metodos y codigo para reiniciar todos los valores de progreso de los jugadores          
     }
     public static int getRandom(){
         return terreno_random;
     }
        
     void definifirPosicion(){
+        if(revisarEstado()){
+            return;
+        }
         int largo = Globales.alto_resolucion-200;
         int ancho_segmento=largo/Globales.jugadores_def;
         for(int i=0;i<Globales.jugadores_def;i++)
@@ -575,6 +530,7 @@ public class Jugar  {
     public void finalizarRonda(){
         listJugador.revivir(); //marcamos todos los jugadores como vivos
         terrain.borrarHitboxAnterior();// eliminamos las hitbox anteriores
+        jugando=false;
         if(Globales.rondas_def>0){                   
             escenaTienda.inicializarInterfaz(listJugador);
             pagar_ronda();
@@ -602,6 +558,9 @@ public class Jugar  {
     }
 
     public void animacionBala(Bala nuevaBala) {
+        if(revisarEstado()){
+            return;
+        }
         Globales.cambiarViento(); // Cambiamos la dirección del viento
         System.out.println("viento de la bala->"+Globales.viento_def);
         new AnimationTimer() {
@@ -660,6 +619,9 @@ public class Jugar  {
     }
 
     public void iniciar_bot() {
+        if(revisarEstado()){
+            return;
+        }
         if (!disparo_en_curso) {
             List<Integer> tiposDisponibles = new ArrayList<>();
             tiposDisponibles.add(1);tiposDisponibles.add(2);tiposDisponibles.add(3);
@@ -749,15 +711,12 @@ public class Jugar  {
        }
         return true;
     }
-    public void revisarJugadores()
-    {
+    public void revisarJugadores(){
         int contador=0;
         int cantidadMaxJugadores=listJugador.lista.size();
-        for(Jugador aux : listJugador.lista)
-        {
-            if(aux.getCantidad105()==0 && aux.cantidad105==0 && aux.cantidad60==0)
-            {
-                aux.activo=false;
+        for(Jugador jugador : listJugador.lista){
+            if(jugador.getCantidad105()==0 && jugador.getCantidad80()==0 && jugador.getCantidad60()==0){
+                jugador.activo=false;
                 contador++;
             }
         }
@@ -765,6 +724,10 @@ public class Jugar  {
         {
             finalizarRonda();
         }
+    }
+   
+    public boolean revisarEstado(){
+        return jugando == false;
     }
 
 }

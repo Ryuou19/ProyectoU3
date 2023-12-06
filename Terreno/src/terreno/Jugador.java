@@ -21,7 +21,6 @@ public class  Jugador {
     int saldo;
     int posicionInicalX=0;
     int posicionInicialY=100;
-    //hola
     int asesionatos;
     public Random rand;
     private Tank tanque;
@@ -106,7 +105,8 @@ public class  Jugador {
     
     public void creaTanque(GraphicsContext gc,  int vida, int validar, Terreno terreno){
         if(validar==0){//verifica si se crea desde un terreno completamente nuevo o solo de un cambio de turno
-            this.random=rand.nextInt(4);      
+            this.random=rand.nextInt(4);  
+            validar=1;
         }
         Tank tanque = new Tank(color, jugador);
         tanque.agregarTanque(gc,this.random,vida,terreno,posicionInicalX,posicionInicialY);

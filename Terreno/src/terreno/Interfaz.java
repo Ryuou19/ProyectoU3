@@ -114,7 +114,7 @@ public class Interfaz {
     GraphicsContext gc;
     Pane canvasPane = new Pane();
     
-    public void iniciar_interfaz( Scene escena){//inicia todo lo visual e interactivo de la interfaz de juego         
+    public void iniciar_interfaz(){//inicia todo lo visual e interactivo de la interfaz de juego         
         Globales.cambiarResolucion(Globales.alto_resolucion-1, Globales.ancho_resolucion-1);
         canvasPane.setPrefSize(alto, ancho);       
         
@@ -123,9 +123,9 @@ public class Interfaz {
         GraphicsContext newgc = canvas.getGraphicsContext2D();
         gc=newgc;
         
-        escena.setRoot(canvasPane);
+        Globales.escena.setRoot(canvasPane);
         canvasPane.getChildren().add(canvas);
-        Globales.stage.setScene(escena);
+        Globales.stage.setScene(Globales.escena);
         
         //FONDO HUD
         hud.setPreserveRatio(false);      
@@ -333,11 +333,7 @@ public class Interfaz {
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
                 boxjugador,disparar, boxdistancia, boxaltura, barraDeVida, 
                 reiniciar, finalizar, tipos, cantidad);
-        
-        
-        
-        
-        
+               
     }
     
     public void mostrarJugador(Jugador jugador){
@@ -372,7 +368,15 @@ public class Interfaz {
                              "-fx-background-color: black, black; " +
                              "-fx-background-insets: 0, 2; " +
                              "-fx-background-radius: 0.5em;");
-        }
-              
-    }   
+        }             
+    }  
+    
+    public void ingresar_disparo(){
+        disparar.setDisable(true);
+        Label distanciaLabel = (Label) boxdistancia.getChildren().get(1);
+        distanciaLabel.setText(" ");                               
+        Label alturaLabel = (Label) boxaltura.getChildren().get(1);
+        alturaLabel.setText(" ");           
+    }
+    
 }

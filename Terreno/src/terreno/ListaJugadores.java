@@ -10,6 +10,8 @@
 
         public ArrayList<Integer> turnosDisponibles = new ArrayList<>();
         public int indiceActual;
+        public static int contador=0;
+
 
         private ListaJugadores()
         {}
@@ -29,7 +31,7 @@
         public void setTerreno(Terreno terreno) {
             this.terreno = terreno;
         }
-
+        ArrayList<Integer> turnosDisponiblesAux = new ArrayList<>();
 
         public ArrayList<Jugador> getLista(){
             return lista;
@@ -92,26 +94,47 @@
 
 
         public void generarTurnoAleatorio() {
-            if (turnosDisponibles.isEmpty()) {
-                for (Jugador jugador : lista) {
-                    if (!jugador.estaEliminado()) {
-                        if(jugador.activo){
-                            turnosDisponibles.add(jugador.jugador);
-                        }
 
+            if(contador!=0){
+                if (turnosDisponibles.isEmpty()) {
+                    ArrayList<Integer> indicesNormales = new ArrayList<>();
+                    ArrayList<Integer> indicesBots = new ArrayList<>();
+                    for (Jugador jugador : lista) {
+                        if (!jugador.estaEliminado()) {
+                            if(jugador.activo){
+                                if ("jugador".equals(jugador.tipo)) {
+                                    indicesNormales.add(jugador.jugador);
+                                } else if ("bot".equals(jugador.tipo)) {
+                                    indicesBots.add(jugador.jugador);
+                                }
+                            }
+                        }
+                    }
+                    turnosDisponibles.addAll(indicesNormales);
+                    turnosDisponibles.addAll(indicesBots);
+                    turnosDisponiblesAux = new ArrayList<>(turnosDisponibles);
+                }
+                if (!turnosDisponibles.isEmpty()) {
+                    Collections.shuffle(turnosDisponibles);
+                    if(turnosDisponiblesAux.size()>1 && turnosDisponibles.size()==lista.size()){
+                        while(se_repite_indice(turnosDisponibles,turnosDisponiblesAux))
+                        {
+                            Collections.shuffle(turnosDisponibles);
+                        }
+                    }
+                    turnosDisponiblesAux = new ArrayList<>(turnosDisponibles);
+                    indiceActual = turnosDisponibles.remove(0);
+                    System.out.println("lista de turnos ->" + turnosDisponibles);
+                    System.out.println("lista de jugadores largo ->" + turnosDisponibles.size());
+                    for(Jugador jugar : lista)
+                    {
+                        System.out.println("jugador:"+jugar.jugador+"saldo"+jugar.saldo);
                     }
                 }
+
+                contador++;
             }
-            if (!turnosDisponibles.isEmpty()) {
-                Collections.shuffle(turnosDisponibles);
-                indiceActual = turnosDisponibles.remove(0);
-                System.out.println("lista de turnos ->" + turnosDisponibles);
-                System.out.println("lista de jugadores largo ->" + turnosDisponibles.size());
-                for(Jugador jugar : lista)
-                {
-                    System.out.println("jugador:"+jugar.jugador+"saldo"+jugar.saldo);
-                }
-            }
+            contador++;
         }
 
 
@@ -183,6 +206,20 @@
                 aux.activo=true; // lo marcamos como activo
                 aux.setVida(100);
             }
+        }
+        public static boolean se_repite_indice(ArrayList<Integer> lista1, ArrayList<Integer> lista2) {
+            // Verifica si las listas tienen la misma longitud
+            if (lista1.size() != lista2.size()) {
+                return false;
+            }
+
+            for (int i = 0; i < lista1.size(); i++) {
+                if (lista1.get(i).equals(lista2.get(i))) {
+                    return true;
+                }
+            }
+
+            return false;
         }
         
     }

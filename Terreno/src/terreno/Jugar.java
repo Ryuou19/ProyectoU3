@@ -171,7 +171,6 @@ public class Jugar  {
         //verifica si el jugador actual es diferente del jugador impactado
         boolean es_el_mismo=false;
         if (listJugador.getJugadorActual() != jugador) {
-            listJugador.getJugadorActual().saldo += 10; // Damos monedas al tanque actual por impactar
             if (jugador.vida <= 0) {
                 listJugador.getJugadorActual().asesionatos += 1; // Incrementa asesinatos
                 listJugador.getJugadorActual().saldo += 5000;
@@ -480,15 +479,19 @@ public class Jugar  {
         listJugador.revivir(); //marcamos todos los jugadores como vivos
         terrain.borrarHitboxAnterior();// eliminamos las hitbox anteriores
         jugando=false;
-        if(Globales.rondas_def>0){                   
+        Jugador.pagar_ronda(listJugador);
+        for(Jugador jugador:listJugador.lista){
+            System.out.println("saldo= "+jugador.saldo);
+        }
+        if(Globales.rondas_def>0){        
             escenaTienda.inicializarInterfaz(listJugador);
-            Jugador.pagar_ronda(listJugador);
             System.out.println("Rondas="+Globales.rondas_def);
         }
         if(Globales.rondas_def==0){
             Platform.exit();
         }     
     } 
+   
     
     public void elegir_bala_bot(){
         tipo=random.nextInt(3)+1;
@@ -533,7 +536,7 @@ public class Jugar  {
                     if (nuevaBala.eliminar()) {
 
                         System.out.println("Victoria = " + impacto);
-                        Globales.congelar(10);
+                        Globales.congelar(1);
                         stop();
                         colision_bala();
                         disparo_en_curso = false;
@@ -593,18 +596,15 @@ public class Jugar  {
     }
   
     public void revisarJugadores(){
-        int contador=0;
-        int cantidadMaxJugadores=listJugador.lista.size();
         for(Jugador jugador : listJugador.lista){
             if(jugador.getCantidad105()==0 && jugador.getCantidad80()==0 && jugador.getCantidad60()==0){
-
                 listJugador.desactivarJugador(jugador.jugador);
 
             }
         }
         if(listJugador.quedaUnoActivo())
         {
-            reiniciar_partida();
+            finalizarRonda();
         }
     }
    

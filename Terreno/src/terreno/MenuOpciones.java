@@ -18,7 +18,7 @@ public class MenuOpciones {
     "9","10","11","12","13","14",
     "15","16","17","18","19","20"};
     private final String[] gravedad={"Normal","15,81","5,81"};
-    private final String[] cantidad = {"0","1", "2","3","4","5"};
+    private final String[] cantidad = {"0","1", "2","3","4","5","6"};
     private final String[] viento={"-NO-","-SI-"};
     private int opcionActualResolucion = 0;
     private int opcionActualJugadores = 0;
@@ -195,12 +195,14 @@ public class MenuOpciones {
 
         flecha_derecha3.setStyle(estilo_botones);
         flecha_derecha3.setOnAction(e -> {
+            flecha_derecha5.setDisable(false); 
             Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
         });
 
         flecha_izquierda3.setStyle(estilo_botones);
         flecha_izquierda3.setOnAction(e -> {
+            flecha_izquierda5.setDisable(false);
             Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
         });
@@ -220,13 +222,26 @@ public class MenuOpciones {
         flecha_derecha5.setStyle(estilo_botones);
         flecha_derecha5.setOnAction(e -> {         
             Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
+            flecha_izquierda5.setDisable(false);
             System.out.println("Actual = "+Globales.cantidad_def); 
+            if(Globales.cantidad_def>Globales.jugadores_def-1){
+                flecha_derecha5.setDisable(true);
+                Globales.cantidad_def=Globales.jugadores_def;
+                
+            }
+            
         });
         
         flecha_izquierda5.setStyle(estilo_botones);
         flecha_izquierda5.setOnAction(e -> {         
-            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
+            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);         
             System.out.println("Actual = "+Globales.cantidad_def); 
+            
+            flecha_derecha5.setDisable(false);
+            if(Globales.cantidad_def>Globales.jugadores_def-1){
+                flecha_izquierda5.setDisable(true);
+                Globales.cantidad_def=Globales.jugadores_def;
+            }
         });
                     
         menu_cantidad.getChildren().addAll(flecha_izquierda5,opcion_cantidad, flecha_derecha5);        

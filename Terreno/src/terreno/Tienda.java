@@ -437,8 +437,7 @@ public class Tienda  {
     }
     
     public void cambiarJugador(ListaJugadores listJugadores){
-        jugador=listJugadores.lista.get(jugadorActual);
-        
+        jugador=listJugadores.lista.get(jugadorActual);     
     }
     
     public void cambiarValores(ListaJugadores listJugadores){
@@ -450,15 +449,4 @@ public class Tienda  {
         tanque = new Image(getClass().getResourceAsStream(jugador.color));
         imagentanque.setImage(tanque);
     }
-    
-    /*   public void iniciarJuego(ListaJugadores listJugadores) {
-    // Iniciar el juego con la lista de jugadores
-    Jugar juego = new Jugar(listJugadores);
-    juego.start(Globales.escena);
-
-    // Después de iniciar el juego, limpiar y cerrar la escena actual de la tienda
-    limpiarTienda();
-    Globales.cerrarEscenaActual(); // Debes definir este método en tu clase Globales para cerrar la escena actual. 
-    }
-    */
 }

@@ -134,4 +134,52 @@ public class  Jugador {
         this.vida=vida;
         return vida;
     }
+    public static Boolean comprobarMunicion(int tipo, ListaJugadores listJugador){//comprueba si es que ls bala ingresada que posee el jugador esta vacia 
+        switch (tipo){
+            case 1:
+                return listJugador.getJugadorActual().getCantidad60() == 0;
+            case 2:
+                return listJugador.getJugadorActual().getCantidad80() == 0;
+            case 3:
+                return listJugador.getJugadorActual().getCantidad105() == 0;
+            default:
+                break;
+        }
+        return false;
+    }
+    
+    public static void pagar_ronda(ListaJugadores listJugador){
+        for(Jugador jugador: listJugador.lista){
+            jugador.saldo+=10000;
+            if(jugador.asesionatos!=0){
+                jugador.saldo+=5000*jugador.asesionatos;
+            }
+            if(jugador.suicidios!=0){
+                jugador.saldo-=5000*jugador.suicidios;
+            }
+        }
+    }
+    
+    public static boolean revisarBalasDisponibles(ListaJugadores listJugador){//revisa las balas disponibles de todos los jugadores para ver si es que hay que finalizar la ronda
+        for(Jugador jugador : listJugador.getLista()){
+            if(jugador.getCantidad60()!=0){
+                return false;
+            }
+            if(jugador.getCantidad80()!=0){
+                return false;
+            }
+            if(jugador.getCantidad105()!=0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static boolean tiene_balas(ListaJugadores listJugador){ //comprobamos si el jugador actual le quedan balas
+       if( listJugador.getJugadorActual().getCantidad60()<=0 && listJugador.getJugadorActual().getCantidad80()<=0 && listJugador.getJugadorActual().getCantidad105()<=0)
+       {
+           return false;
+       }
+        return true;
+    }
 }

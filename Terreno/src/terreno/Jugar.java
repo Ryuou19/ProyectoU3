@@ -172,9 +172,8 @@ public class Jugar  {
         boolean es_el_mismo=false;
         if (listJugador.getJugadorActual() != jugador) {
             if (jugador.vida <= 0) {
-                listJugador.getJugadorActual().asesionatos += 1; // Incrementa asesinatos
-                listJugador.getJugadorActual().saldo += 5000;
-                System.out.println("Asesinatos del jugador = " + listJugador.getJugadorActual().asesionatos);
+                listJugador.getJugadorActual().asesionatos++;
+                listJugador.getJugadorActual().asesinatosTotales++;
             }
         } 
         else {
@@ -191,6 +190,7 @@ public class Jugar  {
             }
             else{//si no es el mismo
                 listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
+                listJugador.getJugadorActual().suicidiosTotales++;
                 HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" se a suicidado..."+"contador de suicidios->"+jugador.suicidios, 3);
                 interfaz.canvasPane.getChildren().add(muerte);
                 muerte.setLayoutX(Globales.alto_resolucion-300);
@@ -491,7 +491,7 @@ public class Jugar  {
     
     public void finalizarRonda(){
         listJugador.revivir(); //marcamos todos los jugadores como vivos
-        terrain.borrarHitboxAnterior();// eliminamos las hitbox anteriores
+        terrain.borrarHitboxAnterior();//eliminamos las hitbox anteriores
         jugando=false;
         Jugador.pagar_ronda(listJugador);
         
@@ -579,7 +579,7 @@ public class Jugar  {
 
             boolean balaEncontrada = false;
 
-            // Verifica cada tipo de bala hasta encontrar una con municiones o agotar todas las opciones
+            //verifica cada tipo de bala hasta encontrar una con municiones o agotar todas las opciones
             while (!tiposDisponibles.isEmpty() && !balaEncontrada) {
                 
                 int indiceAleatorio = random.nextInt(tiposDisponibles.size());
@@ -589,8 +589,11 @@ public class Jugar  {
                 if (!balaEncontrada) {
                     // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
                     tiposDisponibles.remove(indiceAleatorio);
+                    tipo=0;
                 }
             }
+            
+            revisarJugadores();
 
             // Configuración del disparo de la bala para el bot
             velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
@@ -617,13 +620,14 @@ public class Jugar  {
   
     public Boolean revisarJugadores(){
         for(Jugador jugador : listJugador.lista){
-            if(jugador.getCantidad105()<=0 && jugador.getCantidad80()<=0 && jugador.getCantidad60()<=0){
-                System.out.println(" se desactivo ->"+jugador.jugador);
+            if(jugador.cantidad105<=0 && jugador.cantidad80<=0 && jugador.cantidad60<=0){
+                System.out.println(" se desactivo ->"+(jugador.jugador+1));
                 listJugador.desactivarJugador(jugador.jugador);
             }
         }
         if(listJugador.quedaUnoActivo())
-        {
+        {   
+            System.out.println("!!QUEDA UNO ACTIVO!!");
             finalizarRonda();
             return true;
         }

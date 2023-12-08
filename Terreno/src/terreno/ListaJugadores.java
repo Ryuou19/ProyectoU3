@@ -156,7 +156,7 @@
         public void desactivarJugador(int indiceJugador)
         {
             if (indiceJugador < 0 || indiceJugador >= lista.size()) {
-                // Índice fuera de rango, no se hace nada
+                //indice fuera de rango, no se hace nada
                 return;
             }
             lista.get(indiceJugador).descativar();
@@ -191,7 +191,7 @@
                     cantidad_inactivos++;
                 }
 
-                if(cantidad_inactivos==cantidadMaximaDeMuertos)
+                if(cantidad_inactivos==cantidadMaximaDeMuertos-1)
                 {
                     return true;
                 }

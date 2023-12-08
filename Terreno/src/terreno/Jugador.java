@@ -11,7 +11,7 @@ public class  Jugador {
 
     String color = "";
     public int jugador;
-    public  int suicidios=0;
+    
     public boolean activo=true;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
@@ -23,7 +23,10 @@ public class  Jugador {
     int saldo;
     int posicionInicalX=0;
     int posicionInicialY=100;
-    int asesionatos;
+    public int asesionatos;
+    public int suicidios;
+    public int asesinatosTotales;
+    public int suicidiosTotales;
     public Random rand;
     private Tank tanque;
     int random;
@@ -139,16 +142,15 @@ public class  Jugador {
         return vida;
     }
     public static Boolean comprobarMunicion(int tipo, ListaJugadores listJugador){//comprueba si es que ls bala ingresada que posee el jugador esta vacia 
-        switch (tipo){
-            case 1:
-                return listJugador.getJugadorActual().getCantidad60() == 0;
-            case 2:
-                return listJugador.getJugadorActual().getCantidad80() == 0;
-            case 3:
-                return listJugador.getJugadorActual().getCantidad105() == 0;
-            default:
-                break;
+        if(tipo==1){
+            return listJugador.getJugadorActual().getCantidad60() == 0;
         }
+        if(tipo==2){
+            return listJugador.getJugadorActual().getCantidad80() == 0;
+        }
+        if(tipo==3){
+            return listJugador.getJugadorActual().getCantidad105() == 0;
+        }    
         return false;
     }
     

@@ -22,7 +22,7 @@ public class MenuOpciones {
     private final String[] viento={"-NO-","-SI-"};
     private int opcionActualResolucion = 0;
     private int opcionActualJugadores = 0;
-    private int opcionActualRondas = 1;
+    private int opcionActualRondas = 0;
     private int opcionActualGravedad = 0;
     private int opcionActualCantidad = 0;
     private int opcionActualViento = 0;
@@ -38,7 +38,7 @@ public class MenuOpciones {
     "-fx-border-color: #FF0000;" + 
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
-    Image fondo = new Image(getClass().getResourceAsStream("./img/prueba_bosque.jpg")); 
+    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg")); 
     ImageView imageView = new ImageView(fondo); 
     Button volver = new Button("Menu Principal");
     Button flecha_derecha1 = new Button(">");
@@ -116,17 +116,17 @@ public class MenuOpciones {
             Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
             if(opcionActualResolucion==0){
-                Globales.stage.setX(280);
+                Globales.stage.setX(280);//sacar en entrga
                 Globales.alto_resolucion=800;
                 Globales.ancho_resolucion=800;
             }
             if(opcionActualResolucion==1){
-                Globales.stage.setX(230);
+                Globales.stage.setX(230);//sacar en entrega
                 Globales.alto_resolucion=900;
                 Globales.ancho_resolucion=900;
             }
             if(opcionActualResolucion==2){
-                Globales.stage.setX(-20);
+                Globales.stage.setX(-20);//sacar en entrega
                 Globales.alto_resolucion=1920;
                 Globales.ancho_resolucion=1080;
             }

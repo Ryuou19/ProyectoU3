@@ -1,6 +1,6 @@
 package terreno;
 
-import javafx.scene.Scene;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -113,6 +113,9 @@ public class Interfaz {
     Text textcantidad3= new Text("");
     GraphicsContext gc;
     Pane canvasPane = new Pane();
+    private ChangeListener<Number> widthListener;
+    private ChangeListener<Number> heightListener;
+    
     
     public void iniciar_interfaz(){//inicia todo lo visual e interactivo de la interfaz de juego         
         Globales.cambiarResolucion(Globales.alto_resolucion-1, Globales.ancho_resolucion-1);
@@ -236,7 +239,7 @@ public class Interfaz {
         cantidad.getChildren().addAll(textcantidad1,textcantidad2,textcantidad3);
         
         
-        canvasPane.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+        widthListener= (obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800;
             hud.setFitWidth(800*widthRatio);       
             hud.setLayoutX(0);
@@ -280,9 +283,9 @@ public class Interfaz {
             textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
             textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
             
-        });
+        };
          
-        canvasPane.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+        heightListener=(obs, oldHeight, newHeight) -> {
             double heightRatio = newHeight.doubleValue() / 800; 
             hud.setFitHeight(800/2*heightRatio);
             hud.setLayoutY(630*heightRatio);
@@ -328,7 +331,14 @@ public class Interfaz {
             textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
             textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
             textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
-        });
+        };
+        
+        
+        widthListener.changed(null, null, canvasPane.getWidth());
+        heightListener.changed(null, null, canvasPane.getHeight()); 
+        canvasPane.widthProperty().addListener(widthListener);
+        canvasPane.heightProperty().addListener(heightListener);
+        
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
                 boxjugador,disparar, boxdistancia, boxaltura, barraDeVida, 

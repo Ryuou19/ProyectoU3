@@ -24,7 +24,7 @@ public class PantallaInicial extends Application {
     ImageView titulo = new ImageView(titulo1);
     Button opciones = new Button("OPCIONES");  
     Button comenzar = new Button("!!!JUGAR!!!");
-    Rectangle marco = new Rectangle(1920, 1080);  
+    Rectangle marco = new Rectangle(3000, 2000);  
     int validar=0;
     public PantallaInicial() {
     }
@@ -87,7 +87,6 @@ public class PantallaInicial extends Application {
             }       
         });
         
-        // Agregar ChangeListener al ancho y alto del Pane principal
         panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800; 
             titulo.setLayoutX(190 * widthRatio); 
@@ -114,7 +113,6 @@ public class PantallaInicial extends Application {
             
         });
         
-        //se añade todo al panel(agregar imageView)
         panel.getChildren().addAll(marco,comenzar,imageView, titulo,opciones);    
                 
         Globales.stage.setScene(Globales.escena);

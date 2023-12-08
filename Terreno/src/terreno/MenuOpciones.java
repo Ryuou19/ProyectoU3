@@ -224,9 +224,9 @@ public class MenuOpciones {
             Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
             flecha_izquierda5.setDisable(false);
             System.out.println("Actual = "+Globales.cantidad_def); 
-            if(Globales.cantidad_def>Globales.jugadores_def-1){
+            if(Globales.cantidad_def>=Globales.jugadores_def){
                 flecha_derecha5.setDisable(true);
-                Globales.cantidad_def=Globales.jugadores_def;
+                
                 
             }
             
@@ -238,9 +238,9 @@ public class MenuOpciones {
             System.out.println("Actual = "+Globales.cantidad_def); 
             
             flecha_derecha5.setDisable(false);
-            if(Globales.cantidad_def>Globales.jugadores_def-1){
+            if(Globales.cantidad_def>=Globales.jugadores_def){
                 flecha_izquierda5.setDisable(true);
-                Globales.cantidad_def=Globales.jugadores_def;
+                
             }
         });
                     
@@ -349,7 +349,7 @@ public class MenuOpciones {
             
             imageView.setFitHeight(800* heightRatio);
             volver.setPrefHeight(50*heightRatio);
-            volver.setLayoutY(670*heightRatio);
+            volver.setLayoutY(700*heightRatio);
             
             opcion_resolucion.setPrefHeight(52*heightRatio);
             menu_resoluciones.setLayoutY(120*heightRatio);
@@ -424,35 +424,35 @@ public class MenuOpciones {
         if(referencia==1){
             opcionActualResolucion = (opcionActualResolucion + desplazamiento) % tipo.length;
             if(opcionActualResolucion<0){
-                opcionActualResolucion=tipo.length-1;
+                opcionActualResolucion=0;
             }
             opcionActual=opcionActualResolucion;
         }
         if(referencia==2){
             opcionActualRondas = (opcionActualRondas + desplazamiento) % tipo.length;
             if(opcionActualRondas<0){
-                opcionActualRondas=tipo.length-1;
+                opcionActualRondas=0;
             }
             opcionActual=opcionActualRondas;
         }
         if(referencia==3){
             opcionActualJugadores = (opcionActualJugadores + desplazamiento) % tipo.length;
             if(opcionActualJugadores<0){
-                opcionActualJugadores=tipo.length-1;
+                opcionActualJugadores=0;
             }
             opcionActual=opcionActualJugadores;
         }
         if(referencia==4){
             opcionActualCantidad = (opcionActualCantidad + desplazamiento) % tipo.length;
             if(opcionActualCantidad<0){
-                opcionActualCantidad=tipo.length-1;
+                opcionActualCantidad=0;
             }
             opcionActual=opcionActualCantidad;
         }
         if(referencia==5){
             opcionActualGravedad = (opcionActualGravedad + desplazamiento) % tipo.length;
             if(opcionActualGravedad<0){
-                opcionActualGravedad=tipo.length-1;
+                opcionActualGravedad=0;
             }
             opcionActual=opcionActualGravedad;
         }
@@ -460,7 +460,7 @@ public class MenuOpciones {
         if(referencia==6){
             opcionActualViento = (opcionActualViento + desplazamiento) % tipo.length;
             if(opcionActualViento<0){
-                opcionActualViento=tipo.length-1;
+                opcionActualViento=0;
             }
             opcionActual=opcionActualViento;
         }

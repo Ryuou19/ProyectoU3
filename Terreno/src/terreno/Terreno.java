@@ -10,7 +10,7 @@ public class Terreno{
     public int [][] explosion;
     public int radio=0;
     private int contador=0;
-    public int reduccionHud=Globales.ancho_resolucion/12;
+    public int reduccionHud=Globales.ancho_resolucion/10;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
@@ -291,7 +291,7 @@ public class Terreno{
                 }
             }
         }
-        if (x > Globales.alto_resolucion/3 || x < 0 ) {
+        if (x > Globales.alto_resolucion/3 || x < 0 || y > Globales.ancho_resolucion/3) {
             bala.marcar();
         }
         return 0;

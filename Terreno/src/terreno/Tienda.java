@@ -3,7 +3,6 @@ package terreno;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +20,6 @@ public class Tienda  {
     int jugadorActual = 0;
     Jugador jugador;
     int ultimaOpcion;
-    public ArrayList<Integer> carrito = new ArrayList<>();
           
     Text textNombreJugador;
     String imagen;
@@ -74,15 +72,11 @@ public class Tienda  {
     //LISTA TANQUES
     ImageView[] imagenes={imagentanque1,imagentanque2,imagentanque3,imagentanque4,imagentanque5,imagentanque6};
     
-    public Tienda() {
-        
+    public Tienda() {       
     }
-    
-    
-    
+      
     public void inicializarInterfaz( ListaJugadores listJugadores) {      
-        tiendaJugador(listJugadores);
-        
+        tiendaJugador(listJugadores);       
     }
        
     public void tiendaJugador(ListaJugadores listJugadores){
@@ -96,9 +90,7 @@ public class Tienda  {
             }
         }
         
-        Pane panel=new Pane();
-              
-        
+        Pane panel=new Pane();       
         Globales.stage.setTitle("Tienda de Armas");
                            
         marco.setFill(Color.rgb(148, 161, 147, 1.0));

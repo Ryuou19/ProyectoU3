@@ -44,8 +44,9 @@ public class Jugar  {
     }
           
     private static int terreno_random;//variable que guarda la seleccion random del terreno
+    
     static{
-        terreno_random = 1;//random.nextInt(3);
+        terreno_random =random.nextInt(3);
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();
@@ -78,7 +79,7 @@ public class Jugar  {
 
 
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
-            finalizarRonda();
+            finalizarJuego();
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
             reiniciar_partida();
@@ -453,6 +454,7 @@ public class Jugar  {
     
     public void reiniciar_partida(){
         jugando=false;
+        generarTerrenoNuevo();       
         escenaTienda.inicializarInterfaz(listJugador);
         //metodos y codigo para reiniciar todos los valores de progreso de los jugadores          
     }
@@ -504,7 +506,20 @@ public class Jugar  {
             Platform.exit();
         }     
     } 
-   
+    public void generarTerrenoNuevo(){
+        int terrenoAnterior=terreno_random;
+        do{
+            terreno_random=random.nextInt(3);
+        }while (terreno_random == terrenoAnterior);
+    }
+    
+    public void finalizarJuego(){
+        jugando=false;
+        PantallaInicial inicio=new PantallaInicial();
+        inicio.start(Globales.stage);
+        //LIMPIAR LISTA DE JUGADORES Y SUS DATOS
+        listJugador.lista.clear();
+    }
     
     public void elegir_bala_bot(){
         tipo=random.nextInt(3)+1;

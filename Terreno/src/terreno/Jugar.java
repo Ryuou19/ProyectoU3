@@ -50,6 +50,7 @@ public class Jugar  {
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();
+    Clasificacion resultados= new Clasificacion();
     
 
    
@@ -75,8 +76,6 @@ public class Jugar  {
         iniciar_terreno();
 
         interfaz.mostrarJugador(listJugador.getJugadorActual());     
-
-
 
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
             finalizarJuego();
@@ -495,16 +494,9 @@ public class Jugar  {
         terrain.borrarHitboxAnterior();// eliminamos las hitbox anteriores
         jugando=false;
         Jugador.pagar_ronda(listJugador);
-        for(Jugador jugador:listJugador.lista){
-            System.out.println("saldo= "+jugador.saldo);
-        }
-        if(Globales.rondas_def>0){        
-            escenaTienda.inicializarInterfaz(listJugador);
-            System.out.println("Rondas="+Globales.rondas_def);
-        }
-        if(Globales.rondas_def==0){
-            Platform.exit();
-        }     
+        
+        resultados.mostrarTabla(escenaTienda,listJugador);
+             
     } 
     public void generarTerrenoNuevo(){
         int terrenoAnterior=terreno_random;

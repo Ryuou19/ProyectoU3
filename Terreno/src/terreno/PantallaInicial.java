@@ -37,6 +37,7 @@ public class PantallaInicial extends Application {
     public void start(Stage primaryStage) {
         Globales.escena=new Scene(panel,Globales.alto_resolucion,Globales.ancho_resolucion); 
         Globales.stage=primaryStage;
+       
         //Globales.stage.setResizable(false);
         Globales.stage.getIcons().add(icono); 
         Globales.cambiarResolucion(Globales.alto_resolucion, Globales.ancho_resolucion);

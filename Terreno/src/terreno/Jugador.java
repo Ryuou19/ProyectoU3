@@ -3,6 +3,7 @@ package terreno;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.Text;
 
 
 
@@ -28,6 +29,7 @@ public class  Jugador {
     int random;
     String tipo;
     public ArrayList <Integer> carrito=new ArrayList<>();
+    public ArrayList <Text> datosClasificacion=new ArrayList<>();
     public boolean eliminado = false;
 
     public int getVida() {

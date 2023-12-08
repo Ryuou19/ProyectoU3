@@ -82,7 +82,7 @@ public class Tienda  {
     public void tiendaJugador(ListaJugadores listJugadores){
         cambiarJugador(listJugadores);
         System.out.println("GLOBALES: "+Globales.jugadores_def);
-        Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
+        //Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
         
         for(Jugador jugadorBot:listJugadores.lista){
             if(jugadorBot.tipo.equals("bot")){

@@ -31,7 +31,7 @@ public class Globales {
     
     public static void cambiarResolucion(int alto, int ancho){
         stage.setWidth(alto);
-        stage.setHeight(alto);
+        stage.setHeight(ancho);
     }
     
     public static void congelar(int segundos){

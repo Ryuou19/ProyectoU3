@@ -10,7 +10,9 @@
 
         public ArrayList<Integer> turnosDisponibles = new ArrayList<>();
         public int indiceActual;
-
+        public int ultimo_indice=0;
+        public int ultimo_indice_lista=0;
+        public int contador_lista_turnos=0;
         private ListaJugadores()
         {}
 
@@ -29,7 +31,7 @@
         public void setTerreno(Terreno terreno) {
             this.terreno = terreno;
         }
-
+        ArrayList<Integer> turnosDisponiblesAux = new ArrayList<>();
 
         public ArrayList<Jugador> getLista(){
             return lista;
@@ -87,23 +89,51 @@
                 Jugador aux= new Jugador(i,nombre,"bot");
                 lista.add(aux);
             }
-            generarTurnoAleatorio();
         }
 
 
         public void generarTurnoAleatorio() {
             if (turnosDisponibles.isEmpty()) {
+                ArrayList<Integer> indicesNormales = new ArrayList<>();
+                ArrayList<Integer> indicesBots = new ArrayList<>();
                 for (Jugador jugador : lista) {
                     if (!jugador.estaEliminado()) {
                         if(jugador.activo){
-                            turnosDisponibles.add(jugador.jugador);
+                            if ("jugador".equals(jugador.tipo)) {
+                                indicesNormales.add(jugador.jugador);
+                            } else if ("bot".equals(jugador.tipo)) {
+                                indicesBots.add(jugador.jugador);
+                            }
                         }
-
                     }
                 }
+
+                Collections.shuffle(indicesNormales);
+                Collections.shuffle(indicesBots);
+
+                turnosDisponibles.addAll(indicesNormales);
+                turnosDisponibles.addAll(indicesBots);
+                if(turnosDisponibles.size()>1){
+                    while (turnosDisponibles.get(0) == ultimo_indice_lista) {
+                        Collections.shuffle(turnosDisponibles);
+                    }
+
+                    // Actualizar el último índice después de la mezcla
+                    ultimo_indice_lista = turnosDisponibles.get(turnosDisponibles.size() - 1);
+
+                }else {Collections.shuffle(turnosDisponibles);}
+
+                System.out.println("Lista de turnos creada -> " + turnosDisponibles);
             }
-            Collections.shuffle(turnosDisponibles);
-            indiceActual = turnosDisponibles.remove(0);
+            if (!turnosDisponibles.isEmpty()) {
+                indiceActual = turnosDisponibles.remove(0);
+                System.out.println("lista de turnos una vez actualizada ->"+turnosDisponibles);
+                for(Jugador jugar : lista)
+                {
+                    System.out.println("jugador:"+jugar.jugador+"saldo"+jugar.saldo);
+                }
+            }
+
         }
 
 
@@ -121,7 +151,6 @@
 
             lista.get(indiceJugador).eliminar();
             turnosDisponibles.clear();
-            generarTurnoAleatorio(); // cambiamos el turno automaticamente
 
         }
         public void desactivarJugador(int indiceJugador)
@@ -153,15 +182,16 @@
         }
         public boolean quedaUnoActivo()
         {
-            int cantidadMuetos=0;
+            int cantidadMaximaDeMuertos=lista.size();
+            int cantidad_inactivos=0;
             for(Jugador aux: lista)
             {
                 if(!aux.activo)
                 {
-                    cantidadMuetos++;
+                    cantidad_inactivos++;
                 }
-                int cantidadMaximaDeMuertos=lista.size();
-                if(cantidadMuetos==cantidadMaximaDeMuertos)
+
+                if(cantidad_inactivos==cantidadMaximaDeMuertos)
                 {
                     return true;
                 }
@@ -177,4 +207,19 @@
                 aux.setVida(100);
             }
         }
+        public static boolean se_repite_indice(ArrayList<Integer> lista1, ArrayList<Integer> lista2) {
+            // Verifica si las listas tienen la misma longitud
+            if (lista1.size() != lista2.size()) {
+                return false;
+            }
+
+            for (int i = 0; i < lista1.size(); i++) {
+                if (lista1.get(i).equals(lista2.get(i))) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }

@@ -1,5 +1,6 @@
 package terreno;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -21,12 +22,12 @@ public class  Jugador {
     int saldo;
     int posicionInicalX=0;
     int posicionInicialY=100;
-    //hola
     int asesionatos;
     public Random rand;
     private Tank tanque;
     int random;
     String tipo;
+    public ArrayList <Integer> carrito=new ArrayList<>();
     public boolean eliminado = false;
 
     public int getVida() {
@@ -106,7 +107,8 @@ public class  Jugador {
     
     public void creaTanque(GraphicsContext gc,  int vida, int validar, Terreno terreno){
         if(validar==0){//verifica si se crea desde un terreno completamente nuevo o solo de un cambio de turno
-            this.random=rand.nextInt(4);      
+            this.random=rand.nextInt(4);  
+            validar=1;
         }
         Tank tanque = new Tank(color, jugador);
         tanque.agregarTanque(gc,this.random,vida,terreno,posicionInicalX,posicionInicialY);
@@ -133,5 +135,53 @@ public class  Jugador {
         vida-=danio;
         this.vida=vida;
         return vida;
+    }
+    public static Boolean comprobarMunicion(int tipo, ListaJugadores listJugador){//comprueba si es que ls bala ingresada que posee el jugador esta vacia 
+        switch (tipo){
+            case 1:
+                return listJugador.getJugadorActual().getCantidad60() == 0;
+            case 2:
+                return listJugador.getJugadorActual().getCantidad80() == 0;
+            case 3:
+                return listJugador.getJugadorActual().getCantidad105() == 0;
+            default:
+                break;
+        }
+        return false;
+    }
+    
+    public static void pagar_ronda(ListaJugadores listJugador){
+        for(Jugador jugador: listJugador.lista){
+            jugador.saldo+=10000;
+            if(jugador.asesionatos!=0){
+                jugador.saldo+=5000*jugador.asesionatos;
+            }
+            if(jugador.suicidios!=0){
+                jugador.saldo-=5000*jugador.suicidios;
+            }
+        }
+    }
+    
+    public static boolean revisarBalasDisponibles(ListaJugadores listJugador){//revisa las balas disponibles de todos los jugadores para ver si es que hay que finalizar la ronda
+        for(Jugador jugador : listJugador.getLista()){
+            if(jugador.getCantidad60()!=0){
+                return false;
+            }
+            if(jugador.getCantidad80()!=0){
+                return false;
+            }
+            if(jugador.getCantidad105()!=0){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static boolean tiene_balas(ListaJugadores listJugador){ //comprobamos si el jugador actual le quedan balas
+       if( listJugador.getJugadorActual().getCantidad60()<=0 && listJugador.getJugadorActual().getCantidad80()<=0 && listJugador.getJugadorActual().getCantidad105()<=0)
+       {
+           return false;
+       }
+        return true;
     }
 }

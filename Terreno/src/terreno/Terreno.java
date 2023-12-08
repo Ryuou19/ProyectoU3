@@ -10,7 +10,7 @@ public class Terreno{
     public int [][] explosion;
     public int radio=0;
     private int contador=0;
-    public int reduccionHud=Globales.ancho_resolucion/12;
+    public int reduccionHud=Globales.ancho_resolucion/10;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
@@ -100,23 +100,6 @@ public class Terreno{
                 }
             }
         }
-/*
-        amplitud = 0.2;
-        frecuencia = 0.03;
-        for (int i = alto*2/3; i < alto; i++) {
-            for (int j = 0; j < ancho-reduccionHud; j++) {
-                if (dunas[i][j] != -1) {
-                    double nx = (double) i / alto;
-                    double ny = (double) j / ancho;
-                    double altura_dunas = nivel_mar + amplitud * Math.sin(frecuencia * nx * alto);
-                    if (ny >= altura_dunas) {
-                        gc.setFill(Color.rgb(255, 255, 255));
-                        gc.fillRect(i * escala, j * escala, escala, escala);
-                        dunas[i][j] = 1;
-                    }
-                }
-            }
-        }*/
         if(contador==0){
             colocarTanquesTerreno(gc, angulo, vida, validar, terreno, alto, ancho);
         }
@@ -308,7 +291,7 @@ public class Terreno{
                 }
             }
         }
-        if (x > Globales.alto_resolucion/3 || x < 0 ) {
+        if (x > Globales.alto_resolucion/3 || x < 0 || y > Globales.ancho_resolucion/3) {
             bala.marcar();
         }
         return 0;
@@ -334,6 +317,14 @@ public class Terreno{
                 if (matriz[i][j]== indiceJugador) {
                     matriz[i][j] = 0;
                 }
+            }
+        }
+    }
+    
+    public void reiniciar_matriz(int explosion[][]) {
+        for (int i = 0; i < explosion.length; i++) {
+            for (int j = 0; j < explosion[i].length; j++) {
+                explosion[i][j] = 0;
             }
         }
     }

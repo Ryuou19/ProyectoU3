@@ -35,8 +35,6 @@ public class PantallaInicial extends Application {
       
     @Override   
     public void start(Stage primaryStage) {
-        Globales.alto_resolucion=800;
-        Globales.ancho_resolucion=800;
         Globales.escena=new Scene(panel,Globales.alto_resolucion,Globales.ancho_resolucion); 
         Globales.stage=primaryStage;
         //Globales.stage.setResizable(false);
@@ -72,6 +70,7 @@ public class PantallaInicial extends Application {
              
         comenzar.setOnAction(e -> {         
             list.instanciarJugadores(Globales.jugadores_def,Globales.cantidad_def);
+            Globales.rondas_def++;
             Tienda tienda=new Tienda();
             tienda.inicializarInterfaz( list);
         });

@@ -455,8 +455,10 @@ public class Jugar  {
     
     public void reiniciar_partida(){
         jugando=false;
+        listJugador.revivir_jugadores();
         generarTerrenoNuevo();       
         escenaTienda.inicializarInterfaz(listJugador);
+        System.out.println("hola soy el boton reiniciar");
         //metodos y codigo para reiniciar todos los valores de progreso de los jugadores          
     }
     public static int getRandom(){
@@ -516,7 +518,7 @@ public class Jugar  {
     }
     
     public void finalizarRonda(){
-        listJugador.revivir(); //marcamos todos los jugadores como vivos
+        listJugador.revivir_jugadores(); //marcamos todos los jugadores como vivos
         terrain.borrarHitboxAnterior();//eliminamos las hitbox anteriores
         jugando=false;
         Jugador.pagar_ronda(listJugador);

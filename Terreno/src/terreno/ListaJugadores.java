@@ -202,13 +202,23 @@
             }
             return false;
         }
-        public void revivir()
+        public void revivir_jugadores()
         {
             for (Jugador aux : lista)
             {
                 aux.eliminado=false; // no esta eliminado
                 aux.activo=true; // lo marcamos como activo
-                aux.setVida(100);
+                //reinicio de atributos
+                aux.vida=100;
+                aux.suicidios=0;
+                aux.saldo=10000;
+                aux.asesionatos=0;
+                aux.cantidad80=0;
+                aux.cantidad105=0;
+                aux.cantidad60=0;
+                aux.asesinatosTotales=0;
+                aux.suicidiosTotales=0;
+
             }
         }
 

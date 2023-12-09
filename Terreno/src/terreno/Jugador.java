@@ -41,10 +41,6 @@ public class  Jugador {
         return vida;
     }
 
-    public void setVida(int vida) {
-        this.vida = vida;
-    }
-    
     
     public int getCantidad105() {
         return cantidad105;

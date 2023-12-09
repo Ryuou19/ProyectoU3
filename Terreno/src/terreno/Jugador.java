@@ -80,7 +80,7 @@ public class  Jugador {
         this.jugador = jugador;
         this.rand=new Random();
         this.random=rand.nextInt(4);
-        this.saldo=5000;
+        this.saldo=10000;
         this.nombre=nombre;
         this.vida=100;
         this.tipo=tipo;

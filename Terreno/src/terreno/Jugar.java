@@ -623,7 +623,7 @@ public class Jugar  {
   
     public Boolean revisarJugadores(){
         for(Jugador jugador : listJugador.lista){
-            if(jugador.cantidad105<=0 && jugador.cantidad80<=0 && jugador.cantidad60<=0||jugador.eliminado==true){
+            if((jugador.cantidad105+jugador.cantidad80+jugador.cantidad60)<=0||jugador.eliminado==true){
                 System.out.println(" se desactivo ->"+(jugador.jugador+1));
                 listJugador.desactivarJugador(jugador.jugador);
             }

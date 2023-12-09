@@ -33,6 +33,7 @@ public class Jugar  {
     int ancho=(Globales.ancho_resolucion/pixel);
     Interfaz interfaz=new Interfaz(Globales.alto_resolucion,Globales.ancho_resolucion);
     
+    
     int contador_inicio=0;
     int vidatanque1=100;
     private boolean disparo_en_curso = false;
@@ -85,7 +86,8 @@ public class Jugar  {
         });        
         tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
         elegir_bala();
-       
+        
+        interfaz.estadisticas(listJugador);
         interfaz.disparar.setOnAction(event ->{                            
                 if (Jugador.comprobarMunicion(tipo,listJugador)) {//verifica si quedan balas del tipo seleccionado
                     HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
@@ -561,6 +563,7 @@ public class Jugar  {
                         stop();
                         colision_bala();
                         disparo_en_curso = false;
+                        interfaz.estadisticas(listJugador);
                         animacionCaida();
                     }
                 }
@@ -620,7 +623,7 @@ public class Jugar  {
   
     public Boolean revisarJugadores(){
         for(Jugador jugador : listJugador.lista){
-            if(jugador.cantidad105<=0 && jugador.cantidad80<=0 && jugador.cantidad60<=0){
+            if(jugador.cantidad105<=0 && jugador.cantidad80<=0 && jugador.cantidad60<=0||jugador.eliminado==true){
                 System.out.println(" se desactivo ->"+(jugador.jugador+1));
                 listJugador.desactivarJugador(jugador.jugador);
             }

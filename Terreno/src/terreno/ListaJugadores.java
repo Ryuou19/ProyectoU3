@@ -191,7 +191,7 @@
                     cantidad_inactivos++;
                 }
 
-                if(cantidad_inactivos==cantidadMaximaDeMuertos-1)
+                if(cantidad_inactivos==cantidadMaximaDeMuertos)
                 {
                     return true;
                 }

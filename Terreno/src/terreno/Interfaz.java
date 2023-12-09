@@ -1,5 +1,6 @@
 package terreno;
 
+import java.util.ArrayList;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -106,6 +107,30 @@ public class Interfaz {
     Button bala3 = new Button("105mm");
     
     
+    VBox estadisticas=new VBox(10);
+    HBox num1= new HBox(10);
+    HBox num2= new HBox(10);
+    HBox num3= new HBox(10);
+    HBox num4= new HBox(10);
+    HBox num5= new HBox(10);
+    HBox num6= new HBox(10);
+    ProgressBar barra1 = new ProgressBar();
+    ProgressBar barra2 = new ProgressBar();
+    ProgressBar barra3 = new ProgressBar();
+    ProgressBar barra4 = new ProgressBar();
+    ProgressBar barra5 = new ProgressBar();
+    ProgressBar barra6 = new ProgressBar();
+    Text cantidadBalas1=new Text();
+    Text cantidadBalas2=new Text();
+    Text cantidadBalas3=new Text();
+    Text cantidadBalas4=new Text();
+    Text cantidadBalas5=new Text();
+    Text cantidadBalas6=new Text();
+    ArrayList<Text> listaBalas=new ArrayList<>();
+    ArrayList<ProgressBar> listaBarras=new ArrayList<>();
+    ArrayList<HBox> cajaEstadisticas=new ArrayList<>();
+    
+    
     //CANTIDAD BALAS
     VBox cantidad = new VBox(8);
     Text textcantidad1= new Text("");
@@ -193,7 +218,31 @@ public class Interfaz {
                              "-fx-background-insets: 0, 2; " +
                              "-fx-background-radius: 0.5em;");
          
+        cajaEstadisticas.add(num1);
+        cajaEstadisticas.add(num2);
+        cajaEstadisticas.add(num3);
+        cajaEstadisticas.add(num4);
+        cajaEstadisticas.add(num5);
+        cajaEstadisticas.add(num6);
+        listaBarras.add(barra1);
+        listaBarras.add(barra2);
+        listaBarras.add(barra3);
+        listaBarras.add(barra4);
+        listaBarras.add(barra5);
+        listaBarras.add(barra6);
+        listaBalas.add(cantidadBalas1);
+        listaBalas.add(cantidadBalas2);
+        listaBalas.add(cantidadBalas3);
+        listaBalas.add(cantidadBalas4);
+        listaBalas.add(cantidadBalas5);
+        listaBalas.add(cantidadBalas6);
         
+        
+        
+        for (int i=0;i<Globales.jugadores_def;i++){           
+            cajaEstadisticas.get(i).getChildren().add(listaBarras.get(i));    
+            cajaEstadisticas.get(i).getChildren().add(listaBalas.get(i)); 
+        }
         
         
         
@@ -223,6 +272,9 @@ public class Interfaz {
         
         
         
+        estadisticas.getChildren().addAll(num1,num2,num3,num4,num5,num6);
+        estadisticas.setLayoutX(50);
+        estadisticas.setLayoutY(100);
         
         
         //BOTON BALAS
@@ -330,7 +382,9 @@ public class Interfaz {
             cantidad.setLayoutY(655*heightRatio);
             textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
             textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
+            
             textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
+            
         };
         
         
@@ -342,10 +396,21 @@ public class Interfaz {
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
                 boxjugador,disparar, boxdistancia, boxaltura, barraDeVida, 
-                reiniciar, finalizar, tipos, cantidad);
+                reiniciar, finalizar, tipos, cantidad,estadisticas);
                
     }
     
+    public void estadisticas(ListaJugadores listJugador){
+        int i=0;
+        int balastotales;
+        for (Jugador jugador:listJugador.lista){           
+            listaBarras.get(i).setProgress(jugador.getVida()/100.0);
+            balastotales=jugador.cantidad60+jugador.cantidad80+jugador.cantidad105;
+            listaBalas.get(i).setText(Integer.toString(balastotales));
+            i++;
+        }
+        
+    }
     public void mostrarJugador(Jugador jugador){
         for (ImageView imagen : imagenes) {
             imagen.setVisible(false);

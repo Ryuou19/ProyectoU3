@@ -3,6 +3,7 @@ package terreno;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.text.Text;
 
 
@@ -19,6 +20,7 @@ public class  Jugador {
     int cantidad80=0;
     int cantidad60=0;
     int vida;
+    
     //SALDO DE CADA JUGADOR
     int saldo;
     int posicionInicalX=0;
@@ -78,7 +80,7 @@ public class  Jugador {
         this.jugador = jugador;
         this.rand=new Random();
         this.random=rand.nextInt(4);
-        this.saldo=10000;
+        this.saldo=5000;
         this.nombre=nombre;
         this.vida=100;
         this.tipo=tipo;

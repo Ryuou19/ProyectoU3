@@ -2,6 +2,7 @@
 
     import java.util.ArrayList;
     import java.util.Collections;
+    import java.util.Iterator;
 
     public class ListaJugadores {
         private static ListaJugadores instance;
@@ -148,9 +149,13 @@
                 // Índice fuera de rango, no se hace nada
                 return;
             }
-
             lista.get(indiceJugador).eliminar();
-            turnosDisponibles.clear();
+            Iterator<Integer> iterator = turnosDisponibles.iterator(); // si esta en la lista el jugador que fue eliminado lo eliminamos
+            while (iterator.hasNext()) {
+                if (iterator.next() == indiceJugador) {
+                    iterator.remove();
+                }
+            }
 
         }
         public void desactivarJugador(int indiceJugador)
@@ -160,7 +165,6 @@
                 return;
             }
             lista.get(indiceJugador).descativar();
-            turnosDisponibles.clear();
 
         }
         public boolean quedaUnoVivo()
@@ -191,10 +195,10 @@
                     cantidad_inactivos++;
                 }
 
-                if(cantidad_inactivos==cantidadMaximaDeMuertos)
-                {
-                    return true;
-                }
+            }
+            if(cantidad_inactivos==cantidadMaximaDeMuertos)
+            {
+                return true;
             }
             return false;
         }
@@ -207,19 +211,6 @@
                 aux.setVida(100);
             }
         }
-        public static boolean se_repite_indice(ArrayList<Integer> lista1, ArrayList<Integer> lista2) {
-            // Verifica si las listas tienen la misma longitud
-            if (lista1.size() != lista2.size()) {
-                return false;
-            }
 
-            for (int i = 0; i < lista1.size(); i++) {
-                if (lista1.get(i).equals(lista2.get(i))) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
     }

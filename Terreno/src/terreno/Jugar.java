@@ -534,11 +534,7 @@ public class Jugar  {
     }
     
     public void finalizarJuego(){
-        jugando=false;
-        PantallaInicial inicio=new PantallaInicial();
-        inicio.start(Globales.stage);
-        //LIMPIAR LISTA DE JUGADORES Y SUS DATOS
-        listJugador.lista.clear();
+        Platform.exit();
     }
     
     public void elegir_bala_bot(){

@@ -77,6 +77,10 @@ public class MenuOpciones {
     Button flecha_izquierda6 = new Button("<");
     Pane paneOpciones;
     Button volverMenu;    
+    
+    Button[] botonesFlecha = { flecha_derecha1, flecha_izquierda1, flecha_derecha2, flecha_izquierda2,
+        flecha_derecha3, flecha_izquierda3, flecha_derecha4, flecha_izquierda4,
+        flecha_derecha5, flecha_izquierda5, flecha_derecha6, flecha_izquierda6 };
 
     public MenuOpciones() {
         
@@ -111,49 +115,52 @@ public class MenuOpciones {
         opcion_resolucion.setStyle(estilo_botones);        
         flecha_derecha1.setStyle(estilo_botones);
         flecha_izquierda1.setStyle(estilo_botones);
-        
+        flecha_izquierda1.setDisable(true);
+                
         flecha_derecha1.setOnAction(e -> {
+            flecha_izquierda1.setDisable(false);
             Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
-            if(opcionActualResolucion==0){
-                Globales.stage.setX(280);//sacar en entrga
+            if(opcionActualResolucion==0){              
                 Globales.alto_resolucion=800;
                 Globales.ancho_resolucion=800;
             }
-            if(opcionActualResolucion==1){
-                Globales.stage.setX(230);//sacar en entrega
+            if(opcionActualResolucion==1){              
                 Globales.alto_resolucion=900;
                 Globales.ancho_resolucion=900;
             }
             if(opcionActualResolucion==2){
-                Globales.stage.setX(-20);//sacar en entrega
+                Globales.stage.setX(0);
+                Globales.stage.setY(0);
                 Globales.alto_resolucion=1920;
                 Globales.ancho_resolucion=1080;
             }
             Globales.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
+            if(opcionActualResolucion==resolucion.length-1){
+                flecha_derecha1.setDisable(true);
+            }
         });
         
         flecha_izquierda1.setOnAction(e -> {
+            flecha_derecha1.setDisable(false);
             Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
             if(opcionActualResolucion==0){
-                Globales.stage.setX(280);
                 Globales.alto_resolucion=800;
                 Globales.ancho_resolucion=800;
             }
             if(opcionActualResolucion==1){
-                Globales.stage.setX(230);
                 Globales.alto_resolucion=900;
                 Globales.ancho_resolucion=900;
             }
             if(opcionActualResolucion==2){
-                Globales.stage.setX(-20);
                 Globales.alto_resolucion=1920;
                 Globales.ancho_resolucion=1080;
             }
             Globales.cambiarResolucion(Globales.alto_resolucion,Globales.ancho_resolucion);
-            //inicio.ajustarResolucion(imageview,titulo);
-            //ajustarResolucion(imageView);
+            if(opcionActualResolucion==0){
+                flecha_izquierda1.setDisable(true);
+            }
             
         });
                
@@ -195,9 +202,10 @@ public class MenuOpciones {
 
         flecha_derecha3.setStyle(estilo_botones);
         flecha_derecha3.setOnAction(e -> {
-            flecha_derecha5.setDisable(false); 
+            flecha_derecha4.setDisable(false); 
             Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
+            
         });
 
         flecha_izquierda3.setStyle(estilo_botones);
@@ -205,6 +213,9 @@ public class MenuOpciones {
             flecha_izquierda5.setDisable(false);
             Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
+            if(Globales.jugadores_def<Globales.cantidad_def){
+                Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
+            }
         });
                 
         menu_jugadores.getChildren().addAll(flecha_izquierda3,opcion_jugadores, flecha_derecha3);
@@ -219,32 +230,32 @@ public class MenuOpciones {
         opcion_cantidad = new Button(cantidad[opcionActualCantidad]);        
         opcion_cantidad.setStyle(estilo_botones);
       
-        flecha_derecha5.setStyle(estilo_botones);
-        flecha_derecha5.setOnAction(e -> {         
+        flecha_derecha4.setStyle(estilo_botones);
+        flecha_derecha4.setOnAction(e -> {         
             Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
             flecha_izquierda5.setDisable(false);
             System.out.println("Actual = "+Globales.cantidad_def); 
             if(Globales.cantidad_def>=Globales.jugadores_def){
-                flecha_derecha5.setDisable(true);
-                
-                
+                flecha_derecha4.setDisable(true);           
             }
+            if(opcionActualCantidad>cantidad.length-1){
+                flecha_derecha4.setDisable(true);   
+            }
+            
             
         });
         
-        flecha_izquierda5.setStyle(estilo_botones);
-        flecha_izquierda5.setOnAction(e -> {         
+        flecha_izquierda4.setStyle(estilo_botones);
+        flecha_izquierda4.setOnAction(e -> {         
             Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);         
-            System.out.println("Actual = "+Globales.cantidad_def); 
-            
-            flecha_derecha5.setDisable(false);
-            if(Globales.cantidad_def>=Globales.jugadores_def){
-                flecha_izquierda5.setDisable(true);
-                
+            System.out.println("Actual = "+Globales.cantidad_def);         
+            flecha_derecha4.setDisable(false);
+            if(opcionActualCantidad==0){
+                flecha_izquierda4.setDisable(true);   
             }
         });
                     
-        menu_cantidad.getChildren().addAll(flecha_izquierda5,opcion_cantidad, flecha_derecha5);        
+        menu_cantidad.getChildren().addAll(flecha_izquierda4,opcion_cantidad, flecha_derecha4);        
         labelIA.setStyle("-fx-text-fill: white;");       
         texto_IA.getChildren().add(labelIA);
         
@@ -255,20 +266,20 @@ public class MenuOpciones {
         opcion_gravedad = new Button(gravedad[opcionActualGravedad]);      
         opcion_gravedad.setStyle(estilo_botones);
                  
-        flecha_derecha4.setStyle(estilo_botones);
-        flecha_derecha4.setOnAction(e -> {
+        flecha_derecha5.setStyle(estilo_botones);
+        flecha_derecha5.setOnAction(e -> {
             Globales.gravedad_def=cambiarOpcion(1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
             System.out.println("Actual = "+Globales.gravedad_def);    
         });
               
-        flecha_izquierda4.setStyle(estilo_botones);
-        flecha_izquierda4.setOnAction(e -> {
+        flecha_izquierda5.setStyle(estilo_botones);
+        flecha_izquierda5.setOnAction(e -> {
             Globales.gravedad_def=cambiarOpcion(-1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
             System.out.println("Actual = "+Globales.gravedad_def);      
         });
         
         labelGravedad.setStyle("-fx-text-fill: white;");
-        menu_gravedad.getChildren().addAll(flecha_izquierda4,opcion_gravedad, flecha_derecha4);                   
+        menu_gravedad.getChildren().addAll(flecha_izquierda5,opcion_gravedad, flecha_derecha5);                   
         texto_gravedad.getChildren().add(labelGravedad);     
         ///////////////////////////////////////////////
         //GRAVEDAD
@@ -297,7 +308,9 @@ public class MenuOpciones {
         ///////////////////////////////////////////////
         //VIENTO
         
-        
+        for (Button flecha : botonesFlecha) {
+            flecha.setMaxHeight(150);
+        }
         
         
         
@@ -327,75 +340,24 @@ public class MenuOpciones {
             opcion_cantidad.setPrefWidth(140*widthRatio);
             menu_cantidad.setLayoutX(275*widthRatio);
             texto_IA.setLayoutX(338*widthRatio);
-            flecha_izquierda5.setPrefWidth(52*widthRatio);
-            flecha_derecha5.setPrefWidth(52*widthRatio);
+            flecha_izquierda4.setPrefWidth(52*widthRatio);
+            flecha_derecha4.setPrefWidth(52*widthRatio);
             
             opcion_gravedad.setPrefWidth(140*widthRatio);
             menu_gravedad.setLayoutX(275*widthRatio);
             texto_gravedad.setLayoutX(355*widthRatio);
-            flecha_izquierda4.setPrefWidth(52*widthRatio);
-            flecha_derecha4.setPrefWidth(52*widthRatio);
+            flecha_izquierda5.setPrefWidth(52*widthRatio);
+            flecha_derecha5.setPrefWidth(52*widthRatio);
             
             opcion_viento.setPrefWidth(140*widthRatio);
             menu_viento.setLayoutX(275*widthRatio);
-            texto_viento.setLayoutX(355*widthRatio);
+            texto_viento.setLayoutX(370*widthRatio);
             flecha_izquierda6.setPrefWidth(52*widthRatio);
-            flecha_derecha6.setPrefWidth(52*widthRatio); 
-        });
-         
-        panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-            double heightRatio = newHeight.doubleValue() / 800; 
-            Font font = Font.font("Serif", FontWeight.NORMAL, 19);
+            flecha_derecha6.setPrefWidth(52*widthRatio);
             
-            imageView.setFitHeight(800* heightRatio);
-            volver.setPrefHeight(50*heightRatio);
-            volver.setLayoutY(700*heightRatio);
+            Font font = Font.font("Serif", FontWeight.NORMAL, 20*widthRatio);
             
-            opcion_resolucion.setPrefHeight(52*heightRatio);
-            menu_resoluciones.setLayoutY(120*heightRatio);
-            texto_resoluciones.setLayoutY(90*heightRatio);
-            flecha_izquierda1.setPrefHeight(52*heightRatio);
-            flecha_derecha1.setPrefHeight(52*heightRatio);
             
-            opcion_rondas.setPrefHeight(52*heightRatio);
-            menu_rondas.setLayoutY(220*heightRatio);
-            texto_rondas.setLayoutY(190*heightRatio);
-            flecha_izquierda2.setPrefHeight(52*heightRatio);
-            flecha_derecha2.setPrefHeight(52*heightRatio);
-            
-            opcion_jugadores.setPrefHeight(52*heightRatio);
-            menu_jugadores.setLayoutY(320*heightRatio);
-            texto_jugadores.setLayoutY(290*heightRatio);
-            flecha_izquierda3.setPrefHeight(52*heightRatio);
-            flecha_derecha3.setPrefHeight(52*heightRatio);
-            
-            opcion_cantidad.setPrefHeight(52*heightRatio);
-            menu_cantidad.setLayoutY(420*heightRatio);
-            texto_IA.setLayoutY(390*heightRatio);
-            flecha_izquierda5.setPrefHeight(52*heightRatio);
-            flecha_derecha5.setPrefHeight(52*heightRatio);
-            
-            opcion_gravedad.setPrefHeight(52*heightRatio);
-            menu_gravedad.setLayoutY(520*heightRatio);
-            texto_gravedad.setLayoutY(490*heightRatio);
-            flecha_izquierda4.setPrefHeight(52*heightRatio);
-            flecha_derecha4.setPrefHeight(52*heightRatio);
-            
-            opcion_viento.setPrefHeight(52*heightRatio);
-            menu_viento.setLayoutY(620*heightRatio);
-            texto_viento.setLayoutY(590*heightRatio);
-            flecha_izquierda6.setPrefHeight(52*heightRatio);
-            flecha_derecha6.setPrefHeight(52*heightRatio);
-            
-            if(opcionActualResolucion==0){
-                font = Font.font("Serif", FontWeight.NORMAL, 19);
-            }
-            if(opcionActualResolucion==1){
-                font = Font.font("Serif", FontWeight.NORMAL, 22);
-            }
-            if(opcionActualResolucion==2){
-                font = Font.font("Serif", FontWeight.NORMAL, 45);
-            }
             volver.setFont(font);
             opcion_resolucion.setFont(font);    
             labelResolucion.setFont(font);
@@ -410,6 +372,55 @@ public class MenuOpciones {
             labelGravedad.setFont(font);
             opcion_viento.setFont(font);
             labelViento.setFont(font);
+            
+            
+        });
+         
+        panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            double heightRatio = newHeight.doubleValue() / 800; 
+            
+            imageView.setFitHeight(800* heightRatio);
+            volver.setPrefHeight(50*heightRatio);
+            volver.setLayoutY(700*heightRatio);
+            
+            opcion_resolucion.setPrefHeight(52*heightRatio);
+            menu_resoluciones.setLayoutY(70*heightRatio);
+            texto_resoluciones.setLayoutY(30*heightRatio);
+            flecha_izquierda1.setPrefHeight(52*heightRatio);
+            flecha_derecha1.setPrefHeight(52*heightRatio);
+            
+            opcion_rondas.setPrefHeight(52*heightRatio);
+            menu_rondas.setLayoutY(180*heightRatio);
+            texto_rondas.setLayoutY(140*heightRatio);
+            flecha_izquierda2.setPrefHeight(52*heightRatio);
+            flecha_derecha2.setPrefHeight(52*heightRatio);
+            
+            opcion_jugadores.setPrefHeight(52*heightRatio);
+            menu_jugadores.setLayoutY(290*heightRatio);
+            texto_jugadores.setLayoutY(250*heightRatio);
+            flecha_izquierda3.setPrefHeight(52*heightRatio);
+            flecha_derecha3.setPrefHeight(52*heightRatio);
+            
+            opcion_cantidad.setPrefHeight(52*heightRatio);
+            menu_cantidad.setLayoutY(400*heightRatio);
+            texto_IA.setLayoutY(360*heightRatio);
+            flecha_izquierda4.setPrefHeight(52*heightRatio);
+            flecha_derecha4.setPrefHeight(52*heightRatio);
+            
+            opcion_gravedad.setPrefHeight(52*heightRatio);
+            menu_gravedad.setLayoutY(510*heightRatio);
+            texto_gravedad.setLayoutY(470*heightRatio);
+            flecha_izquierda5.setPrefHeight(52*heightRatio);
+            flecha_derecha5.setPrefHeight(52*heightRatio);
+            
+            opcion_viento.setPrefHeight(52*heightRatio);
+            menu_viento.setLayoutY(620*heightRatio);
+            texto_viento.setLayoutY(580*heightRatio);
+            flecha_izquierda6.setPrefHeight(52*heightRatio);
+            flecha_derecha6.setPrefHeight(52*heightRatio);
+            
+           
+            
         });
         
         this.volverMenu=volver;
@@ -498,5 +509,11 @@ public class MenuOpciones {
             }         
         }
         return opcion;
+    }
+    
+    private void maximo(int opcionActual, String[] eleccion,Button flecha){
+        if(opcionActual==eleccion.length-1){
+            flecha.setDisable(true);
+        }
     }
 }

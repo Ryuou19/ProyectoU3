@@ -338,7 +338,7 @@ public class Tienda  {
                     
             textNombreJugador.setLayoutY(320*heightRatio);
             
-            imagentanque.setFitHeight(150*heightRatio);   
+            imagentanque.setFitHeight(160*heightRatio);   
             imagentanque.setLayoutY(270*heightRatio);
             
             textSaldoJugador.setLayoutY(420*heightRatio);

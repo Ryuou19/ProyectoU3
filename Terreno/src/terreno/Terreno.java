@@ -267,13 +267,13 @@ public class Terreno{
                 bala.marcar();
                 matriz[x][y] = 0;
                 if(tipo==1){
-                    radio=15;
+                    radio=8;
                 }
                 if(tipo==2){
                     radio=10;
                 }
                 if(tipo==3){
-                    radio=10;
+                    radio=15;
                 }
                 for (int i = x - radio; i <= x + radio; i++) {//realiza la explosion del disparo dependiendo del tipo de bala en base a un radio
                     for (int j = y - radio; j <= y + radio; j++) {

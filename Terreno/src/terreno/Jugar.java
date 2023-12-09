@@ -462,20 +462,44 @@ public class Jugar  {
     public static int getRandom(){
         return terreno_random;
     }
-       
-    void definirPosicion(){
-        if(revisarEstado()){
+
+    void definirPosicion() {
+        if (revisarEstado()) {
             return;
         }
-        int largo = Globales.alto_resolucion-200;
-        int ancho_segmento=largo/Globales.jugadores_def;
-        System.out.println("jugadores def es -> cantidad de jugadores"+Globales.jugadores_def);
-        for(int i=0;i<Globales.jugadores_def;i++){
-            int min=ancho_segmento*i;
-            int max=ancho_segmento*(i+1);
-            int posicion_inicial=random.nextInt(max-min)+min;
-            listJugador.getLista().get(i).posicionInicalX=posicion_inicial;
+
+        int largo = Globales.alto_resolucion - 200;
+        int ancho_segmento = largo / Globales.jugadores_def;
+
+        int aux = -1;  // Inicializar con un valor que no se encuentre en el rango
+
+        for (int i = 0; i < Globales.jugadores_def; i++) {
+            int min = ancho_segmento * i;
+            int max = ancho_segmento * (i + 1);
+            System.out.println(min+"-"+max);
+            // ajustamos el maximo y el minimo
+            min=min+10;
+            max=max-10;
+            // Definir la posición inicial
+            double factorDispersión = 1.5;
+            int nuevaPosicion = generarPosicionUnica(min, max, aux, factorDispersión);
+            listJugador.getLista().get(i).posicionInicalX = nuevaPosicion;
+            System.out.println("posicion geenerada -> x" + nuevaPosicion);
+
+            // Actualizar aux con la nueva posición
+            aux = nuevaPosicion;
         }
+    }
+
+    private int generarPosicionUnica(int min, int max, int posicionAnterior, double factorDispersión) {
+        Random random = new Random();
+        int distanciaMinima = 75;
+        int nuevaPosicion;
+        do {
+            nuevaPosicion = random.nextInt((int) (factorDispersión * (max - min))) + min;
+        } while (Math.abs(nuevaPosicion - posicionAnterior) < distanciaMinima);
+
+        return nuevaPosicion;
     }
 
     public int calcularDañoPorAltura(int altura) {

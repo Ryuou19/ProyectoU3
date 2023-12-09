@@ -10,7 +10,7 @@ public class Terreno{
     public int [][] explosion;
     public int radio=0;
     private int contador=0;
-    public int reduccionHud=Globales.ancho_resolucion/10;
+    public int reduccionHud=Globales.ancho_resolucion/12;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
@@ -267,13 +267,13 @@ public class Terreno{
                 bala.marcar();
                 matriz[x][y] = 0;
                 if(tipo==1){
-                    radio=15;
+                    radio=8;
                 }
                 if(tipo==2){
                     radio=10;
                 }
                 if(tipo==3){
-                    radio=10;
+                    radio=15;
                 }
                 for (int i = x - radio; i <= x + radio; i++) {//realiza la explosion del disparo dependiendo del tipo de bala en base a un radio
                     for (int j = y - radio; j <= y + radio; j++) {

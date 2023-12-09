@@ -2,6 +2,7 @@
 
     import java.util.ArrayList;
     import java.util.Collections;
+    import java.util.Iterator;
 
     public class ListaJugadores {
         private static ListaJugadores instance;
@@ -148,19 +149,22 @@
                 // Índice fuera de rango, no se hace nada
                 return;
             }
-
             lista.get(indiceJugador).eliminar();
-            turnosDisponibles.clear();
+            Iterator<Integer> iterator = turnosDisponibles.iterator(); // si esta en la lista el jugador que fue eliminado lo eliminamos
+            while (iterator.hasNext()) {
+                if (iterator.next() == indiceJugador) {
+                    iterator.remove();
+                }
+            }
 
         }
         public void desactivarJugador(int indiceJugador)
         {
             if (indiceJugador < 0 || indiceJugador >= lista.size()) {
-                // Índice fuera de rango, no se hace nada
+                //indice fuera de rango, no se hace nada
                 return;
             }
             lista.get(indiceJugador).descativar();
-            turnosDisponibles.clear();
 
         }
         public boolean quedaUnoVivo()
@@ -191,35 +195,32 @@
                     cantidad_inactivos++;
                 }
 
-                if(cantidad_inactivos==cantidadMaximaDeMuertos)
-                {
-                    return true;
-                }
+            }
+            if(cantidad_inactivos==cantidadMaximaDeMuertos)
+            {
+                return true;
             }
             return false;
         }
-        public void revivir()
+        public void revivir_jugadores()
         {
             for (Jugador aux : lista)
             {
                 aux.eliminado=false; // no esta eliminado
                 aux.activo=true; // lo marcamos como activo
-                aux.setVida(100);
+                //reinicio de atributos
+                aux.vida=100;
+                aux.suicidios=0;
+                aux.saldo=10000;
+                aux.asesionatos=0;
+                aux.cantidad80=0;
+                aux.cantidad105=0;
+                aux.cantidad60=0;
+                aux.asesinatosTotales=0;
+                aux.suicidiosTotales=0;
+
             }
         }
-        public static boolean se_repite_indice(ArrayList<Integer> lista1, ArrayList<Integer> lista2) {
-            // Verifica si las listas tienen la misma longitud
-            if (lista1.size() != lista2.size()) {
-                return false;
-            }
 
-            for (int i = 0; i < lista1.size(); i++) {
-                if (lista1.get(i).equals(lista2.get(i))) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
     }

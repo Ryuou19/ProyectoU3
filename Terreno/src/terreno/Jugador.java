@@ -3,6 +3,8 @@ package terreno;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.text.Text;
 
 
 
@@ -10,7 +12,7 @@ public class  Jugador {
 
     String color = "";
     public int jugador;
-    public  int suicidios=0;
+    
     public boolean activo=true;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
@@ -18,26 +20,27 @@ public class  Jugador {
     int cantidad80=0;
     int cantidad60=0;
     int vida;
+    
     //SALDO DE CADA JUGADOR
     int saldo;
     int posicionInicalX=0;
     int posicionInicialY=100;
-    int asesionatos;
+    public int asesionatos;
+    public int suicidios;
+    public int asesinatosTotales;
+    public int suicidiosTotales;
     public Random rand;
     private Tank tanque;
     int random;
     String tipo;
     public ArrayList <Integer> carrito=new ArrayList<>();
+    public ArrayList <Text> datosClasificacion=new ArrayList<>();
     public boolean eliminado = false;
 
     public int getVida() {
         return vida;
     }
 
-    public void setVida(int vida) {
-        this.vida = vida;
-    }
-    
     
     public int getCantidad105() {
         return cantidad105;
@@ -137,16 +140,15 @@ public class  Jugador {
         return vida;
     }
     public static Boolean comprobarMunicion(int tipo, ListaJugadores listJugador){//comprueba si es que ls bala ingresada que posee el jugador esta vacia 
-        switch (tipo){
-            case 1:
-                return listJugador.getJugadorActual().getCantidad60() == 0;
-            case 2:
-                return listJugador.getJugadorActual().getCantidad80() == 0;
-            case 3:
-                return listJugador.getJugadorActual().getCantidad105() == 0;
-            default:
-                break;
+        if(tipo==1){
+            return listJugador.getJugadorActual().getCantidad60() == 0;
         }
+        if(tipo==2){
+            return listJugador.getJugadorActual().getCantidad80() == 0;
+        }
+        if(tipo==3){
+            return listJugador.getJugadorActual().getCantidad105() == 0;
+        }    
         return false;
     }
     

@@ -33,6 +33,7 @@ public class Jugar  {
     int ancho=(Globales.ancho_resolucion/pixel);
     Interfaz interfaz=new Interfaz(Globales.alto_resolucion,Globales.ancho_resolucion);
     
+    
     int contador_inicio=0;
     int vidatanque1=100;
     private boolean disparo_en_curso = false;
@@ -50,6 +51,7 @@ public class Jugar  {
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();
+    Clasificacion resultados= new Clasificacion();
     
 
    
@@ -76,8 +78,6 @@ public class Jugar  {
 
         interfaz.mostrarJugador(listJugador.getJugadorActual());     
 
-
-
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
             finalizarJuego();
         });
@@ -86,7 +86,8 @@ public class Jugar  {
         });        
         tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
         elegir_bala();
-       
+        
+        interfaz.estadisticas(listJugador);
         interfaz.disparar.setOnAction(event ->{                            
                 if (Jugador.comprobarMunicion(tipo,listJugador)) {//verifica si quedan balas del tipo seleccionado
                     HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
@@ -173,9 +174,8 @@ public class Jugar  {
         boolean es_el_mismo=false;
         if (listJugador.getJugadorActual() != jugador) {
             if (jugador.vida <= 0) {
-                listJugador.getJugadorActual().asesionatos += 1; // Incrementa asesinatos
-                listJugador.getJugadorActual().saldo += 5000;
-                System.out.println("Asesinatos del jugador = " + listJugador.getJugadorActual().asesionatos);
+                listJugador.getJugadorActual().asesionatos++;
+                listJugador.getJugadorActual().asesinatosTotales++;
             }
         } 
         else {
@@ -192,6 +192,7 @@ public class Jugar  {
             }
             else{//si no es el mismo
                 listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
+                listJugador.getJugadorActual().suicidiosTotales++;
                 HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" se a suicidado..."+"contador de suicidios->"+jugador.suicidios, 3);
                 interfaz.canvasPane.getChildren().add(muerte);
                 muerte.setLayoutX(Globales.alto_resolucion-300);
@@ -454,27 +455,53 @@ public class Jugar  {
     
     public void reiniciar_partida(){
         jugando=false;
+        listJugador.revivir_jugadores();
         generarTerrenoNuevo();       
         escenaTienda.inicializarInterfaz(listJugador);
+        System.out.println("hola soy el boton reiniciar");
         //metodos y codigo para reiniciar todos los valores de progreso de los jugadores          
     }
     public static int getRandom(){
         return terreno_random;
     }
-       
-    void definirPosicion(){
-        if(revisarEstado()){
+
+    void definirPosicion() {
+        if (revisarEstado()) {
             return;
         }
-        int largo = Globales.alto_resolucion-200;
-        int ancho_segmento=largo/Globales.jugadores_def;
-        System.out.println("jugadores def es -> cantidad de jugadores"+Globales.jugadores_def);
-        for(int i=0;i<Globales.jugadores_def;i++){
-            int min=ancho_segmento*i;
-            int max=ancho_segmento*(i+1);
-            int posicion_inicial=random.nextInt(max-min)+min;
-            listJugador.getLista().get(i).posicionInicalX=posicion_inicial;
+
+        int largo = Globales.alto_resolucion - 200;
+        int ancho_segmento = largo / Globales.jugadores_def;
+
+        int aux = -1;  // Inicializar con un valor que no se encuentre en el rango
+
+        for (int i = 0; i < Globales.jugadores_def; i++) {
+            int min = ancho_segmento * i;
+            int max = ancho_segmento * (i + 1);
+            System.out.println(min+"-"+max);
+            // ajustamos el maximo y el minimo
+            min=min+10;
+            max=max-10;
+            // Definir la posición inicial
+            double factorDispersión = 1.5;
+            int nuevaPosicion = generarPosicionUnica(min, max, aux, factorDispersión);
+            listJugador.getLista().get(i).posicionInicalX = nuevaPosicion;
+            System.out.println("posicion geenerada -> x" + nuevaPosicion);
+
+            // Actualizar aux con la nueva posición
+            aux = nuevaPosicion;
         }
+    }
+
+    private int generarPosicionUnica(int min, int max, int posicionAnterior, double factorDispersión) {
+        Random random = new Random();
+        int distanciaMinima = 75;
+        int nuevaPosicion;
+        do {
+            nuevaPosicion = random.nextInt((int) (factorDispersión * (max - min))) + min;
+        } while (Math.abs(nuevaPosicion - posicionAnterior) < distanciaMinima);
+
+        return nuevaPosicion;
     }
 
     public int calcularDañoPorAltura(int altura) {
@@ -491,20 +518,13 @@ public class Jugar  {
     }
     
     public void finalizarRonda(){
-        listJugador.revivir(); //marcamos todos los jugadores como vivos
-        terrain.borrarHitboxAnterior();// eliminamos las hitbox anteriores
+        listJugador.revivir_jugadores(); //marcamos todos los jugadores como vivos
+        terrain.borrarHitboxAnterior();//eliminamos las hitbox anteriores
         jugando=false;
         Jugador.pagar_ronda(listJugador);
-        for(Jugador jugador:listJugador.lista){
-            System.out.println("saldo= "+jugador.saldo);
-        }
-        if(Globales.rondas_def>0){        
-            escenaTienda.inicializarInterfaz(listJugador);
-            System.out.println("Rondas="+Globales.rondas_def);
-        }
-        if(Globales.rondas_def==0){
-            Platform.exit();
-        }     
+        
+        resultados.mostrarTabla(escenaTienda,listJugador);
+             
     } 
     public void generarTerrenoNuevo(){
         int terrenoAnterior=terreno_random;
@@ -514,11 +534,7 @@ public class Jugar  {
     }
     
     public void finalizarJuego(){
-        jugando=false;
-        PantallaInicial inicio=new PantallaInicial();
-        inicio.start(Globales.stage);
-        //LIMPIAR LISTA DE JUGADORES Y SUS DATOS
-        listJugador.lista.clear();
+        Platform.exit();
     }
     
     public void elegir_bala_bot(){
@@ -569,6 +585,7 @@ public class Jugar  {
                         stop();
                         colision_bala();
                         disparo_en_curso = false;
+                        interfaz.estadisticas(listJugador);
                         animacionCaida();
                     }
                 }
@@ -587,7 +604,7 @@ public class Jugar  {
 
             boolean balaEncontrada = false;
 
-            // Verifica cada tipo de bala hasta encontrar una con municiones o agotar todas las opciones
+            //verifica cada tipo de bala hasta encontrar una con municiones o agotar todas las opciones
             while (!tiposDisponibles.isEmpty() && !balaEncontrada) {
                 
                 int indiceAleatorio = random.nextInt(tiposDisponibles.size());
@@ -597,8 +614,11 @@ public class Jugar  {
                 if (!balaEncontrada) {
                     // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
                     tiposDisponibles.remove(indiceAleatorio);
+                    tipo=0;
                 }
             }
+            
+            revisarJugadores();
 
             // Configuración del disparo de la bala para el bot
             velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
@@ -625,13 +645,14 @@ public class Jugar  {
   
     public Boolean revisarJugadores(){
         for(Jugador jugador : listJugador.lista){
-            if(jugador.getCantidad105()<=0 && jugador.getCantidad80()<=0 && jugador.getCantidad60()<=0){
-                System.out.println(" se desactivo ->"+jugador.jugador);
+            if((jugador.cantidad105+jugador.cantidad80+jugador.cantidad60)<=0||jugador.eliminado==true){
+                System.out.println(" se desactivo ->"+(jugador.jugador+1));
                 listJugador.desactivarJugador(jugador.jugador);
             }
         }
         if(listJugador.quedaUnoActivo())
-        {
+        {   
+            System.out.println("!!QUEDA UNO ACTIVO!!");
             finalizarRonda();
             return true;
         }

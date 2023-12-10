@@ -50,26 +50,32 @@ public class Interfaz {
     //TANQUE 1
     Image tanque1 = new Image(getClass().getResourceAsStream("./img/tanque1.png"));
     ImageView imagentanque1 = new ImageView(tanque1);
+    ImageView iconoTanque1 = new ImageView(tanque1);
 
     //TANQUE 2
     Image tanque2 = new Image(getClass().getResourceAsStream("./img/tanque2.png"));
     ImageView imagentanque2 = new ImageView(tanque2);
+    ImageView iconoTanque2 = new ImageView(tanque2);
     
     //TANQUE 3
     Image tanque3 = new Image(getClass().getResourceAsStream("./img/tanque3.png"));
     ImageView imagentanque3 = new ImageView(tanque3);
+    ImageView iconoTanque3 = new ImageView(tanque3);
         
     //TANQUE 4
     Image tanque4 = new Image(getClass().getResourceAsStream("./img/tanque4.png"));
     ImageView imagentanque4 = new ImageView(tanque4);
+    ImageView iconoTanque4 = new ImageView(tanque4);
     
     //TANQUE 5
     Image tanque5 = new Image(getClass().getResourceAsStream("./img/tanque5.png"));
     ImageView imagentanque5 = new ImageView(tanque5);
+    ImageView iconoTanque5 = new ImageView(tanque5);
         
     //TANQUE 6
     Image tanque6 = new Image(getClass().getResourceAsStream("./img/tanque6.png"));
     ImageView imagentanque6 = new ImageView(tanque6);
+    ImageView iconoTanque6 = new ImageView(tanque1);
        
     //LISTA TANQUES
     ImageView[] imagenes={imagentanque1,imagentanque2,imagentanque3,imagentanque4,imagentanque5,imagentanque6};
@@ -108,7 +114,7 @@ public class Interfaz {
     Text textcantidad2= new Text("");
     Text textcantidad3= new Text("");
     
-    VBox estadisticas=new VBox(10);
+    VBox estadisticas=new VBox(-10);
     HBox num1= new HBox(10);
     HBox num2= new HBox(10);
     HBox num3= new HBox(10);
@@ -127,6 +133,7 @@ public class Interfaz {
     Text cantidadBalas4=new Text();
     Text cantidadBalas5=new Text();
     Text cantidadBalas6=new Text();
+    ArrayList<ImageView> listaTanques=new ArrayList<>();
     ArrayList<Text> listaBalas=new ArrayList<>();
     ArrayList<ProgressBar> listaBarras=new ArrayList<>();
     ArrayList<HBox> cajaEstadisticas=new ArrayList<>();
@@ -246,6 +253,12 @@ public class Interfaz {
         cajaEstadisticas.add(num4);
         cajaEstadisticas.add(num5);
         cajaEstadisticas.add(num6);
+        listaTanques.add(iconoTanque1);
+        listaTanques.add(iconoTanque2);
+        listaTanques.add(iconoTanque3);
+        listaTanques.add(iconoTanque4);
+        listaTanques.add(iconoTanque5);
+        listaTanques.add(iconoTanque6);
         listaBarras.add(barra1);
         listaBarras.add(barra2);
         listaBarras.add(barra3);
@@ -259,9 +272,15 @@ public class Interfaz {
         listaBalas.add(cantidadBalas5);
         listaBalas.add(cantidadBalas6);
       
-        for (int i=0;i<Globales.jugadores_def;i++){           
+        for (int i=0;i<Globales.jugadores_def;i++){  
+            cajaEstadisticas.get(i).getChildren().add(listaTanques.get(i));
             cajaEstadisticas.get(i).getChildren().add(listaBarras.get(i));    
             cajaEstadisticas.get(i).getChildren().add(listaBalas.get(i)); 
+            cajaEstadisticas.get(i).getChildren().get(1).setStyle("-fx-control-inner-background: black; " +
+                             "-fx-accent: #00FF00; " +
+                             "-fx-background-color: black, black; " +
+                             "-fx-background-insets: 0, 2; " +
+                             "-fx-background-radius: 0.5em;");
         }
         
         //ASESINATOS
@@ -337,7 +356,20 @@ public class Interfaz {
             for (ImageView imagen : imagenes) {
                 imagen.setFitWidth(120*widthRatio);               
                 imagen.setLayoutX(335*widthRatio);               
-            } 
+            }
+            for (ImageView imagen : listaTanques) {
+                imagen.setFitWidth(50*widthRatio);                             
+            }
+            for (ProgressBar barra : listaBarras) {
+                barra.setPrefWidth(100*widthRatio);                             
+            }
+            
+            for (Text balas : listaBalas) {
+                balas.setFont(Font.font("Arial", 16*widthRatio));
+            }
+            estadisticas.setLayoutX(15*widthRatio);
+        
+            
             iconoDisparo.setFitWidth(70*widthRatio);
             disparar.setLayoutX(545*widthRatio); 
             
@@ -419,6 +451,18 @@ public class Interfaz {
                 imagen.setFitHeight(150*heightRatio);
                 imagen.setLayoutY(620*heightRatio);
             }
+            
+            for (ImageView imagen : listaTanques) {
+                imagen.setFitHeight(50*heightRatio);   
+                imagen.setTranslateY(-23*heightRatio);
+            }
+            
+            for (ProgressBar barra : listaBarras) {
+                barra.setPrefHeight(20*heightRatio);                             
+            }
+            
+            estadisticas.setLayoutY(20*heightRatio);
+            
             iconoDisparo.setFitHeight(70*heightRatio);          
             disparar.setLayoutY(690*heightRatio);
             
@@ -518,8 +562,30 @@ public class Interfaz {
         int balastotales;
         for (Jugador jugador:listJugador.lista){           
             listaBarras.get(i).setProgress(jugador.getVida()/100.0);
+            if(jugador.getVida()>=60){
+                listaBarras.get(i).setStyle("-fx-control-inner-background: black; " +
+                                 "-fx-accent: #00FF00; " +
+                                 "-fx-background-color: black, black; " +
+                                 "-fx-background-insets: 0, 2; " +
+                                 "-fx-background-radius: 0.5em;");
+            } 
+            if(jugador.getVida()<60){
+                listaBarras.get(i).setStyle("-fx-control-inner-background: black; " +
+                                 "-fx-accent: #FFA500; " +
+                                 "-fx-background-color: black, black; " +
+                                 "-fx-background-insets: 0, 2; " +
+                                 "-fx-background-radius: 0.5em;");
+            }
+            if(jugador.getVida()<25){
+                listaBarras.get(i).setStyle("-fx-control-inner-background: black; " +
+                                 "-fx-accent: red; " +
+                                 "-fx-background-color: black, black; " +
+                                 "-fx-background-insets: 0, 2; " +
+                                 "-fx-background-radius: 0.5em;");
+            } 
             balastotales=jugador.cantidad60+jugador.cantidad80+jugador.cantidad105;
             listaBalas.get(i).setText(Integer.toString(balastotales));
+            
             i++;
         }
         

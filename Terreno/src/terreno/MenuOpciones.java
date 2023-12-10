@@ -110,14 +110,20 @@ public class MenuOpciones {
         //VOLVER MENU PRINCIPAAL    
         volver.setStyle(estilo_botones);
          
+        flecha_izquierda1.setDisable(true);
+        flecha_izquierda2.setDisable(true);
+        flecha_izquierda3.setDisable(true);
+        flecha_izquierda4.setDisable(true);
+        flecha_izquierda5.setDisable(true);
+        flecha_izquierda6.setDisable(true);
+        
         //////////////////////////////////////////////////////////////////7
         //RESOLUCION     
         opcion_resolucion = new Button(resolucion[opcionActualResolucion]);   
         opcion_resolucion.setStyle(estilo_botones);        
         flecha_derecha1.setStyle(estilo_botones);
         flecha_izquierda1.setStyle(estilo_botones);
-        flecha_izquierda1.setDisable(true);
-                
+                      
         flecha_derecha1.setOnAction(e -> {
             Musica.sonido_click();
             flecha_izquierda1.setDisable(false);
@@ -180,16 +186,24 @@ public class MenuOpciones {
         
         flecha_derecha2.setStyle(estilo_botones);
         flecha_derecha2.setOnAction(e -> {
+            flecha_izquierda2.setDisable(false);
             Musica.sonido_click();
             Globales.rondas_def=cambiarOpcion(1,rondas,opcion_rondas,Globales.rondas_def,2);
             System.out.println("Actual = "+Globales.rondas_def);
+            if(opcionActualRondas==rondas.length-1){
+                flecha_derecha2.setDisable(true);
+            }
         });
 
         flecha_izquierda2.setStyle(estilo_botones);
         flecha_izquierda2.setOnAction(e -> {
+            flecha_derecha2.setDisable(false);
             Musica.sonido_click();
             Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def,2);
             System.out.println("Actual = "+Globales.rondas_def);
+            if(opcionActualRondas==0){
+                flecha_izquierda2.setDisable(true);
+            }
         });
                
         menu_rondas.getChildren().addAll(flecha_izquierda2,opcion_rondas, flecha_derecha2);
@@ -207,21 +221,27 @@ public class MenuOpciones {
 
         flecha_derecha3.setStyle(estilo_botones);
         flecha_derecha3.setOnAction(e -> {
+            flecha_izquierda3.setDisable(false);
             Musica.sonido_click();
             flecha_derecha4.setDisable(false); 
             Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
-            
+            if(opcionActualJugadores==jugadores.length-1){
+                flecha_derecha3.setDisable(true);
+            }
         });
 
         flecha_izquierda3.setStyle(estilo_botones);
         flecha_izquierda3.setOnAction(e -> {
+            flecha_derecha3.setDisable(false);
             Musica.sonido_click();
-            flecha_izquierda5.setDisable(false);
             Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
             if(Globales.jugadores_def<Globales.cantidad_def){
                 Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
+            }
+            if(opcionActualJugadores==0){
+                flecha_izquierda3.setDisable(true);
             }
         });
                 
@@ -239,9 +259,9 @@ public class MenuOpciones {
       
         flecha_derecha4.setStyle(estilo_botones);
         flecha_derecha4.setOnAction(e -> { 
+            flecha_izquierda4.setDisable(false);
             Musica.sonido_click();
             Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
-            flecha_izquierda5.setDisable(false);
             System.out.println("Actual = "+Globales.cantidad_def); 
             if(Globales.cantidad_def>=Globales.jugadores_def){
                 flecha_derecha4.setDisable(true);           
@@ -249,18 +269,25 @@ public class MenuOpciones {
             if(opcionActualCantidad>cantidad.length-1){
                 flecha_derecha4.setDisable(true);   
             }
+            if(opcionActualCantidad==cantidad.length-1){
+                flecha_derecha4.setDisable(true);
+            }
             
             
         });
         
         flecha_izquierda4.setStyle(estilo_botones);
         flecha_izquierda4.setOnAction(e -> {   
+            flecha_derecha4.setDisable(false);
             Musica.sonido_click();
             Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);         
             System.out.println("Actual = "+Globales.cantidad_def);         
             flecha_derecha4.setDisable(false);
             if(opcionActualCantidad==0){
                 flecha_izquierda4.setDisable(true);   
+            }
+            if(opcionActualCantidad==0){
+                flecha_izquierda4.setDisable(true);
             }
         });
                     
@@ -277,16 +304,24 @@ public class MenuOpciones {
                  
         flecha_derecha5.setStyle(estilo_botones);
         flecha_derecha5.setOnAction(e -> {
+            flecha_izquierda5.setDisable(false);
             Musica.sonido_click();
             Globales.gravedad_def=cambiarOpcion(1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
             System.out.println("Actual = "+Globales.gravedad_def);    
+            if(opcionActualGravedad==gravedad.length-1){
+                flecha_derecha5.setDisable(true);
+            }
         });
               
         flecha_izquierda5.setStyle(estilo_botones);
         flecha_izquierda5.setOnAction(e -> {
+            flecha_derecha5.setDisable(false);
             Musica.sonido_click();
             Globales.gravedad_def=cambiarOpcion(-1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
-            System.out.println("Actual = "+Globales.gravedad_def);      
+            System.out.println("Actual = "+Globales.gravedad_def);     
+            if(opcionActualGravedad==0){
+                flecha_izquierda5.setDisable(true);
+            }
         });
         
         labelGravedad.setStyle("-fx-text-fill: white;");
@@ -303,16 +338,24 @@ public class MenuOpciones {
                  
         flecha_derecha6.setStyle(estilo_botones);
         flecha_derecha6.setOnAction(e -> {
+            flecha_izquierda6.setDisable(false);
             Musica.sonido_click();
             Globales.viento_def=cambiarOpcion(1,viento,opcion_viento,Globales.viento_def,6);
             System.out.println("Actual = "+Globales.viento_def);    
+            if(opcionActualViento==viento.length-1){
+                flecha_derecha6.setDisable(true);
+            }
         });
               
         flecha_izquierda6.setStyle(estilo_botones);
         flecha_izquierda6.setOnAction(e -> {
+            flecha_derecha6.setDisable(false);
             Musica.sonido_click();
             Globales.viento_def=cambiarOpcion(-1,viento,opcion_viento,Globales.viento_def,6);
-            System.out.println("Actual = "+Globales.viento_def);      
+            System.out.println("Actual = "+Globales.viento_def);   
+            if(opcionActualViento==0){
+                flecha_izquierda6.setDisable(true);
+            }
         });
         
         labelViento.setStyle("-fx-text-fill: white;");

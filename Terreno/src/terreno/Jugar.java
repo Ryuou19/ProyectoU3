@@ -62,10 +62,10 @@ public class Jugar  {
         System.out.println("global gravedad= "+Globales.gravedad_def);
         Globales.stage.setResizable(true);
         if(Globales.gravedad_def==1){
-            Globales.gravedad=-15.98;
+            Globales.gravedad=-15.81;
         }
         if(Globales.gravedad_def==2){
-            Globales.gravedad=-5.98;
+            Globales.gravedad=-5.81;
         }
 
         if(Globales.rondas_def==0){
@@ -518,11 +518,10 @@ public class Jugar  {
     }
     
     public void finalizarRonda(){
-        listJugador.revivir_jugadores(); //marcamos todos los jugadores como vivos
+        listJugador.revivir(); //marcamos todos los jugadores como vivos
         terrain.borrarHitboxAnterior();//eliminamos las hitbox anteriores
         jugando=false;
-        Jugador.pagar_ronda(listJugador);
-        
+        Jugador.pagar_ronda(listJugador);      
         resultados.mostrarTabla(escenaTienda,listJugador);
              
     } 

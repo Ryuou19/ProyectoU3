@@ -81,7 +81,6 @@ public class Tienda  {
        
     public void tiendaJugador(ListaJugadores listJugadores){
         cambiarJugador(listJugadores);
-        System.out.println("GLOBALES: "+Globales.jugadores_def);
         //Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
         
         for(Jugador jugadorBot:listJugadores.lista){
@@ -91,7 +90,6 @@ public class Tienda  {
         }
         
         Pane panel=new Pane();       
-        Globales.stage.setTitle("Tienda de Armas");
                            
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
      

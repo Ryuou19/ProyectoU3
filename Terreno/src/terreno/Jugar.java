@@ -552,6 +552,7 @@ public class Jugar  {
     }
     
     public void finalizarRonda(){
+        
         listJugador.revivir(); //marcamos todos los jugadores como vivos
         terrain.borrarHitboxAnterior();//eliminamos las hitbox anteriores
         jugando=false;

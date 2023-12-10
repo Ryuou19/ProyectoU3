@@ -16,7 +16,7 @@ public class Victoria {
     Pane panel= new Pane();
     Image imagenFondo = new Image(getClass().getResourceAsStream("./img/fondoVictoria.png"));    
     ImageView fondo = new ImageView(imagenFondo);
-    Button finalizar= new Button("TERMINAR");
+    Button finalizar= new Button("FINALIZAR");
     
     Image tanque=null;
     Image titulo=new Image(getClass().getResourceAsStream("./img/ganadorFinal.png"));          
@@ -25,6 +25,9 @@ public class Victoria {
     Image draw=new Image(getClass().getResourceAsStream("./img/draw.png"));
     ImageView empate=new ImageView(draw);
     
+    Image crown=new Image(getClass().getResourceAsStream("./img/corona.png"));
+    ImageView corona=new ImageView(crown);
+    
     private ChangeListener<Number> widthListener;
     private ChangeListener<Number> heightListener;
     
@@ -32,12 +35,13 @@ public class Victoria {
     public void mostrarGanador(ListaJugadores listJugador){
         Globales.escena.setRoot(panel);
         fondo.setPreserveRatio(false);
-        
+        fondo.setX(-12);
+        fondo.setY(-36);
         panel.getChildren().addAll(fondo,finalizar);
         finalizar.setStyle(
             "-fx-background-color: #000000; " + 
             "-fx-text-fill: #FFFFFF;" + 
-            "-fx-border-color: #FF0000;" + 
+            "-fx-border-color: #FFD700;" + 
             "-fx-border-width: 3px;" +  
             "-fx-background-radius: 0;" 
         );
@@ -50,37 +54,45 @@ public class Victoria {
         
         widthListener= (obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800; 
-            fondo.setFitWidth(800*widthRatio);
-            finalizar.setLayoutX(525*widthRatio);
+            fondo.setFitWidth(825*widthRatio);
+            fondo.setX(-13*widthRatio);
+       
+            finalizar.setLayoutX(305*widthRatio);
             finalizar.setPrefWidth(195*widthRatio);
             finalizar.setFont(Font.font("Serif",FontWeight.BOLD, 24*widthRatio));
 
             if(tanque!=null){
-                ganador.setLayoutX(520*widthRatio);
+                ganador.setLayoutX(300*widthRatio);
                 ganador.setFitWidth(200*widthRatio);
-                victoria.setLayoutX(300*widthRatio);            
+                victoria.setLayoutX(160*widthRatio);            
                 victoria.setFitWidth(500*widthRatio);
             }    
             
-            empate.setLayoutX(300*widthRatio);           
-            empate.setFitWidth(500*widthRatio);                                  
+            empate.setLayoutX(160*widthRatio);           
+            empate.setFitWidth(500*widthRatio); 
+            corona.setLayoutX(300*widthRatio);           
+            corona.setFitWidth(200*widthRatio);   
+            
         };
 
         heightListener=(obs, oldHeight, newHeight) -> {
             double heightRatio = newHeight.doubleValue() / 800; 
-            fondo.setFitHeight(800*heightRatio);
-            finalizar.setLayoutY(460*heightRatio);
-            finalizar.setPrefHeight(60*heightRatio);
+            fondo.setFitHeight(881*heightRatio);
+            fondo.setY(-41*heightRatio);
+            finalizar.setLayoutY(560*heightRatio);
+            finalizar.setPrefHeight(50*heightRatio);
             
             if(tanque!=null){
-                ganador.setLayoutY(250*heightRatio);
-                ganador.setFitHeight(200*heightRatio);
-                victoria.setLayoutY(150*heightRatio);
-                victoria.setFitHeight(300*heightRatio);
+                ganador.setLayoutY(320*heightRatio);
+                ganador.setFitHeight(250*heightRatio);
+                victoria.setLayoutY(120*heightRatio);
+                victoria.setFitHeight(500*heightRatio);
             }
            
-            empate.setLayoutY(200*heightRatio);
-            empate.setFitHeight(300*heightRatio);
+            empate.setLayoutY(120*heightRatio);
+            empate.setFitHeight(500*heightRatio);
+            corona.setLayoutY(110*heightRatio);           
+            corona.setFitHeight(250*heightRatio);
             
         };
         
@@ -107,7 +119,7 @@ public class Victoria {
             }        
         }
         if(indice==-1){          
-            panel.getChildren().add(empate);
+            panel.getChildren().addAll(empate,corona);
         }
      
         ///////////////////////////
@@ -133,7 +145,7 @@ public class Victoria {
         if(tanque!=null){
             victoria=new ImageView(titulo);
             ganador=new ImageView(tanque);
-            panel.getChildren().addAll(ganador,victoria);          
+            panel.getChildren().addAll(ganador,victoria,corona);          
         }                 
     }
 }

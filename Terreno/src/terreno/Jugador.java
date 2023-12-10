@@ -3,7 +3,6 @@ package terreno;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.text.Text;
 
 
@@ -12,13 +11,13 @@ public class  Jugador {
 
     String color = "";
     public int jugador;
-    
+    Random r=new Random();
     public boolean activo=true;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
     int cantidad105=0;
     int cantidad80=0;
-    int cantidad60=1;
+    int cantidad60=0;
     int vida;
     
     //SALDO DE CADA JUGADOR

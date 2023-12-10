@@ -93,6 +93,7 @@ public class MenuOpciones {
         paneOpciones.setPrefSize(Globales.alto_resolucion,Globales.ancho_resolucion);
    
         volverMenu.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.escena.setRoot(panel);
             Globales.cambiarEscena(Globales.escena);         
         }); 
@@ -118,6 +119,7 @@ public class MenuOpciones {
         flecha_izquierda1.setDisable(true);
                 
         flecha_derecha1.setOnAction(e -> {
+            Musica.sonido_click();
             flecha_izquierda1.setDisable(false);
             Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
@@ -142,6 +144,7 @@ public class MenuOpciones {
         });
         
         flecha_izquierda1.setOnAction(e -> {
+            Musica.sonido_click();
             flecha_derecha1.setDisable(false);
             Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
             System.out.println("Actual = "+Globales.resolucion_def);
@@ -177,12 +180,14 @@ public class MenuOpciones {
         
         flecha_derecha2.setStyle(estilo_botones);
         flecha_derecha2.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.rondas_def=cambiarOpcion(1,rondas,opcion_rondas,Globales.rondas_def,2);
             System.out.println("Actual = "+Globales.rondas_def);
         });
 
         flecha_izquierda2.setStyle(estilo_botones);
         flecha_izquierda2.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def,2);
             System.out.println("Actual = "+Globales.rondas_def);
         });
@@ -202,6 +207,7 @@ public class MenuOpciones {
 
         flecha_derecha3.setStyle(estilo_botones);
         flecha_derecha3.setOnAction(e -> {
+            Musica.sonido_click();
             flecha_derecha4.setDisable(false); 
             Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
@@ -210,6 +216,7 @@ public class MenuOpciones {
 
         flecha_izquierda3.setStyle(estilo_botones);
         flecha_izquierda3.setOnAction(e -> {
+            Musica.sonido_click();
             flecha_izquierda5.setDisable(false);
             Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
             System.out.println("Actual = "+Globales.jugadores_def);
@@ -231,7 +238,8 @@ public class MenuOpciones {
         opcion_cantidad.setStyle(estilo_botones);
       
         flecha_derecha4.setStyle(estilo_botones);
-        flecha_derecha4.setOnAction(e -> {         
+        flecha_derecha4.setOnAction(e -> { 
+            Musica.sonido_click();
             Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
             flecha_izquierda5.setDisable(false);
             System.out.println("Actual = "+Globales.cantidad_def); 
@@ -246,7 +254,8 @@ public class MenuOpciones {
         });
         
         flecha_izquierda4.setStyle(estilo_botones);
-        flecha_izquierda4.setOnAction(e -> {         
+        flecha_izquierda4.setOnAction(e -> {   
+            Musica.sonido_click();
             Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);         
             System.out.println("Actual = "+Globales.cantidad_def);         
             flecha_derecha4.setDisable(false);
@@ -268,12 +277,14 @@ public class MenuOpciones {
                  
         flecha_derecha5.setStyle(estilo_botones);
         flecha_derecha5.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.gravedad_def=cambiarOpcion(1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
             System.out.println("Actual = "+Globales.gravedad_def);    
         });
               
         flecha_izquierda5.setStyle(estilo_botones);
         flecha_izquierda5.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.gravedad_def=cambiarOpcion(-1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
             System.out.println("Actual = "+Globales.gravedad_def);      
         });
@@ -292,12 +303,14 @@ public class MenuOpciones {
                  
         flecha_derecha6.setStyle(estilo_botones);
         flecha_derecha6.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.viento_def=cambiarOpcion(1,viento,opcion_viento,Globales.viento_def,6);
             System.out.println("Actual = "+Globales.viento_def);    
         });
               
         flecha_izquierda6.setStyle(estilo_botones);
         flecha_izquierda6.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.viento_def=cambiarOpcion(-1,viento,opcion_viento,Globales.viento_def,6);
             System.out.println("Actual = "+Globales.viento_def);      
         });

@@ -57,6 +57,7 @@ public class Jugar  {
 
    
     public void start() {
+        Musica.agregar_musica_terreno();
         if(revisarEstado()){
             return;
         }
@@ -91,6 +92,7 @@ public class Jugar  {
             finalizarJuego();
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
+            Musica.detenerMusica();
             reiniciar_partida();
         });        
         tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
@@ -215,6 +217,7 @@ public class Jugar  {
     }
    
     public void colision_bala(){
+        Musica.sonido_colision();
         if(revisarEstado()){
             return;
         }

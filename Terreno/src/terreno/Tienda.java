@@ -75,7 +75,8 @@ public class Tienda  {
     public Tienda() {       
     }
       
-    public void inicializarInterfaz( ListaJugadores listJugadores) {      
+    public void inicializarInterfaz( ListaJugadores listJugadores) {     
+        Musica.agregar_musica_tienda();
         tiendaJugador(listJugadores);       
     }
        

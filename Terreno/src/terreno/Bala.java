@@ -2,6 +2,7 @@ package terreno;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class Bala {
@@ -75,7 +76,7 @@ public class Bala {
     }
 
 
-     public void actualizarPosicion(double deltaTiempo, Bala player, int distancia, int altura,  HBox boxdistancia, HBox boxaltura,double posicionInicialY,double posicionInicialX){
+     public void actualizarPosicion(double deltaTiempo, Bala player, int distancia, int altura,  VBox boxdistancia, VBox boxaltura,double posicionInicialY,double posicionInicialX){
         // de uno a 1 metros por segundo
          ejeX += (velocidadX) * deltaTiempo;
          velocidadY -= Globales.gravedad * deltaTiempo;

@@ -27,6 +27,7 @@ public class Jugar  {
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)   
     int tipo=0;//tipo de bala seleccionada
     double deltaTiempo = 0.09;
+    int viento;
     
     ListaJugadores listJugador;
     int alto = (Globales.alto_resolucion/pixel);
@@ -59,6 +60,7 @@ public class Jugar  {
         if(revisarEstado()){
             return;
         }
+        viento=Globales.cambiarViento(interfaz);//generamos el primer viento
         System.out.println("global gravedad= "+Globales.gravedad_def);
         Globales.stage.setResizable(true);
         if(Globales.gravedad_def==1){
@@ -73,6 +75,13 @@ public class Jugar  {
         }
         //deberia de tomar la variable con lo que hay en configuracion
         interfaz.iniciar_interfaz();
+        interfaz.cantidadRondas.setText(Integer.toString(Globales.rondas_def));
+        interfaz.cantidadGravedad.setText(Double.toString(Globales.gravedad*-1));
+        if(Globales.viento_def==0){
+            interfaz.cantidadViento.setText("Nulo");
+        }
+        
+        
         definirPosicion();
         iniciar_terreno();
 
@@ -218,8 +227,7 @@ public class Jugar  {
         }
         if(terreno_random == 2) {
             terrain.terreno_aram(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
-        }
-        interfaz.disparar.setDisable(false);       
+        }   
         tipo=0;
     } 
     
@@ -384,6 +392,7 @@ public class Jugar  {
                                     }
                                     listJugador.generarTurnoAleatorio();
                                     interfaz.mostrarJugador(listJugador.getJugadorActual());
+                                   
                                     if (listJugador.getJugadorActual().tipo.equals("bot")) {
                                         iniciar_bot();
                                     }
@@ -427,20 +436,28 @@ public class Jugar  {
 
 
     public void elegir_bala(){
+        if(listJugador.getJugadorActual().cantidad60==0){
+            interfaz.bala1.setDisable(true);
+        }
+        if(listJugador.getJugadorActual().cantidad80==0){
+            interfaz.bala2.setDisable(true);
+        }
+        if(listJugador.getJugadorActual().cantidad105==0){
+            interfaz.bala3.setDisable(true);
+        }
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
-            interfaz.bala1.setOnAction(event -> {//escoge bala 1
-            String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
-            interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
-            tipo=1;//ajusta el tipo          
-            interfaz.disparar.setStyle("-fx-text-fill: green;-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
-            interfaz.disparar.setDisable(false);
+        
+        interfaz.bala1.setOnAction(event -> {//escoge bala 1
+        String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
+        interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
+        tipo=1;//ajusta el tipo          
+        interfaz.disparar.setDisable(false);
         });
             
         interfaz.bala2.setOnAction(event -> {//escoge bala 2           
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad80());
             interfaz.textcantidad2.setText(int_string);//lo mismo de bala1
             tipo=2;//ajusta el tipo   
-            interfaz.disparar.setStyle("-fx-text-fill: blue;-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });
             
@@ -448,7 +465,6 @@ public class Jugar  {
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad105());
             interfaz.textcantidad3.setText(int_string);
             tipo=3;//ajusta el tipo       
-            interfaz.disparar.setStyle("-fx-text-fill: red;-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
             interfaz.disparar.setDisable(false);
         });                      
     }
@@ -544,13 +560,14 @@ public class Jugar  {
         if(revisarEstado()){
             return;
         }
-        Globales.cambiarViento();//cambiamos la dirección del viento
-        System.out.println("viento de la bala->"+Globales.viento_def);
+        
+        
+        
         new AnimationTimer() {
 
             long lastWindChangeTime = 0; // Variable para almacenar la última vez que cambió la dirección del viento
             int windChangeInterval = 50_000_000; // Cambiar la dirección del viento cada 1/20 de segundo
-            double vientoIncremento = Globales.viento_def / 20.0; // Reducir la cantidad que se suma al eje x a 1/20
+            double vientoIncremento = viento/ 20.0; // Reducir la cantidad que se suma al eje x a 1/20
 
             @Override
             public void handle(long now) {
@@ -584,6 +601,7 @@ public class Jugar  {
                         stop();
                         colision_bala();
                         disparo_en_curso = false;
+                        viento=Globales.cambiarViento(interfaz);//cambiamos la dirección del viento
                         interfaz.estadisticas(listJugador);
                         animacionCaida();
                     }

@@ -48,7 +48,7 @@ public class Jugar  {
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     
     static{
-        terreno_random =1;//random.nextInt(3);
+        terreno_random =random.nextInt(3);
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();

@@ -64,7 +64,7 @@ public class Victoria {
             if(tanque!=null){
                 ganador.setLayoutX(300*widthRatio);
                 ganador.setFitWidth(200*widthRatio);
-                victoria.setLayoutX(160*widthRatio);            
+                victoria.setLayoutX(150*widthRatio);            
                 victoria.setFitWidth(500*widthRatio);
             }    
             
@@ -85,8 +85,8 @@ public class Victoria {
             if(tanque!=null){
                 ganador.setLayoutY(320*heightRatio);
                 ganador.setFitHeight(250*heightRatio);
-                victoria.setLayoutY(120*heightRatio);
-                victoria.setFitHeight(500*heightRatio);
+                victoria.setLayoutY(180*heightRatio);
+                victoria.setFitHeight(350*heightRatio);
             }
            
             empate.setLayoutY(120*heightRatio);
@@ -108,16 +108,22 @@ public class Victoria {
         int mayor=0;
         int indice=-1;
         for(int i=0;i<lista.size();i++){
-            if(lista.get(i).asesinatosTotales==mayor && indice!=-1){
-                indice=-1;
-                break;
-            }
-            if(mayor<lista.get(i).asesinatosTotales){
-                
+            if(mayor<lista.get(i).asesinatosTotales){              
                 mayor=lista.get(i).asesinatosTotales;
+                System.out.println("MAYOR= "+mayor);
                 indice=i;
             }        
         }
+        lista.remove(indice);
+        for(int i=0;i<lista.size();i++){
+            if(lista.get(i).asesinatosTotales==mayor && indice!=-1){
+                System.out.println("Encontro copia");
+                indice=-1;
+                break;
+            }
+        }
+        
+        
         if(indice==-1){          
             panel.getChildren().addAll(empate,corona);
         }

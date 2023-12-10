@@ -21,6 +21,15 @@ public class Musica {
         
  
     }
+    public static void sonido_compra(){
+        final String click = "src/terreno/music/dinero.mp3";
+        File archivo_click = new File(click);
+        Media music_mp3 =new Media(archivo_click.toURI().toString());
+        MediaPlayer Player_music = new MediaPlayer(music_mp3);
+        Player_music.play();
+        
+ 
+    }
     public static void agregar_musica(){
         final String music ="src/terreno/music/musica.mp3";
         File archivo_music = new File(music);
@@ -34,7 +43,7 @@ public class Musica {
     }
 
     public static void agregar_musica_terreno(){
-        final String music ="src/terreno/music/music_terreno.mp3";
+        final String music ="src/terreno/music/Gow.mp3";
         File archivo_music = new File(music);
         Media musicMp3 =new Media(archivo_music.toURI().toString());
         
@@ -42,13 +51,14 @@ public class Musica {
          detenerMusica();
         
         player = new MediaPlayer(musicMp3);
+         player.setVolume(0.1);
         player.play();
         
         
     }
     
      public static void sonido_disparo(){
-        final String music ="src/terreno/music/music_terreno.mp3";
+        final String music ="src/terreno/music/disparo.mp3";
         File archivo_music = new File(music);
         Media music_mp3 =new Media(archivo_music.toURI().toString());
         MediaPlayer Player_music = new MediaPlayer(music_mp3);
@@ -71,6 +81,7 @@ public class Musica {
              detenerMusica();
 
             player = new MediaPlayer(musicMp3);
+             player.setVolume(0.1);
             player.play();
         
         

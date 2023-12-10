@@ -93,7 +93,8 @@ public class Jugar  {
         elegir_bala();
         
         interfaz.estadisticas(listJugador);
-        interfaz.disparar.setOnAction(event ->{                            
+        interfaz.disparar.setOnAction(event ->{  
+                Musica.sonido_click();
                 if (Jugador.comprobarMunicion(tipo,listJugador)) {//verifica si quedan balas del tipo seleccionado
                     HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
                     interfaz.canvasPane.getChildren().add(aviso);
@@ -137,8 +138,10 @@ public class Jugar  {
                     System.out.println("no quedan mas balas ");
                 }
                 else{
+                    Musica.sonido_disparo();
                     System.out.println("disparo en curso->"+disparo_en_curso);
                     disparo_en_curso = false;
+                    
                     animacionBala(nuevaBala);
                 }     
             interfaz.entradaangulo.setText("");
@@ -437,6 +440,7 @@ public class Jugar  {
     public void elegir_bala(){
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
             interfaz.bala1.setOnAction(event -> {//escoge bala 1
+            Musica.sonido_click();
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
             interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
             tipo=1;//ajusta el tipo          
@@ -444,7 +448,8 @@ public class Jugar  {
             interfaz.disparar.setDisable(false);
         });
             
-        interfaz.bala2.setOnAction(event -> {//escoge bala 2           
+        interfaz.bala2.setOnAction(event -> {//escoge bala 2     
+            Musica.sonido_click();
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad80());
             interfaz.textcantidad2.setText(int_string);//lo mismo de bala1
             tipo=2;//ajusta el tipo   
@@ -452,7 +457,8 @@ public class Jugar  {
             interfaz.disparar.setDisable(false);
         });
             
-        interfaz.bala3.setOnAction(event -> {//escoge bala 3           
+        interfaz.bala3.setOnAction(event -> {//escoge bala 3          
+            Musica.sonido_click();
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad105());
             interfaz.textcantidad3.setText(int_string);
             tipo=3;//ajusta el tipo       

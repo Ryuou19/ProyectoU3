@@ -187,7 +187,7 @@ public class Tienda  {
         
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         comprarBala60.setOnAction(event -> {    
-            Musica.sonido_click();
+            Musica.sonido_compra();
             System.out.println("Bala 60 comprada");
             jugador.saldo-=1000;
             textSaldoJugador.setText("$"+jugador.saldo);
@@ -200,7 +200,7 @@ public class Tienda  {
         });
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);
         comprarBala80.setOnAction(event -> {
-            Musica.sonido_click();
+            Musica.sonido_compra();
             System.out.println("Bala 80 comprada");
             jugador.saldo-=2500;
             textSaldoJugador.setText("$"+jugador.saldo);
@@ -212,7 +212,7 @@ public class Tienda  {
         });
         bloquearBoton(comprarBala60,comprarBala80,comprarBala105,jugador);    
         comprarBala105.setOnAction(event -> {
-            Musica.sonido_click();
+            Musica.sonido_compra();
             System.out.println("Bala 105 comprada");
             jugador.saldo-=4000;
             textSaldoJugador.setText("$"+jugador.saldo);

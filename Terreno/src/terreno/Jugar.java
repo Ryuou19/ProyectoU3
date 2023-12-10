@@ -439,15 +439,6 @@ public class Jugar  {
 
 
     public void elegir_bala(){
-        if(listJugador.getJugadorActual().cantidad60==0){
-            interfaz.bala1.setDisable(true);
-        }
-        if(listJugador.getJugadorActual().cantidad80==0){
-            interfaz.bala2.setDisable(true);
-        }
-        if(listJugador.getJugadorActual().cantidad105==0){
-            interfaz.bala3.setDisable(true);
-        }
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
         
         interfaz.bala1.setOnAction(event -> {//escoge bala 1

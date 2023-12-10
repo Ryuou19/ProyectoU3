@@ -44,7 +44,7 @@ public class Musica {
         reproducirMusica("src/terreno/music/win.mp3", 0.7);
     }
        public static void agregar_musica_empate() {
-        reproducirMusica("src/terreno/music/win.mp3", 0.7);
+        reproducirMusica("src/terreno/music/empate.mp3", 0.9);
     }
        public static void agregar_musica_clasificatoria() {
         reproducirMusica("src/terreno/music/clasificatoria.mp3", 0.5);

@@ -75,8 +75,10 @@ public class Tienda  {
     public Tienda() {       
     }
       
-    public void inicializarInterfaz( ListaJugadores listJugadores) {      
-        tiendaJugador(listJugadores);       
+    public void inicializarInterfaz( ListaJugadores listJugadores) 
+        {
+           Musica.agregar_musica_tienda();
+            tiendaJugador(listJugadores);       
     }
        
     public void tiendaJugador(ListaJugadores listJugadores){
@@ -223,6 +225,7 @@ public class Tienda  {
         
         revertirCompra.setOnAction(event -> {
             Musica.sonido_click();
+                 
             
             if (jugador.carrito.size()-1 >= 0) { // Verificar si la lista tiene al menos un elemento
                 ultimaOpcion=jugador.carrito.get(jugador.carrito.size()-1);
@@ -287,8 +290,10 @@ public class Tienda  {
             if(cambio==1){
                 Globales.alto_resolucion--;
             }
+       
             Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
             juego.start();              
+            
         });
         
         widthListener= (obs, oldWidth, newWidth) -> {
@@ -388,6 +393,7 @@ public class Tienda  {
           textSaldoJugador, textBalas60,textBalas80,textBalas105,finalizarTienda,revertirCompra,textNombreJugador,
           cambiar);        
         Globales.escena.setRoot(panel);        
+        
     }
     
     public void bloquearBoton(Button comprarBala60,Button comprarBala80,Button comprarBala105,Jugador jugador){

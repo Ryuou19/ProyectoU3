@@ -54,11 +54,15 @@ public class Jugar  {
     Clasificacion resultados= new Clasificacion();
     
 
-   
+    
     public void start() {
+    
+          
+       Musica.agregar_musica_terreno();
         if(revisarEstado()){
             return;
         }
+         
         System.out.println("global gravedad= "+Globales.gravedad_def);
         Globales.stage.setResizable(true);
         if(Globales.gravedad_def==1){
@@ -82,6 +86,7 @@ public class Jugar  {
             finalizarJuego();
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
+            Musica.detenerMusica();
             reiniciar_partida();
         });        
         tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
@@ -143,6 +148,7 @@ public class Jugar  {
     } 
     
     public void iniciar_terreno(){//inicializa la matriz del terreno y la dibuja dependiendo de la eleccion random
+        
         if(revisarEstado()){
             return;
         }
@@ -206,9 +212,11 @@ public class Jugar  {
     }
    
     public void colision_bala(){
+         Musica.sonido_colision();
         if(revisarEstado()){
             return;
         }
+       
         calcular_explosion();
         if(terreno_random == 0) {
             terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
@@ -456,7 +464,8 @@ public class Jugar  {
     public void reiniciar_partida(){
         jugando=false;
         listJugador.revivir_jugadores();
-        generarTerrenoNuevo();       
+      
+       
         escenaTienda.inicializarInterfaz(listJugador);
         System.out.println("hola soy el boton reiniciar");
         //metodos y codigo para reiniciar todos los valores de progreso de los jugadores          

@@ -26,7 +26,7 @@ public class  Jugador {
     int posicionInicialY=100;
     public int asesionatos;
     public int suicidios;
-    public int asesinatosTotales=r.nextInt(5);
+    public int asesinatosTotales;
     public int suicidiosTotales;
     public Random rand;
     private Tank tanque;

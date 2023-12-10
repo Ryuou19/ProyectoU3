@@ -114,7 +114,9 @@ public class Victoria {
                 indice=i;
             }        
         }
-        lista.remove(indice);
+        if(indice!=-1){
+            lista.remove(indice);
+        }       
         for(int i=0;i<lista.size();i++){
             if(lista.get(i).asesinatosTotales==mayor && indice!=-1){
                 System.out.println("Encontro copia");

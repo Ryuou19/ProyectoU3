@@ -107,6 +107,7 @@ public class Victoria {
             }        
         }
         if(indice==-1){          
+            Musica.agregar_musica_empate();
             panel.getChildren().add(empate);
         }
      

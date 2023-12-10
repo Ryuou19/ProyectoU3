@@ -43,7 +43,9 @@ public class Musica {
         public static void agregar_musica_win() {
         reproducirMusica("src/terreno/music/win.mp3", 0.1);
     }
-
+       public static void agregar_musica_empate() {
+        reproducirMusica("src/terreno/music/win.mp3", 0.1);
+    }
     public static void detenerMusica() {
         if (player != null) {
             player.stop();

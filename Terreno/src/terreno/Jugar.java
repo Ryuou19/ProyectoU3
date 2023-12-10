@@ -57,6 +57,7 @@ public class Jugar  {
 
    
     public void start() {
+        Musica.agregar_musica_terreno();
         if(revisarEstado()){
             return;
         }
@@ -91,63 +92,66 @@ public class Jugar  {
             finalizarJuego();
         });
         interfaz.reiniciar.setOnAction(event -> {//se realiza todo el proceso para reiniciar la partida
+            Musica.detenerMusica();
             reiniciar_partida();
         });        
         tipo=0;//reiniciamos el tipo para que no permita disparar la bala anterior sin antes escogerla
         elegir_bala();
         
         interfaz.estadisticas(listJugador);
-        interfaz.disparar.setOnAction(event ->{                            
-                if (Jugador.comprobarMunicion(tipo,listJugador)) {//verifica si quedan balas del tipo seleccionado
-                    HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
+        interfaz.disparar.setOnAction(event ->{
+            Musica.sonido_click();
+            if (Jugador.comprobarMunicion(tipo,listJugador)) {//verifica si quedan balas del tipo seleccionado
+                HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
+                interfaz.canvasPane.getChildren().add(aviso);
+                aviso.setLayoutX(Globales.alto_resolucion/2-70);
+                aviso.setLayoutY(Globales.ancho_resolucion/2);
+                if(Jugador.comprobarMunicion(1,listJugador)&&Jugador.comprobarMunicion(2,listJugador)&&Jugador.comprobarMunicion(3,listJugador)){
+                    aviso=VentanaEmergente.aparecer("Jugador se quedo sin balas....",3);
                     interfaz.canvasPane.getChildren().add(aviso);
-                    aviso.setLayoutX(Globales.alto_resolucion/2-70);
-                    aviso.setLayoutY(Globales.ancho_resolucion/2);
-                    if(Jugador.comprobarMunicion(1,listJugador)&&Jugador.comprobarMunicion(2,listJugador)&&Jugador.comprobarMunicion(3,listJugador)){
-                        aviso=VentanaEmergente.aparecer("Jugador se quedo sin balas....",3);
-                        interfaz.canvasPane.getChildren().add(aviso);
-                        aviso.setLayoutX(Globales.alto_resolucion/2-120);
-                        aviso.setLayoutY(0);
-                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> animacionCaida()));
-                        delay.play();
-                        return;
-                    }
-                    tipo=0;                   
-                    if(Jugador.revisarBalasDisponibles(listJugador)){
-                        aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
-                        interfaz.canvasPane.getChildren().add(aviso);
-                        aviso.setLayoutX(Globales.alto_resolucion/2-80);
-                        aviso.setLayoutY(0);
-                        Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> finalizarRonda()));
-                        delay.play();
-                    }                                               
-                }              
-                if(tipo==0){//si no se selecciono nada o se equivoco
+                    aviso.setLayoutX(Globales.alto_resolucion/2-120);
+                    aviso.setLayoutY(0);
+                    Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> animacionCaida()));
+                    delay.play();
                     return;
                 }
-                interfaz.ingresar_disparo();//ingresa los label que guardaran el valor de angulo y velocidad
-                String anguloTexto = interfaz.entradaangulo.getText();
-                String velocidadTexto = interfaz.entradavelocidad.getText();       
-                if(anguloTexto.isEmpty() || velocidadTexto.isEmpty() || anguloTexto.equals("0") || velocidadTexto.equals("0")){//verifica las entradas             
-                    interfaz.disparar.setDisable(false);
-                    return;
-                }
-                angulo = -Double.parseDouble(anguloTexto);
-                velocidad = Double.parseDouble(velocidadTexto);
-                System.out.println("la velocidad es->"+velocidad);
-                Bala nuevaBala = crear_bala();//creamos nueva bala con el tipo seleciconado
-                //comprobamos si la bala esta vacia
-                if(nuevaBala==null){
-                    System.out.println("no quedan mas balas ");
-                }
-                else{
-                    System.out.println("disparo en curso->"+disparo_en_curso);
-                    disparo_en_curso = false;
-                    animacionBala(nuevaBala);
-                }     
-            interfaz.entradaangulo.setText("");
-            interfaz.entradavelocidad.setText("");
-            }           
+                tipo=0;                   
+                if(Jugador.revisarBalasDisponibles(listJugador)){
+                    aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
+                    interfaz.canvasPane.getChildren().add(aviso);
+                    aviso.setLayoutX(Globales.alto_resolucion/2-80);
+                    aviso.setLayoutY(0);
+                    Timeline delay = new Timeline(new KeyFrame(Duration.seconds(3), e -> finalizarRonda()));
+                    delay.play();
+                }                                               
+            }              
+            if(tipo==0){//si no se selecciono nada o se equivoco
+                return;
+            }
+            interfaz.ingresar_disparo();//ingresa los label que guardaran el valor de angulo y velocidad
+            String anguloTexto = interfaz.entradaangulo.getText();
+            String velocidadTexto = interfaz.entradavelocidad.getText();       
+            if(anguloTexto.isEmpty() || velocidadTexto.isEmpty() || anguloTexto.equals("0") || velocidadTexto.equals("0")){//verifica las entradas             
+                interfaz.disparar.setDisable(false);
+                return;
+            }
+            angulo = -Double.parseDouble(anguloTexto);
+            velocidad = Double.parseDouble(velocidadTexto);
+            System.out.println("la velocidad es->"+velocidad);
+            Bala nuevaBala = crear_bala();//creamos nueva bala con el tipo seleciconado
+            //comprobamos si la bala esta vacia
+            if(nuevaBala==null){
+                System.out.println("no quedan mas balas ");
+            }
+            else{
+                Musica.sonido_disparo();
+                System.out.println("disparo en curso->"+disparo_en_curso);
+                disparo_en_curso = false;
+                animacionBala(nuevaBala);
+            }     
+        interfaz.entradaangulo.setText("");
+        interfaz.entradavelocidad.setText("");
+        }           
         );      
     } 
     
@@ -215,6 +219,7 @@ public class Jugar  {
     }
    
     public void colision_bala(){
+        Musica.sonido_colision();
         if(revisarEstado()){
             return;
         }
@@ -446,20 +451,23 @@ public class Jugar  {
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
         
         interfaz.bala1.setOnAction(event -> {//escoge bala 1
-        String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
-        interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
-        tipo=1;//ajusta el tipo          
-        interfaz.disparar.setDisable(false);
+            Musica.sonido_click();
+            String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad60());
+            interfaz.textcantidad1.setText(int_string);//muestra la cantidad de balas disponibles       
+            tipo=1;//ajusta el tipo          
+            interfaz.disparar.setDisable(false);
         });
             
-        interfaz.bala2.setOnAction(event -> {//escoge bala 2           
+        interfaz.bala2.setOnAction(event -> {//escoge bala 2 
+            Musica.sonido_click();
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad80());
             interfaz.textcantidad2.setText(int_string);//lo mismo de bala1
             tipo=2;//ajusta el tipo   
             interfaz.disparar.setDisable(false);
         });
             
-        interfaz.bala3.setOnAction(event -> {//escoge bala 3           
+        interfaz.bala3.setOnAction(event -> {//escoge bala 3     
+            Musica.sonido_click();
             String int_string = Integer.toString(listJugador.getJugadorActual().getCantidad105());
             interfaz.textcantidad3.setText(int_string);
             tipo=3;//ajusta el tipo       

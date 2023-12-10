@@ -35,6 +35,8 @@ public class PantallaInicial extends Application {
       
     @Override   
     public void start(Stage primaryStage) {
+        
+        Musica.agregar_musica();
         Globales.escena=new Scene(panel,Globales.alto_resolucion,Globales.ancho_resolucion); 
         Globales.stage=primaryStage;
        
@@ -69,7 +71,8 @@ public class PantallaInicial extends Application {
             "-fx-background-radius: 0;" 
         );
              
-        comenzar.setOnAction(e -> {         
+        comenzar.setOnAction(e -> {  
+            Musica.sonido_click();
             list.instanciarJugadores(Globales.jugadores_def,Globales.cantidad_def);
             Globales.rondas_def++;
             Tienda tienda=new Tienda();
@@ -77,6 +80,7 @@ public class PantallaInicial extends Application {
         });
         
         opciones.setOnAction(e -> {
+            Musica.sonido_click();
             if(validar==0){
                 options.start(Globales.stage,list,panel);
                 validar=1;

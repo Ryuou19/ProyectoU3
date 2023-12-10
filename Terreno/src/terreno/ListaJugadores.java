@@ -213,7 +213,7 @@
                 aux.suicidios=0;
                 aux.saldo=10000;
                 aux.asesionatos=0;
-                aux.cantidad80=0;
+                aux.cantidad80=2;
                 aux.cantidad105=0;
                 aux.cantidad60=0;
                 aux.asesinatosTotales=0;

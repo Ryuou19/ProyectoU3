@@ -337,6 +337,34 @@ public class Jugar  {
                             tanque.posicionY += Math.abs(Globales.gravedad);
                             todosEnSuelo = false;
                         }
+                        //revisamos si esta en fuera de terreno
+                        if(!tanque.esta_dentro_de_terreno(terrain))
+                        {
+                            stop();
+                            disparo_en_curso=false;
+                            HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
+                            interfaz.canvasPane.getChildren().add(muerte);
+                            muerte.setLayoutX(Globales.alto_resolucion-300);
+                            muerte.setLayoutY(0);
+                            listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
+                            listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
+                            Boolean terminar=revisarJugadores();
+                            if(terminar){
+                                return;
+                            }
+                            listJugador.generarTurnoAleatorio();
+                            interfaz.mostrarJugador(listJugador.getJugadorActual());
+
+                            if (listJugador.getJugadorActual().tipo.equals("bot")) {
+                                iniciar_bot();
+                            }
+                            if(listJugador.quedaUnoVivo()) // si queda uno vivo terminamos la ronda
+                            {
+                                finalizarRonda();
+                            }
+                            animacionCaida();// para que se redibujen los tanques
+                            return;
+                        }
                         if(contador_inicio!=0)
                         {
                             // revisamos de donde esta cayendo
@@ -374,36 +402,6 @@ public class Jugar  {
                                     return;
                                 }
                             }
-                                //revisamos si esta en fuera de terreno
-                                if(!tanque.esta_dentro_de_terreno(terrain))
-                                {
-                                    stop();
-
-                                    disparo_en_curso=false;
-                                    HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
-                                    interfaz.canvasPane.getChildren().add(muerte);
-                                    muerte.setLayoutX(Globales.alto_resolucion-300);
-                                    muerte.setLayoutY(0);
-                                    listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
-                                    listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
-                                    Boolean terminar=revisarJugadores();
-                                    if(terminar){
-                                        return;
-                                    }
-                                    listJugador.generarTurnoAleatorio();
-                                    interfaz.mostrarJugador(listJugador.getJugadorActual());
-                                   
-                                    if (listJugador.getJugadorActual().tipo.equals("bot")) {
-                                        iniciar_bot();
-                                    }
-                                    if(listJugador.quedaUnoVivo()) // si queda uno vivo terminamos la ronda
-                                    {
-                                        finalizarRonda();
-                                    }
-                                    animacionCaida();// para que se redibujen los tanques
-                                    return;
-                                }
-
                         }
                         tanque.dibuarTanque(interfaz.gc);
                         tanque.modificarCañon(interfaz.gc, 0);
@@ -485,8 +483,20 @@ public class Jugar  {
         if (revisarEstado()) {
             return;
         }
-
-        int largo = Globales.alto_resolucion - 200;
+        int largo=0;
+        System.out.println("el largo de la resolucion es->"+Globales.alto_resolucion);
+        if(Globales.alto_resolucion>699 && Globales.alto_resolucion<=799)
+        {
+             largo = Globales.alto_resolucion - 200;
+        }
+        if(Globales.alto_resolucion>799 && Globales.alto_resolucion<=899)
+        {
+            largo = Globales.alto_resolucion - 250;
+        }
+        if(Globales.alto_resolucion>899 && Globales.alto_resolucion<=1919)
+        {
+            largo = Globales.alto_resolucion - 1000;
+        }
         int ancho_segmento = largo / Globales.jugadores_def;
 
         int aux = -1;  // Inicializar con un valor que no se encuentre en el rango
@@ -639,7 +649,8 @@ public class Jugar  {
 
             // Configuración del disparo de la bala para el bot
             velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
-            angulo = 180 + random.nextDouble() * 180; // Ajusta estos valores según tu juego
+            angulo = 60 + random.nextDouble() * 60; // angulos entre 60 y 120
+            angulo=(-1)*angulo;// ajuste pq estan invertidos los angulos
 
             if(tipo==1){
                 interfaz.textcantidad1.setText(Integer.toString(listJugador.getJugadorActual().getCantidad60()));

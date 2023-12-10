@@ -14,15 +14,15 @@ import javafx.scene.text.FontWeight;
 
 public class Victoria {
     Pane panel= new Pane();
-    Image imagenFondo = new Image(getClass().getResourceAsStream("./img/tabla.png"));    
+    Image imagenFondo = new Image(getClass().getResourceAsStream("./img/fondoVictoria.png"));    
     ImageView fondo = new ImageView(imagenFondo);
     Button finalizar= new Button("TERMINAR");
     
     Image tanque=null;
-    Image titulo=new Image(getClass().getResourceAsStream("./img/ganador.gif"));          
+    Image titulo=new Image(getClass().getResourceAsStream("./img/ganadorFinal.png"));          
     ImageView victoria=new ImageView(titulo);
     ImageView ganador;
-    Image draw=new Image(getClass().getResourceAsStream("./img/empate.gif"));
+    Image draw=new Image(getClass().getResourceAsStream("./img/draw.png"));
     ImageView empate=new ImageView(draw);
     
     private ChangeListener<Number> widthListener;
@@ -58,12 +58,12 @@ public class Victoria {
             if(tanque!=null){
                 ganador.setLayoutX(520*widthRatio);
                 ganador.setFitWidth(200*widthRatio);
-                victoria.setLayoutX(490*widthRatio);            
-                victoria.setFitWidth(260*widthRatio);
+                victoria.setLayoutX(300*widthRatio);            
+                victoria.setFitWidth(500*widthRatio);
             }    
             
-            empate.setLayoutX(490*widthRatio);           
-            empate.setFitWidth(270*widthRatio);                                  
+            empate.setLayoutX(300*widthRatio);           
+            empate.setFitWidth(500*widthRatio);                                  
         };
 
         heightListener=(obs, oldHeight, newHeight) -> {
@@ -76,11 +76,11 @@ public class Victoria {
                 ganador.setLayoutY(250*heightRatio);
                 ganador.setFitHeight(200*heightRatio);
                 victoria.setLayoutY(150*heightRatio);
-                victoria.setFitHeight(150*heightRatio);
+                victoria.setFitHeight(300*heightRatio);
             }
            
-            empate.setLayoutY(300*heightRatio);
-            empate.setFitHeight(100*heightRatio);
+            empate.setLayoutY(200*heightRatio);
+            empate.setFitHeight(300*heightRatio);
             
         };
         

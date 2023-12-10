@@ -11,7 +11,7 @@ public class Globales {
     public static int ancho_resolucion=800;
     public static int resolucion_def=0;
     public static int jugadores_def=3;
-    public static int rondas_def=2;
+    public static int rondas_def=1;
     public static int cantidad_def=2;
     public static int gravedad_def=0;
     public static double gravedad=-9.81;

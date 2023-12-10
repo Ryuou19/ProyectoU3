@@ -10,7 +10,7 @@ public class Terreno{
     public int [][] explosion;
     public int radio=0;
     private int contador=0;
-    public int reduccionHud=Globales.ancho_resolucion/12;
+    public int reduccionHud=66;
     Image nieve = new Image(getClass().getResourceAsStream("./img/frozen.jpg"));//imagen nieve
     Image desierto  = new Image(getClass().getResourceAsStream("./img/desiertoo.jpg"));//imagen desierto
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
@@ -25,6 +25,7 @@ public class Terreno{
         this.matriz=new int[alto][ancho];
         this.dunas=new int[alto][ancho];
         this.explosion=new int[alto][ancho];
+        
     }
 
     public void setContador(int contador) {
@@ -46,6 +47,12 @@ public class Terreno{
             for(int j=0;j<explosion[i].length;j++) {
                 explosion[i][j]=0;
             }
+        }
+        if(Globales.resolucion_def==1){
+            reduccionHud=74;
+        }
+        if(Globales.resolucion_def==2){
+            reduccionHud=87;
         }
     }
     public void agregarImagenDeFondo(GraphicsContext gc) {//agregamos las imagenes de fondo
@@ -109,9 +116,14 @@ public class Terreno{
     public void terreno_desierto(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho) {//terreno desertico
      
         int escala = this.pixel;
-        double nivel_mar = 0.55;
-        double frecuencia = 0.095;
-        double amplitud = 0.08;
+        double cambio=0;
+        if(Globales.resolucion_def==2){
+            cambio=0.045;
+        }     
+        double nivel_mar = 0.55-cambio*2;
+        double frecuencia = 0.095-cambio;
+        double amplitud = 0.08+cambio;
+        
 
         agregarImagenDeFondo(gc);
 
@@ -131,9 +143,9 @@ public class Terreno{
                 }
             }
         }
-        amplitud = 0.05;
-        frecuencia = 0.06;
-        nivel_mar = 0.5;
+        amplitud = 0.05+cambio*2;
+        frecuencia = 0.06-cambio;
+        nivel_mar = 0.50-cambio*2;
         for (int i = alto/2; i < alto; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {

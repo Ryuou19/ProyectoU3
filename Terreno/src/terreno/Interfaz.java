@@ -351,7 +351,7 @@ public class Interfaz {
             boxjugador.setLayoutY(645*heightRatio);
             
             for (ImageView imagen : imagenes) {
-                imagen.setFitHeight(120*heightRatio);
+                imagen.setFitHeight(150*heightRatio);
                 imagen.setLayoutY(630*heightRatio);
             }
             disparar.setPrefHeight(30*heightRatio);
@@ -368,11 +368,11 @@ public class Interfaz {
             barraDeVida.setLayoutY(660*heightRatio);
             barraDeVida.setPrefHeight(20*heightRatio);
             
-            imagenBotonReiniciar.setFitHeight(30*heightRatio);
+            imagenBotonReiniciar.setFitHeight(50*heightRatio);
             reiniciar.setLayoutY(650*heightRatio);
             
-            imagenBotonFinalizar.setFitHeight(30*heightRatio);
-            finalizar.setLayoutY(700*heightRatio);
+            imagenBotonFinalizar.setFitHeight(50*heightRatio);
+            finalizar.setLayoutY(710*heightRatio);
             
             tipos.setLayoutY(650*heightRatio);
             bala1.setPrefHeight(30*heightRatio);

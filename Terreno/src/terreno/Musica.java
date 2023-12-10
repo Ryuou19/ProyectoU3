@@ -7,91 +7,69 @@ import java.io.File;
 
 public class Musica {
     
-    public static MediaPlayer player;
-
-    public Musica(){
-
-    }
-    public static void sonido_click(){
-        final String click = "src/terreno/music/click.mp3";
-        File archivo_click = new File(click);
-        Media music_mp3 =new Media(archivo_click.toURI().toString());
-        MediaPlayer Player_music = new MediaPlayer(music_mp3);
-        Player_music.play();
-        
- 
-    }
-    public static void sonido_compra(){
-        final String click = "src/terreno/music/dinero.mp3";
-        File archivo_click = new File(click);
-        Media music_mp3 =new Media(archivo_click.toURI().toString());
-        MediaPlayer Player_music = new MediaPlayer(music_mp3);
-        Player_music.play();
-        
- 
-    }
-    public static void agregar_musica(){
-        final String music ="src/terreno/music/musica.mp3";
-        File archivo_music = new File(music);
-        Media musicMp3 =new Media(archivo_music.toURI().toString());
+     private static MediaPlayer player;
      
-        
-         detenerMusica();
-        
-        player = new MediaPlayer(musicMp3);
-        player.play();
+    public Musica() {
     }
 
-    public static void agregar_musica_terreno(){
-        final String music ="src/terreno/music/Gow.mp3";
-        File archivo_music = new File(music);
-        Media musicMp3 =new Media(archivo_music.toURI().toString());
-        
-        
-         detenerMusica();
-        
-        player = new MediaPlayer(musicMp3);
-         player.setVolume(0.1);
-        player.play();
-        
-        
+    public static void sonido_click() {
+        reproducirSonido("src/terreno/music/click.mp3", 1.0);
+    }
+
+    public static void sonido_compra() {
+        reproducirSonido("src/terreno/music/dinero.mp3", 1.0);
+    }
+
+    public static void agregar_musica() {
+        reproducirMusica("src/terreno/music/musica.mp3", 1.0);
+    }
+
+    public static void agregar_musica_terreno() {
+        reproducirMusica("src/terreno/music/Gow.mp3", 0.1);
+    }
+
+    public static void sonido_disparo() {
+        reproducirSonido("src/terreno/music/disparo.mp3", 0.5);
+    }
+
+    public static void sonido_colision() {
+        reproducirSonido("src/terreno/music/colision.mp3", 0.6);
+    }
+
+    public static void agregar_musica_tienda() {
+        reproducirMusica("src/terreno/music/tienda.mp3", 0.1);
     }
     
-     public static void sonido_disparo(){
-        final String music ="src/terreno/music/disparo.mp3";
-        File archivo_music = new File(music);
-        Media music_mp3 =new Media(archivo_music.toURI().toString());
-        MediaPlayer Player_music = new MediaPlayer(music_mp3);
-        Player_music.play();
-     }
-        
-       public static void sonido_colision(){
-        final String music ="src/terreno/music/colision.mp3";
-        File archivo_music = new File(music);
-        Media music_mp3 =new Media(archivo_music.toURI().toString());
-        MediaPlayer Player_music = new MediaPlayer(music_mp3);
-        Player_music.play();
+        public static void agregar_musica_win() {
+        reproducirMusica("src/terreno/music/win.mp3", 0.1);
     }
-         public static void agregar_musica_tienda(){
-            final String music ="src/terreno/music/tienda.mp3";
-            File archivo_music = new File(music);
-            Media musicMp3 =new Media(archivo_music.toURI().toString());
-
-
-             detenerMusica();
-
-            player = new MediaPlayer(musicMp3);
-             player.setVolume(0.1);
-            player.play();
-        
-        
+       public static void agregar_musica_empate() {
+        reproducirMusica("src/terreno/music/win.mp3", 0.1);
     }
-        public static void detenerMusica() {
+    public static void detenerMusica() {
         if (player != null) {
             player.stop();
         }
     }
-    
 
+   
+
+    private static void reproducirSonido(String path, double volume) {
+        File archivo = new File(path);
+        Media media = new Media(archivo.toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(volume);
+        mediaPlayer.play();
+    }
+
+    private static void reproducirMusica(String path, double volume) {
+        detenerMusica();
+
+        File archivo = new File(path);
+        Media media = new Media(archivo.toURI().toString());
+        player = new MediaPlayer(media);
+        player.setVolume(volume);
+        player.play();
+    }
 }
 

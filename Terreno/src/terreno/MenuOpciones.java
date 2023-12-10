@@ -187,6 +187,7 @@ public class MenuOpciones {
 
         flecha_izquierda2.setStyle(estilo_botones);
         flecha_izquierda2.setOnAction(e -> {
+            Musica.sonido_click();
             Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def,2);
             System.out.println("Actual = "+Globales.rondas_def);
         });

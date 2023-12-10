@@ -33,8 +33,11 @@ public class Clasificacion {
     private ChangeListener<Number> widthListener;
     private ChangeListener<Number> heightListener;
     
+  
+    
     
     public void mostrarTabla(Tienda tienda, ListaJugadores listJugador){
+        Musica.agregar_musica_clasificatoria();
         Globales.escena.setRoot(panel);
         tabla.setPreserveRatio(false);
         

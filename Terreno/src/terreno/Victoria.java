@@ -131,6 +131,7 @@ public class Victoria {
             tanque=new Image(getClass().getResourceAsStream("./img/tanque6.png"));
         }
         if(tanque!=null){
+            Musica.agregar_musica_win();
             victoria=new ImageView(titulo);
             ganador=new ImageView(tanque);
             panel.getChildren().addAll(ganador,victoria);          

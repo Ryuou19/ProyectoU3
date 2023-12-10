@@ -81,7 +81,6 @@ public class Tienda  {
        
     public void tiendaJugador(ListaJugadores listJugadores){
         cambiarJugador(listJugadores);
-        System.out.println("GLOBALES: "+Globales.jugadores_def);
         //Globales.cambiarResolucion(Globales.alto_resolucion+cambio,Globales.ancho_resolucion+cambio);
         
         for(Jugador jugadorBot:listJugadores.lista){
@@ -91,7 +90,6 @@ public class Tienda  {
         }
         
         Pane panel=new Pane();       
-        Globales.stage.setTitle("Tienda de Armas");
                            
         marco.setFill(Color.rgb(148, 161, 147, 1.0));
      
@@ -341,7 +339,7 @@ public class Tienda  {
             imagentanque.setFitHeight(160*heightRatio);   
             imagentanque.setLayoutY(270*heightRatio);
             
-            textSaldoJugador.setLayoutY(420*heightRatio);
+            textSaldoJugador.setLayoutY(440*heightRatio);
             
             textBalas60.setLayoutY(335*heightRatio);
             
@@ -362,10 +360,10 @@ public class Tienda  {
             revertirCompra.setLayoutY(440*heightRatio);
             revertirCompra.setPrefHeight(40*heightRatio);
             
-            finalizarTienda.setLayoutY(440*heightRatio);       
+            finalizarTienda.setLayoutY(480*heightRatio);       
             finalizarTienda.setPrefHeight(40*heightRatio);
             
-            cambiar.setLayoutY(240*heightRatio);
+            cambiar.setLayoutY(220*heightRatio);
             cambiarJugadorDerecha.setPrefHeight(30*heightRatio);        
             cambiarJugadorIzquierda.setPrefHeight(30*heightRatio);
             

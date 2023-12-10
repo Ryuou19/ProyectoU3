@@ -2,9 +2,6 @@
 package terreno;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -81,8 +78,9 @@ public class Clasificacion {
                 tienda.inicializarInterfaz(listJugador);
                 System.out.println("Rondas="+Globales.rondas_def);
             }
-            if(Globales.rondas_def==0){
-                Platform.exit();
+            if(Globales.rondas_def==1){
+                Victoria victoria=new Victoria();
+                victoria.mostrarGanador(listJugador);
             }                      
         });
         
@@ -96,7 +94,7 @@ public class Clasificacion {
                 hboxJugadores.get(i).setLayoutX(155*widthRatio);
                 for(Node texto:hboxJugadores.get(i).getChildren()){
                     Text textoActual = (Text) texto;
-                    textoActual.setFont(Font.font("Monospaced",FontWeight.BOLD, 20*widthRatio));
+                    textoActual.setFont(Font.font("Monospaced",FontWeight.BOLD, 18*widthRatio));
                 }
             }
             if(tanque!=null){
@@ -105,6 +103,10 @@ public class Clasificacion {
                 victoria.setLayoutX(490*widthRatio);            
                 victoria.setFitWidth(260*widthRatio);
             }
+            for(int i=0;i<Globales.jugadores_def;i++){
+                hboxJugadores.get(i).setSpacing(45*widthRatio);
+            }
+            
             
             empate.setLayoutX(490*widthRatio);           
             empate.setFitWidth(270*widthRatio);
@@ -191,16 +193,4 @@ public class Clasificacion {
             
         }                 
     }
-    
-    /*public int compare(int a,int b){
-        if (a>b)  {return 1;}
-        if (a<b)  {return 2;}
-        return 0;
-    }
-    
-    public void cambiar(ArrayList<Integer> asesinatos, int i, int menor){//intercambia canciones dentro de la lista
-        int aux=asesinatos.get(i);
-        asesinatos.set(i,asesinatos.get(menor));
-        asesinatos.set(menor,aux);
-    }*/
 }

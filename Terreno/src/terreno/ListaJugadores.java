@@ -221,6 +221,17 @@
 
             }
         }
+        
+        public void revivir()
+        {
+            for (Jugador aux : lista)
+            {
+                aux.eliminado=false; // no esta eliminado
+                aux.activo=true; // lo marcamos como activo
+                //reinicio de vida
+                aux.vida=100;              
+            }
+        }
 
 
     }

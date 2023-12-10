@@ -37,17 +37,14 @@ public class Interfaz {
     ImageView hud= new ImageView(imagenHud);
     
     //ANGULO
-    HBox boxangulo = new HBox();
-    Text text1 = new Text("Angulo");
+    HBox boxangulo = new HBox(10);
     TextField entradaangulo = new TextField();
     
     //VELOCIDAD
-    HBox boxvelocidad = new HBox();
-    Text text2 = new Text("Velocidad");
+    HBox boxvelocidad = new HBox(10);
     TextField entradavelocidad = new TextField();
 
     //JUGADOR
-    HBox boxjugador = new HBox();
     Text textjugador=new Text("Turno Actual");
 
     //TANQUE 1
@@ -78,16 +75,15 @@ public class Interfaz {
     ImageView[] imagenes={imagentanque1,imagentanque2,imagentanque3,imagentanque4,imagentanque5,imagentanque6};
     
     //DISPARO
-    Button disparar = new Button("!DISPARAR!");
+    Button disparar = new Button();
 
     //DISTANCIA
-    HBox boxdistancia=new HBox();
-    Text textdistancia= new Text("Distancia = ");
+    VBox boxdistancia=new VBox(7);
+    
 
     //ALTURA
-    HBox boxaltura=new HBox();
-    Text textaltura= new Text("Altura = ");
-
+    VBox boxaltura=new VBox(7);
+    
     //VIDA    
     ProgressBar barraDeVida = new ProgressBar();
     
@@ -101,11 +97,16 @@ public class Interfaz {
     ImageView imagenBotonFinalizar = new ImageView(image);
       
     //BOTONES BALAS
-    VBox tipos = new VBox();
-    Button bala1 = new Button("60mm");  
-    Button bala2 = new Button("80mm");  
-    Button bala3 = new Button("105mm");
+    HBox tipos = new HBox();
+    Button bala1 = new Button("60m");  
+    Button bala2 = new Button("80m");  
+    Button bala3 = new Button("105m");
     
+    //CANTIDAD BALAS
+    HBox cantidad = new HBox(20);
+    Text textcantidad1= new Text("");
+    Text textcantidad2= new Text("");
+    Text textcantidad3= new Text("");
     
     VBox estadisticas=new VBox(10);
     HBox num1= new HBox(10);
@@ -131,11 +132,45 @@ public class Interfaz {
     ArrayList<HBox> cajaEstadisticas=new ArrayList<>();
     
     
-    //CANTIDAD BALAS
-    VBox cantidad = new VBox(8);
-    Text textcantidad1= new Text("");
-    Text textcantidad2= new Text("");
-    Text textcantidad3= new Text("");
+    //IMAGENES ICONOS
+    Image dist = new Image(getClass().getResourceAsStream("./img/distancia.png"));
+    ImageView distancia = new ImageView(dist);
+    Image alt = new Image(getClass().getResourceAsStream("./img/altura.png"));
+    ImageView altura = new ImageView(alt);
+    Image ang = new Image(getClass().getResourceAsStream("./img/angulo.png"));
+    ImageView angulo = new ImageView(ang);
+    Image vel = new Image(getClass().getResourceAsStream("./img/velocidad.png"));
+    ImageView velocidad = new ImageView(vel);
+    Image disp = new Image(getClass().getResourceAsStream("./img/disparo.jpg"));
+    ImageView iconoDisparo = new ImageView(disp);
+    
+    Image asesinatos = new Image(getClass().getResourceAsStream("./img/kills.png"));
+    ImageView kills = new ImageView(asesinatos);
+    HBox asesinato=new HBox(15);
+    Text cantidadAsesinatos=new Text("0");
+    
+    Image sui = new Image(getClass().getResourceAsStream("./img/suicidio.png"));
+    ImageView suicidios = new ImageView(sui);
+    HBox suicidio=new HBox(15);
+    Text cantidadSuicidios=new Text("0");
+    
+    Image round = new Image(getClass().getResourceAsStream("./img/ronda.png"));
+    ImageView ronda = new ImageView(round);
+    HBox rondas=new HBox(15);
+    Text cantidadRondas=new Text("0");
+    
+    Image grav = new Image(getClass().getResourceAsStream("./img/gravedad.png"));
+    ImageView gravity = new ImageView(grav);
+    HBox gravedad=new HBox(15);
+    Text cantidadGravedad=new Text("9.81");
+    
+    Image wind = new Image(getClass().getResourceAsStream("./img/viento.png"));
+    ImageView viento = new ImageView(wind);
+    HBox vientos=new HBox(15);
+    Text cantidadViento=new Text("0"+" M/S");
+    
+    
+   
     GraphicsContext gc;
     Pane canvasPane = new Pane();
     private ChangeListener<Number> widthListener;
@@ -160,17 +195,12 @@ public class Interfaz {
         canvasPane.getChildren().add(hud);
         //ANGULO
         boxangulo.setSpacing(10);    
-        boxangulo.getChildren().addAll(text1, entradaangulo);
-        
-               
+        boxangulo.getChildren().addAll(angulo, entradaangulo);
+                     
         //VELOCIDAD
         boxvelocidad.setSpacing(10);
-        boxvelocidad.getChildren().addAll(text2, entradavelocidad);
-        
-                    
-        //JUGADOR
-        boxjugador.getChildren().add(textjugador);
-        
+        boxvelocidad.getChildren().addAll(velocidad, entradavelocidad);
+                                
         //TANQUES
         for (ImageView imagen : imagenes) {              
             canvasPane.getChildren().add(imagen); //agrega cada imagen al pane
@@ -178,46 +208,38 @@ public class Interfaz {
         
             
         //DISPARO
-        disparar.setStyle("-fx-font-size: 14px; -fx-font-family: 'Monospaced'; ");
+        iconoDisparo.setPreserveRatio(false);
+        disparar.setGraphic(iconoDisparo);
+        disparar.setStyle(
+            "-fx-background-color: transparent; " +
+            "-fx-border-color: transparent; " +
+            "-fx-padding: 0;" // Ajustar el relleno del botón a 0 para eliminar cualquier espacio adicional
+        );
         
        
                        
         //DISTANCIA   
-        boxdistancia.setSpacing(6);
         textodistancia = new Label(0 + " Metros");
-        
-        textdistancia.setFill(Color.BLACK);
-        textodistancia.setTextFill(Color.RED);
-        
-        textdistancia.setTranslateY(-1); 
-        boxdistancia.getChildren().addAll(textdistancia,textodistancia);
-        
-              
-        
-        
-        
-        
+        textodistancia.setTextFill(Color.RED);      
+        boxdistancia.getChildren().addAll(distancia,textodistancia);
+    
         //ALTURA
-        boxaltura.setSpacing(6);
-        textoaltura = new Label(0 + " Metros");      
-             
-        textaltura.setFill(Color.BLACK);       
-        textoaltura.setTextFill(Color.RED);
-                     
-        textaltura.setTranslateY(-1);   
-        boxaltura.getChildren().addAll(textaltura,textoaltura);
+        textoaltura = new Label(0 + " Metros");                           
+        textoaltura.setTextFill(Color.RED); 
+        boxaltura.getChildren().addAll(altura,textoaltura);
        
                
         
         
-        //VIDA
-         
+        //VIDA       
         barraDeVida.setStyle("-fx-control-inner-background: black; " +
                              "-fx-accent: #00FF00; " +
                              "-fx-background-color: black, black; " +
                              "-fx-background-insets: 0, 2; " +
                              "-fx-background-radius: 0.5em;");
          
+        
+        //ESTADISTICAS
         cajaEstadisticas.add(num1);
         cajaEstadisticas.add(num2);
         cajaEstadisticas.add(num3);
@@ -236,33 +258,37 @@ public class Interfaz {
         listaBalas.add(cantidadBalas4);
         listaBalas.add(cantidadBalas5);
         listaBalas.add(cantidadBalas6);
-        
-        
-        
+      
         for (int i=0;i<Globales.jugadores_def;i++){           
             cajaEstadisticas.get(i).getChildren().add(listaBarras.get(i));    
             cajaEstadisticas.get(i).getChildren().add(listaBalas.get(i)); 
         }
         
+        //ASESINATOS
+        asesinato.getChildren().addAll(kills,cantidadAsesinatos);
         
+        //SUICIDIO
+        suicidio.getChildren().addAll(suicidios,cantidadSuicidios);
         
+        //RONDAS
+        rondas.getChildren().addAll(ronda,cantidadRondas);
         
-        //BOTON REINICIAR
+        //GRAVEDAD
+        gravedad.getChildren().addAll(gravity,cantidadGravedad);
         
-        imagenBotonReiniciar.setPreserveRatio(false);
+        //VIENTO
+        vientos.getChildren().addAll(viento,cantidadViento);
+        viento.setRotate(180);
         
-        
+        //BOTON REINICIAR       
+        imagenBotonReiniciar.setPreserveRatio(false);      
         reiniciar.setGraphic(imagenBotonReiniciar); 
         reiniciar.setStyle(
             "-fx-background-color: transparent; " +
             "-fx-border-color: transparent;"
         );
-        
-        
-        
-        
-        //BOTON FINALIZAR
-        
+              
+        //BOTON FINALIZAR       
         imagenBotonFinalizar.setPreserveRatio(false);     
         finalizar.setGraphic(imagenBotonFinalizar); 
         finalizar.setStyle(
@@ -275,6 +301,7 @@ public class Interfaz {
         estadisticas.getChildren().addAll(num1,num2,num3,num4,num5,num6);
         estadisticas.setLayoutX(50);
         estadisticas.setLayoutY(100);
+        
         
         
         //BOTON BALAS
@@ -296,44 +323,79 @@ public class Interfaz {
             hud.setFitWidth(800*widthRatio);       
             hud.setLayoutX(0);
             
-            text1.setFont(Font.font("Arial",FontWeight.BOLD, 20*widthRatio)); 
-            entradaangulo.setPrefWidth(40*widthRatio);
-            boxangulo.setLayoutX(180*widthRatio); 
+            angulo.setFitWidth(30*widthRatio);
+            entradaangulo.setPrefWidth(35*widthRatio);
+            boxangulo.setLayoutX(140*widthRatio); 
             
-            text2.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
-            entradavelocidad.setPrefWidth(40*widthRatio);
-            boxvelocidad.setLayoutX(155*widthRatio); 
+            velocidad.setFitWidth(30*widthRatio);
+            entradavelocidad.setPrefWidth(35*widthRatio);
+            boxvelocidad.setLayoutX(225*widthRatio); 
         
             textjugador.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
-            boxjugador.setLayoutX(350*widthRatio); 
+            textjugador.setLayoutX(330*widthRatio); 
             
             for (ImageView imagen : imagenes) {
                 imagen.setFitWidth(120*widthRatio);               
-                imagen.setLayoutX(355*widthRatio);               
+                imagen.setLayoutX(335*widthRatio);               
             } 
-            disparar.setPrefWidth(120*widthRatio);
-            disparar.setLayoutX(500*widthRatio); 
+            iconoDisparo.setFitWidth(70*widthRatio);
+            disparar.setLayoutX(545*widthRatio); 
             
-            boxaltura.setLayoutX(30*widthRatio);
+            textodistancia.setFont(Font.font("Arial", 16*widthRatio));
+            textodistancia.setTranslateX(-17*widthRatio);
+            distancia.setFitWidth(30*widthRatio);
+            boxdistancia.setLayoutX(170*widthRatio);
+                      
+            textoaltura.setFont(Font.font("Arial", 16*widthRatio));
+            textoaltura.setTranslateX(-17*widthRatio);
+            altura.setFitWidth(30*widthRatio);
+            boxaltura.setLayoutX(260*widthRatio);
             
             barraDeVida.setPrefWidth(120*widthRatio);
-            barraDeVida.setLayoutX(500*widthRatio);    
+            barraDeVida.setLayoutX(335*widthRatio);    
             
+            asesinato.setLayoutX(465*widthRatio);
+            kills.setFitWidth(30*widthRatio);
+            cantidadAsesinatos.setFont(Font.font("Arial", 16*widthRatio));
+            
+            suicidio.setLayoutX(465*widthRatio);
+            suicidios.setFitWidth(30*widthRatio);
+            cantidadSuicidios.setFont(Font.font("Arial", 16*widthRatio));
+            
+            rondas.setLayoutX(520*widthRatio);
+            rondas.setSpacing(10*widthRatio);
+            ronda.setFitWidth(30*widthRatio);
+            cantidadRondas.setFont(Font.font("Arial", 16*widthRatio));
+            
+            gravedad.setLayoutX(600*widthRatio);
+            gravedad.setSpacing(10*widthRatio);
+            gravity.setFitWidth(30*widthRatio);
+            cantidadGravedad.setFont(Font.font("Arial", 16*widthRatio));
+            
+            vientos.setLayoutX(700*widthRatio);
+            vientos.setSpacing(10*widthRatio);
+            viento.setFitWidth(30*widthRatio);
+            cantidadViento.setFont(Font.font("Arial", 16*widthRatio));
+                    
             imagenBotonReiniciar.setFitWidth(100*widthRatio);
-            reiniciar.setLayoutX(25*widthRatio); 
+            reiniciar.setLayoutX(10*widthRatio); 
         
             imagenBotonFinalizar.setFitWidth(100*widthRatio);            
-            finalizar.setLayoutX(25*widthRatio); 
+            finalizar.setLayoutX(10*widthRatio); 
             
-            tipos.setLayoutX(680*widthRatio);
-            bala1.setPrefWidth(70*widthRatio);
-            bala2.setPrefWidth(70*widthRatio);
-            bala3.setPrefWidth(70*widthRatio);
+            tipos.setLayoutX(640*widthRatio);
+            bala1.setPrefWidth(47*widthRatio);
+            bala2.setPrefWidth(47*widthRatio);
+            bala3.setPrefWidth(47*widthRatio);
             
+            cantidad.setSpacing(36*widthRatio);
             cantidad.setLayoutX(660*widthRatio);
             textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
             textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
             textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
+            
+            
+            
             
         };
          
@@ -341,49 +403,99 @@ public class Interfaz {
             double heightRatio = newHeight.doubleValue() / 800; 
             hud.setFitHeight(800/2*heightRatio);
             hud.setLayoutY(630*heightRatio);
-                    
+              
+            angulo.setFitHeight(30*heightRatio);
             entradaangulo.setPrefHeight(30*heightRatio);
-            boxangulo.setLayoutY(660*heightRatio);
+            boxangulo.setLayoutY(730*heightRatio);
             
+            
+            velocidad.setFitHeight(30*heightRatio);
             entradavelocidad.setPrefHeight(30*heightRatio);
-            boxvelocidad.setLayoutY(700*heightRatio);
+            boxvelocidad.setLayoutY(730*heightRatio);
             
-            boxjugador.setLayoutY(645*heightRatio);
+            textjugador.setLayoutY(670*heightRatio);
             
             for (ImageView imagen : imagenes) {
-                imagen.setFitHeight(120*heightRatio);
-                imagen.setLayoutY(630*heightRatio);
+                imagen.setFitHeight(150*heightRatio);
+                imagen.setLayoutY(620*heightRatio);
             }
-            disparar.setPrefHeight(30*heightRatio);
+            iconoDisparo.setFitHeight(70*heightRatio);          
             disparar.setLayoutY(690*heightRatio);
             
-            textdistancia.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
-            textodistancia.setFont(Font.font("Arial", 16*heightRatio));
-            boxdistancia.setLayoutY(2*heightRatio);
+            distancia.setFitHeight(30*heightRatio);          
+            boxdistancia.setLayoutY(650*heightRatio);
+                       
+            altura.setFitHeight(30*heightRatio);   
+            boxaltura.setLayoutY(650*heightRatio);
             
-            textaltura.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));  
-            textoaltura.setFont(Font.font("Arial", 16*heightRatio));   
-            boxaltura.setLayoutY(30*heightRatio);
-            
-            barraDeVida.setLayoutY(660*heightRatio);
+            barraDeVida.setLayoutY(760*heightRatio);
             barraDeVida.setPrefHeight(20*heightRatio);
             
-            imagenBotonReiniciar.setFitHeight(30*heightRatio);
+            asesinato.setLayoutY(690*heightRatio);
+            kills.setFitHeight(30*heightRatio);
+            cantidadAsesinatos.setTranslateY(6);
+            if(Globales.resolucion_def==2){
+                cantidadAsesinatos.setTranslateY(-1);
+            }
+            else{
+                cantidadAsesinatos.setTranslateY(6);
+            }
+                      
+            suicidio.setLayoutY(730*heightRatio);
+            suicidios.setFitHeight(30*heightRatio);
+            if(Globales.resolucion_def==2){
+                cantidadSuicidios.setTranslateY(-1);
+            }
+            else{
+                cantidadSuicidios.setTranslateY(6);
+            }
+            
+            rondas.setLayoutY(640*heightRatio);
+            ronda.setFitHeight(30*heightRatio);
+            if(Globales.resolucion_def==2){
+                cantidadRondas.setTranslateY(-1);
+            }
+            else{
+                cantidadRondas.setTranslateY(6);
+            }
+            
+            gravedad.setLayoutY(640*heightRatio);
+            gravity.setFitHeight(30*heightRatio);
+            if(Globales.resolucion_def==2){
+                cantidadGravedad.setTranslateY(-1);
+            }
+            else{
+                cantidadGravedad.setTranslateY(6);
+            }
+            
+            vientos.setLayoutY(640*heightRatio);
+            viento.setFitHeight(30*heightRatio);
+            if(Globales.resolucion_def==2){
+                cantidadViento.setTranslateY(-1);
+            }
+            else{
+                cantidadViento.setTranslateY(6);
+            }
+            
+            
+            imagenBotonReiniciar.setFitHeight(50*heightRatio);
             reiniciar.setLayoutY(650*heightRatio);
             
-            imagenBotonFinalizar.setFitHeight(30*heightRatio);
-            finalizar.setLayoutY(700*heightRatio);
+            imagenBotonFinalizar.setFitHeight(50*heightRatio);
+            finalizar.setLayoutY(710*heightRatio);
             
-            tipos.setLayoutY(650*heightRatio);
-            bala1.setPrefHeight(30*heightRatio);
-            bala2.setPrefHeight(30*heightRatio);
-            bala3.setPrefHeight(30*heightRatio);
+            tipos.setLayoutY(700*heightRatio);
+            bala1.setPrefHeight(35*heightRatio);
+            bala2.setPrefHeight(35*heightRatio);
+            bala3.setPrefHeight(35*heightRatio);
             
-            cantidad.setLayoutY(655*heightRatio);
+            cantidad.setLayoutY(740*heightRatio);
             textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
-            textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
-            
+            textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));            
             textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
+            
+            
+            
             
         };
         
@@ -395,8 +507,9 @@ public class Interfaz {
         
         //SE AGREGA TODO AL CANVASPANE
         canvasPane.getChildren().addAll(boxangulo,boxvelocidad,
-                boxjugador,disparar, boxdistancia, boxaltura, barraDeVida, 
-                reiniciar, finalizar, tipos, cantidad,estadisticas);
+            textjugador,disparar, boxdistancia, boxaltura, barraDeVida,
+            asesinato,suicidio,rondas,gravedad,vientos,reiniciar,
+            finalizar, tipos, cantidad,estadisticas);
                
     }
     
@@ -416,6 +529,9 @@ public class Interfaz {
             imagen.setVisible(false);
         }
         imagenes[jugador.jugador].setVisible(true);
+        
+        cantidadAsesinatos.setText(Integer.toString(jugador.asesionatos));
+        cantidadSuicidios.setText(Integer.toString(jugador.suicidios));
         
         textcantidad1.setText(Integer.toString(jugador.cantidad60));
         textcantidad2.setText(Integer.toString(jugador.cantidad80));

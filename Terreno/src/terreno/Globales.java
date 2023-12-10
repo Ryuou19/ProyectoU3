@@ -10,7 +10,7 @@ public class Globales {
     public static int alto_resolucion=800;
     public static int ancho_resolucion=800;
     public static int resolucion_def=0;
-    public static int jugadores_def=2;
+    public static int jugadores_def=3;
     public static int rondas_def=1;
     public static int cantidad_def=0;
     public static int gravedad_def=0;
@@ -40,14 +40,16 @@ public class Globales {
         }catch (InterruptedException e) {}
     }
     
-    public static void cambiarViento() {
+    public static int cambiarViento(Interfaz interfaz) {
         if(Globales.viento_def==0){
-            return;
+            return 0;
         }
         Random random = new Random();
         int viento_actual = random.nextInt(10) + 1; // Genera un número entre 1 y 10
-        viento_actual+=19;
+        interfaz.cantidadViento.setText(Integer.toString(viento_actual)+" M/S");
+        viento_actual+=19;      
         System.out.println("viento actual" + viento_actual);
+        return viento_actual;
     }
 }
 

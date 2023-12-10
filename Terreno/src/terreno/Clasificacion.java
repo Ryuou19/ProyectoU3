@@ -74,13 +74,13 @@ public class Clasificacion {
                 jugador.asesionatos=0;
                 jugador.suicidios=0;
             }            
-            if(Globales.rondas_def>0){        
+            if(Globales.rondas_def>0 && Globales.rondas_def!=1){        
                 tienda.inicializarInterfaz(listJugador);
                 System.out.println("Rondas="+Globales.rondas_def);
             }
             if(Globales.rondas_def==1){
-                Victoria victoria=new Victoria();
-                victoria.mostrarGanador(listJugador);
+                Victoria victory=new Victoria();
+                victory.mostrarGanador(listJugador);
             }                      
         });
         

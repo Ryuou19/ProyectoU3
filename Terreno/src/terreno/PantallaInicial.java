@@ -11,8 +11,20 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 
 public class PantallaInicial extends Application {
+
+
            
     ListaJugadores list=ListaJugadores.getInstance();
     static Pane panel = new Pane();
@@ -24,7 +36,8 @@ public class PantallaInicial extends Application {
     ImageView titulo = new ImageView(titulo1);
     Button opciones = new Button("OPCIONES");  
     Button comenzar = new Button("!!!JUGAR!!!");
-    Rectangle marco = new Rectangle(3000, 2000);  
+    Rectangle marco = new Rectangle(1920, 1080);
+
     int validar=0;
     public PantallaInicial() {
     }
@@ -35,9 +48,14 @@ public class PantallaInicial extends Application {
       
     @Override   
     public void start(Stage primaryStage) {
+
+        Musica.agregar_musica();
+
+
+        Globales.alto_resolucion=800;
+        Globales.ancho_resolucion=800;
         Globales.escena=new Scene(panel,Globales.alto_resolucion,Globales.ancho_resolucion); 
         Globales.stage=primaryStage;
-       
         //Globales.stage.setResizable(false);
         Globales.stage.getIcons().add(icono); 
         Globales.cambiarResolucion(Globales.alto_resolucion, Globales.ancho_resolucion);
@@ -69,14 +87,15 @@ public class PantallaInicial extends Application {
             "-fx-background-radius: 0;" 
         );
              
-        comenzar.setOnAction(e -> {         
+        comenzar.setOnAction(e -> {
+            Musica.sonido_click();
             list.instanciarJugadores(Globales.jugadores_def,Globales.cantidad_def);
-            Globales.rondas_def++;
             Tienda tienda=new Tienda();
             tienda.inicializarInterfaz( list);
         });
         
         opciones.setOnAction(e -> {
+            Musica.sonido_click();
             if(validar==0){
                 options.start(Globales.stage,list,panel);
                 validar=1;
@@ -84,9 +103,10 @@ public class PantallaInicial extends Application {
             if(validar==1){
                 Globales.escena.setRoot(options.paneOpciones);
                 Globales.cambiarEscena(Globales.escena);
-            }       
+            }
         });
         
+        // Agregar ChangeListener al ancho y alto del Pane principal
         panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800; 
             titulo.setLayoutX(190 * widthRatio); 
@@ -113,6 +133,7 @@ public class PantallaInicial extends Application {
             
         });
         
+        //se aÃ±ade todo al panel(agregar imageView)
         panel.getChildren().addAll(marco,comenzar,imageView, titulo,opciones);    
                 
         Globales.stage.setScene(Globales.escena);

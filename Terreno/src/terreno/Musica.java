@@ -21,7 +21,7 @@ public class Musica {
     }
 
     public static void agregar_musica() {
-        reproducirMusica("src/terreno/music/musica.mp3", 1.0);
+        reproducirMusica("src/terreno/music/musica.mp3", 0.5);
     }
 
     public static void agregar_musica_terreno() {
@@ -41,10 +41,13 @@ public class Musica {
     }
     
         public static void agregar_musica_win() {
-        reproducirMusica("src/terreno/music/win.mp3", 0.1);
+        reproducirMusica("src/terreno/music/win.mp3", 0.7);
     }
        public static void agregar_musica_empate() {
-        reproducirMusica("src/terreno/music/win.mp3", 0.1);
+        reproducirMusica("src/terreno/music/win.mp3", 0.7);
+    }
+       public static void agregar_musica_clasificatoria() {
+        reproducirMusica("src/terreno/music/clasificatoria.mp3", 0.5);
     }
     public static void detenerMusica() {
         if (player != null) {

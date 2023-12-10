@@ -12,7 +12,7 @@ public class Globales {
     public static int resolucion_def=0;
     public static int jugadores_def=3;
     public static int rondas_def=1;
-    public static int cantidad_def=3;
+    public static int cantidad_def=0;// cantidad de bots
     public static int gravedad_def=0;
     public static double gravedad=-9.81;
     public static int viento_def=0;

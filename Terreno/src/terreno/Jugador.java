@@ -16,7 +16,7 @@ public class  Jugador {
     public boolean activo=true;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
-    int cantidad105=100;
+    int cantidad105=0;
     int cantidad80=0;
     int cantidad60=1;
     int vida;

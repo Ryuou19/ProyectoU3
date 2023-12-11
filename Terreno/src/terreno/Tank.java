@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;// import usado para dibujar hitbox con el fin d
 public class Tank{
     Globales c=new Globales();
     public int posicionX;
+    int largo_imagen=0;
+    int ancho_imagen=0;
     public int posicionY=300;
     public String color;
     public int jugadorTanque;
@@ -94,8 +96,23 @@ public class Tank{
     }
     //cambio--------------------------------------------------------------------------------------------------------    
     public void crearHitbox( GraphicsContext gc, Terreno terreno,Jugador jugador) {
-        int hitboxAncho=1;
-        int hitboxLargo=2;
+        int hitboxAncho=0;
+        int hitboxLargo=0;
+        if(largo_imagen==70)
+        {
+            hitboxAncho=1;
+            hitboxLargo=2;
+        }
+        if(largo_imagen==80)
+        {
+            hitboxAncho=4;
+            hitboxLargo=5;
+        }
+        if(largo_imagen==90)
+        {
+            hitboxAncho=7;
+            hitboxLargo=8;
+        }
         int marcar_hitbox = jugador.jugador + 2; // se pone un 2 para tanque 0
         System.out.println("marca de la hitbox="+marcar_hitbox);
         for(int i=0;i<ancho+hitboxAncho;i++){
@@ -105,13 +122,11 @@ public class Tank{
                int ajustar_posicion=6;//Esta variable se usa para colocar la hitbox del tanque en el lugar correcto, ya que por dimensiones del canvas necesita moverse 6 espacios hacia abajo para quedar correcto
                int posXMatriz = (posicionX / 3 + i);
                int posYMatriz = (posicionY / 3 + j+ajustar_posicion);
-               
+
                 if (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){
-    
-                        
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
-                        //gc.setFill(Color.GREEN);
-                        //gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
+                        gc.setFill(Color.GREEN);
+                        gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
                 }
             }
         }
@@ -189,8 +204,26 @@ public class Tank{
     
     public void dibuarTanque(GraphicsContext gc)
     {
+        //creamos las dimenciones que tendra la imagen dependiendo de la resolucion
+
+        if(Globales.alto_resolucion>699 && Globales.alto_resolucion<=799)
+        {
+            largo_imagen=70;
+            ancho_imagen=70;
+        }
+        if(Globales.alto_resolucion>799 && Globales.alto_resolucion<=899)
+        {
+            largo_imagen=80;
+            ancho_imagen=80;
+        }
+        if(Globales.alto_resolucion>899 && Globales.alto_resolucion<=1919)
+        {
+           ancho_imagen=90;
+           largo_imagen=90;
+        }
+        //dibujamos el tanque con sus dimenciones correspondientes
            Image tanque = new Image(getClass().getResourceAsStream(color));
-           gc.drawImage(tanque, posicionX-7, posicionY-12, 70, 70);
+           gc.drawImage(tanque, posicionX-7, posicionY-12, largo_imagen, ancho_imagen);
     }
 
 

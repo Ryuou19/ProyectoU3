@@ -80,6 +80,17 @@ public class Tienda  {
     }
        
     public void tiendaJugador(ListaJugadores listJugadores){
+        
+        //BOTON DEVOLVER COMPRA
+        revertirCompra = new Button("DEVOLVER");
+        revertirCompra.setDisable(true);
+        revertirCompra.setStyle(
+            "-fx-background-color: #000000; " +
+            "-fx-text-fill: #FFFFFF;" +  
+            "-fx-border-color: #FFFFFF;" + 
+            "-fx-border-width: 3px;" +  
+            "-fx-background-radius: 0;"  
+        );
         cambiarJugador(listJugadores);
         
         //si es bot se compran de forma automatica desde el principio
@@ -451,7 +462,13 @@ public class Tienda  {
     
     //AJUSTA EL JUGADOR ACTUAL
     public void cambiarJugador(ListaJugadores listJugadores){
-        jugador=listJugadores.lista.get(jugadorActual);     
+        jugador=listJugadores.lista.get(jugadorActual); 
+        if(jugador.tipo.equals("bot")){
+            revertirCompra.setDisable(true);
+        }
+        else{
+            revertirCompra.setDisable(false);
+        }
     }
     
     //CAMBIA LOS VALORES DEL JUGADOR ACTUAL EN LA INTERFAZ VISUAL

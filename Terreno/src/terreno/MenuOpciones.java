@@ -135,25 +135,28 @@ public class MenuOpciones {
         //DEFINIR ESTILO DE TODAS LAS FLECHAS
         for (Button flecha : botonesFlecha) {
             flecha.setStyle(estilo_botones);
+            flecha.setMaxHeight(150);
         }
+        
         //DEFINIR ESTILO DE TODAS LAS OPCIONES
         for (Button opcion : botonesOpciones) {
             opcion.setStyle(estilo_botones);
         }
+        
         //DEFINIR ESTILO DE TODOS LOS LABEL
         for (Label text : textos) {
             text.setStyle("-fx-text-fill: white;");
         }
         
-        //////////////////////////////////////////////////////////////////7
+        /////////////////////////////////////////////////////////
         //RESOLUCION     
-              
-                      
+        /////////////////////////////////////////////////////////                         
         flecha_derecha1.setOnAction(e -> {
-            Musica.sonido_click();
+            Musica.sonido_click();//sonido
             flecha_izquierda1.setDisable(false);
+            //se defina la opcion en globales por el cambio de la flecha
             Globales.resolucion_def=cambiarOpcion(1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
-            System.out.println("Actual = "+Globales.resolucion_def);
+            //se cambia la resolucion
             if(opcionActualResolucion==0){              
                 Globales.alto_resolucion=800;
                 Globales.ancho_resolucion=800;
@@ -175,10 +178,11 @@ public class MenuOpciones {
         });
         
         flecha_izquierda1.setOnAction(e -> {
-            Musica.sonido_click();
+            Musica.sonido_click();//
             flecha_derecha1.setDisable(false);
+            //se defina la opcion en globales por el cambio de la flecha
             Globales.resolucion_def=cambiarOpcion(-1,resolucion,opcion_resolucion,Globales.resolucion_def,1);
-            System.out.println("Actual = "+Globales.resolucion_def);
+            //se ajusta la resolucion
             if(opcionActualResolucion==0){
                 Globales.alto_resolucion=800;
                 Globales.ancho_resolucion=800;
@@ -196,68 +200,64 @@ public class MenuOpciones {
                 flecha_izquierda1.setDisable(true);
             }
             
-        });
-               
+        });            
         menu_resoluciones.getChildren().addAll(flecha_izquierda1,opcion_resolucion, flecha_derecha1);      
         texto_resoluciones.getChildren().add(labelResolucion);            
         /////////////////////////////////////////////////
         ///RESOLUCION
-       
+        /////////////////////////////////////////////////
+        
         /////////////////////////////////////////////////////
         //RONDAS
-           
-        
+        ////////////////////////////////////////////////////          
         flecha_derecha2.setOnAction(e -> {
             flecha_izquierda2.setDisable(false);
-            Musica.sonido_click();
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
             Globales.rondas_def=cambiarOpcion(1,rondas,opcion_rondas,Globales.rondas_def,2);
-            System.out.println("Actual = "+Globales.rondas_def);
             if(opcionActualRondas==rondas.length-1){
                 flecha_derecha2.setDisable(true);
             }
         });
-
-       
+        
         flecha_izquierda2.setOnAction(e -> {
             flecha_derecha2.setDisable(false);
-            Musica.sonido_click();
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
             Globales.rondas_def=cambiarOpcion(-1,rondas,opcion_rondas,Globales.rondas_def,2);
-            System.out.println("Actual = "+Globales.rondas_def);
             if(opcionActualRondas==0){
                 flecha_izquierda2.setDisable(true);
             }
         });
-               
+             
         menu_rondas.getChildren().addAll(flecha_izquierda2,opcion_rondas, flecha_derecha2);    
         texto_rondas.getChildren().add(labelRondas);
            
         /////////////////////////////////////////////////////
         //RONDAS
+        /////////////////////////////////////////////////////
         
         
         /////////////////////////////////////////////////////
         //JUGADORES
-              
-       
-
-        
+        /////////////////////////////////////////////////////     
+             
         flecha_derecha3.setOnAction(e -> {
             flecha_izquierda3.setDisable(false);
-            Musica.sonido_click();
+            Musica.sonido_click();//sonido
             flecha_derecha4.setDisable(false); 
+            //se defina la opcion en globales por el cambio de la flecha
             Globales.jugadores_def=cambiarOpcion(1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
-            System.out.println("Actual = "+Globales.jugadores_def);
             if(opcionActualJugadores==jugadores.length-1){
                 flecha_derecha3.setDisable(true);
             }
         });
-
-        
+      
         flecha_izquierda3.setOnAction(e -> {
             flecha_derecha3.setDisable(false);
-            Musica.sonido_click();
-            Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def,3);
-            System.out.println("Actual = "+Globales.jugadores_def);
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
+            Globales.jugadores_def=cambiarOpcion(-1,jugadores,opcion_jugadores,Globales.jugadores_def,3);;
             if(Globales.jugadores_def<Globales.cantidad_def){
                 Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
             }
@@ -270,19 +270,18 @@ public class MenuOpciones {
         texto_jugadores.getChildren().add(labelJugadores);        
         /////////////////////////////////////////////////////
         //JUGADORES
+        /////////////////////////////////////////////////////
         
         
-        ////////////////////////////////////////////
+        //////////////////////////////////////////////
         //CANTIDAD IA´S
-              
-        
-      
+        //////////////////////////////////////////////  
         
         flecha_derecha4.setOnAction(e -> { 
             flecha_izquierda4.setDisable(false);
-            Musica.sonido_click();
-            Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4);
-            System.out.println("Actual = "+Globales.cantidad_def); 
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
+            Globales.cantidad_def=cambiarOpcion(1,cantidad,opcion_cantidad,Globales.cantidad_def,4); 
             if(Globales.cantidad_def>=Globales.jugadores_def){
                 flecha_derecha4.setDisable(true);           
             }
@@ -291,17 +290,14 @@ public class MenuOpciones {
             }
             if(opcionActualCantidad==cantidad.length-1){
                 flecha_derecha4.setDisable(true);
-            }
-            
-            
+            }          
         });
-        
-        
+               
         flecha_izquierda4.setOnAction(e -> {   
             flecha_derecha4.setDisable(false);
-            Musica.sonido_click();
-            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);         
-            System.out.println("Actual = "+Globales.cantidad_def);         
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
+            Globales.cantidad_def=cambiarOpcion(-1,cantidad,opcion_cantidad,Globales.cantidad_def,4);              
             flecha_derecha4.setDisable(false);
             if(opcionActualCantidad==0){
                 flecha_izquierda4.setDisable(true);   
@@ -313,80 +309,72 @@ public class MenuOpciones {
                     
         menu_cantidad.getChildren().addAll(flecha_izquierda4,opcion_cantidad, flecha_derecha4);         
         texto_IA.getChildren().add(labelIA);
-        
-        
-        /////////////////////////////////////////
+                
+        ///////////////////////////////////////////
         //GRAVEDAD
-        
- 
-                 
+        //////////////////////////////////////////
         
         flecha_derecha5.setOnAction(e -> {
             flecha_izquierda5.setDisable(false);
-            Musica.sonido_click();
-            Globales.gravedad_def=cambiarOpcion(1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
-            System.out.println("Actual = "+Globales.gravedad_def);    
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
+            Globales.gravedad_def=cambiarOpcion(1,gravedad,opcion_gravedad,Globales.gravedad_def,5);  
             if(opcionActualGravedad==gravedad.length-1){
                 flecha_derecha5.setDisable(true);
             }
         });
-              
-        
+                    
         flecha_izquierda5.setOnAction(e -> {
             flecha_derecha5.setDisable(false);
-            Musica.sonido_click();
-            Globales.gravedad_def=cambiarOpcion(-1,gravedad,opcion_gravedad,Globales.gravedad_def,5);
-            System.out.println("Actual = "+Globales.gravedad_def);     
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
+            Globales.gravedad_def=cambiarOpcion(-1,gravedad,opcion_gravedad,Globales.gravedad_def,5);  
             if(opcionActualGravedad==0){
                 flecha_izquierda5.setDisable(true);
             }
         });
         
         menu_gravedad.getChildren().addAll(flecha_izquierda5,opcion_gravedad, flecha_derecha5);                   
-        texto_gravedad.getChildren().add(labelGravedad);     
+        texto_gravedad.getChildren().add(labelGravedad); 
+        
         ///////////////////////////////////////////////
         //GRAVEDAD
+        ///////////////////////////////////////////////
         
         
-        
+        ///////////////////////////////////////////////
         //VIENTO
-           
-        
-                 
-        
+        ///////////////////////////////////////////////
+              
         flecha_derecha6.setOnAction(e -> {
             flecha_izquierda6.setDisable(false);
-            Musica.sonido_click();
-            Globales.viento_def=cambiarOpcion(1,viento,opcion_viento,Globales.viento_def,6);
-            System.out.println("Actual = "+Globales.viento_def);    
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
+            Globales.viento_def=cambiarOpcion(1,viento,opcion_viento,Globales.viento_def,6);  
             if(opcionActualViento==viento.length-1){
                 flecha_derecha6.setDisable(true);
             }
         });
-              
-        
+                     
         flecha_izquierda6.setOnAction(e -> {
             flecha_derecha6.setDisable(false);
-            Musica.sonido_click();
-            Globales.viento_def=cambiarOpcion(-1,viento,opcion_viento,Globales.viento_def,6);
-            System.out.println("Actual = "+Globales.viento_def);   
+            Musica.sonido_click();//sonido
+            //se defina la opcion en globales por el cambio de la flecha
+            Globales.viento_def=cambiarOpcion(-1,viento,opcion_viento,Globales.viento_def,6);  
             if(opcionActualViento==0){
                 flecha_izquierda6.setDisable(true);
             }
         });
-        
-        
+               
         menu_viento.getChildren().addAll(flecha_izquierda6,opcion_viento, flecha_derecha6);                   
         texto_viento.getChildren().add(labelViento);     
         ///////////////////////////////////////////////
         //VIENTO
-        
-        for (Button flecha : botonesFlecha) {
-            flecha.setMaxHeight(150);
-        }
+        ///////////////////////////////////////////////
+
         
         
-        
+        //METODO LISTENER PARA AJUSTAR NODOS A LA RESOLUCION (IGNORAR, ES PURO FXML)
         panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800; 
           
@@ -400,37 +388,29 @@ public class MenuOpciones {
             opcion_resolucion.setPrefWidth(140*widthRatio);
             menu_resoluciones.setLayoutX(275*widthRatio);
             texto_resoluciones.setLayoutX(352*widthRatio);
-            
-            
                    
             opcion_rondas.setPrefWidth(140*widthRatio);
             menu_rondas.setLayoutX(275*widthRatio);
             texto_rondas.setLayoutX(366*widthRatio);
-            
-            
+                       
             opcion_jugadores.setPrefWidth(140*widthRatio);
             menu_jugadores.setLayoutX(275*widthRatio);
             texto_jugadores.setLayoutX(357*widthRatio);
-            
-           
+                      
             opcion_cantidad.setPrefWidth(140*widthRatio);
             menu_cantidad.setLayoutX(275*widthRatio);
             texto_IA.setLayoutX(338*widthRatio);
-            
-            
+                       
             opcion_gravedad.setPrefWidth(140*widthRatio);
             menu_gravedad.setLayoutX(275*widthRatio);
             texto_gravedad.setLayoutX(355*widthRatio);
-            
-            
+                      
             opcion_viento.setPrefWidth(140*widthRatio);
             menu_viento.setLayoutX(275*widthRatio);
             texto_viento.setLayoutX(370*widthRatio);
-            
-            
+                      
             Font font = Font.font("Serif", FontWeight.NORMAL, 20*widthRatio);
-            
-            
+                      
             volver.setFont(font);
             opcion_resolucion.setFont(font);    
             labelResolucion.setFont(font);
@@ -443,11 +423,10 @@ public class MenuOpciones {
             opcion_gravedad.setFont(font);
             labelGravedad.setFont(font);
             opcion_viento.setFont(font);
-            labelViento.setFont(font);
-            
-            
+            labelViento.setFont(font);                    
         });
          
+        //METODO LISTENER PARA AJUSTAR NODOS A LA RESOLUCION (IGNORAR, ES PURO FXML)
         panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
             double heightRatio = newHeight.doubleValue() / 800; 
             
@@ -462,103 +441,97 @@ public class MenuOpciones {
             opcion_resolucion.setPrefHeight(52*heightRatio);
             menu_resoluciones.setLayoutY(70*heightRatio);
             texto_resoluciones.setLayoutY(30*heightRatio);
-            
-            
+                      
             opcion_rondas.setPrefHeight(52*heightRatio);
             menu_rondas.setLayoutY(180*heightRatio);
             texto_rondas.setLayoutY(140*heightRatio);
-            
-            
+                      
             opcion_jugadores.setPrefHeight(52*heightRatio);
             menu_jugadores.setLayoutY(290*heightRatio);
-            texto_jugadores.setLayoutY(250*heightRatio);
-            
+            texto_jugadores.setLayoutY(250*heightRatio);          
             
             opcion_cantidad.setPrefHeight(52*heightRatio);
             menu_cantidad.setLayoutY(400*heightRatio);
             texto_IA.setLayoutY(360*heightRatio);
-            
-            
+                      
             opcion_gravedad.setPrefHeight(52*heightRatio);
             menu_gravedad.setLayoutY(510*heightRatio);
             texto_gravedad.setLayoutY(470*heightRatio);
             
             opcion_viento.setPrefHeight(52*heightRatio);
             menu_viento.setLayoutY(620*heightRatio);
-            texto_viento.setLayoutY(580*heightRatio);
-            
-            
-           
-            
+            texto_viento.setLayoutY(580*heightRatio);          
         });
         
+        //se define boton para volver
         this.volverMenu=volver;
+        //se agrega todo al panel
         panel.getChildren().addAll(menu_resoluciones,texto_resoluciones,menu_rondas,
         texto_rondas,menu_jugadores,texto_jugadores,menu_gravedad,texto_gravedad,
         menu_cantidad,texto_IA,menu_viento,texto_viento,volver);                 
         return panel;
     }
     
+    
+    //METODO QUE CAMBIA VISUALMENTE LA OPCION EN BASE A UNA REFERENCIA
     private int cambiarOpcion(int desplazamiento, String[] tipo, Button opcion, int var_opcion, int referencia) {
         int opcionActual=0;
-        if(referencia==1){
+        if(referencia==1){//REFERENCIA 1=RESOLUCION
             opcionActualResolucion = (opcionActualResolucion + desplazamiento) % tipo.length;
             if(opcionActualResolucion<0){
                 opcionActualResolucion=0;
             }
             opcionActual=opcionActualResolucion;
         }
-        if(referencia==2){
+        if(referencia==2){//REFERENCIA 2=RONDAS
             opcionActualRondas = (opcionActualRondas + desplazamiento) % tipo.length;
             if(opcionActualRondas<0){
                 opcionActualRondas=0;
             }
             opcionActual=opcionActualRondas;
         }
-        if(referencia==3){
+        if(referencia==3){//REFERENCIA 3=JUGADORES
             opcionActualJugadores = (opcionActualJugadores + desplazamiento) % tipo.length;
             if(opcionActualJugadores<0){
                 opcionActualJugadores=0;
             }
             opcionActual=opcionActualJugadores;
         }
-        if(referencia==4){
+        if(referencia==4){//REFERENCIA 4=BOTS
             opcionActualCantidad = (opcionActualCantidad + desplazamiento) % tipo.length;
             if(opcionActualCantidad<0){
                 opcionActualCantidad=0;
             }
             opcionActual=opcionActualCantidad;
         }
-        if(referencia==5){
+        if(referencia==5){//REFERENCIA 5=GRAVEDAD
             opcionActualGravedad = (opcionActualGravedad + desplazamiento) % tipo.length;
             if(opcionActualGravedad<0){
                 opcionActualGravedad=0;
             }
             opcionActual=opcionActualGravedad;
-        }
-        
-        if(referencia==6){
+        }       
+        if(referencia==6){//REFERENCIA 6=VIENTO
             opcionActualViento = (opcionActualViento + desplazamiento) % tipo.length;
             if(opcionActualViento<0){
                 opcionActualViento=0;
             }
             opcionActual=opcionActualViento;
-        }
-        
-               
-        opcion.setText(tipo[opcionActual]);
+        }                   
+        opcion.setText(tipo[opcionActual]);//se muestra el texto
         var_opcion=opcion_def(tipo,opcionActual,var_opcion);
         return var_opcion;
     }   
     
+    //METODO QUE DEFINE LA OPCION COMO UN ENTERO INDEPENDIENTE DE SU TIPO
+    //PARA SER GUARDADA EN GLOBALES
     private int opcion_def(String[] tipo, int opcionActual, int opcion){
         String opcion_str;
         for (int i=0;i<tipo.length;i++){
             if(i==opcionActual){
-                System.out.println("Opcion Actual= "+opcionActual);
                 if(tipo[i].length()>2){
                     opcion_str=tipo[i];
-                    System.out.println("ELECCION STR= "+opcion_str);
+                    //REVISA LAS OPCIONES QUE NO SON ENTEROS Y LOS AJUSTA AL TIPO
                     if(opcion_str.equals("800x800")||opcion_str.equals("Normal")
                             ||opcion_str.equals("-NO-")){
                         opcion=0;
@@ -573,16 +546,9 @@ public class MenuOpciones {
                 }
                 else{
                     opcion=Integer.parseInt(tipo[i]);
-                    System.out.println("ELECCION= "+opcion);
                 }               
             }         
         }
         return opcion;
-    }
-    
-    private void maximo(int opcionActual, String[] eleccion,Button flecha){
-        if(opcionActual==eleccion.length-1){
-            flecha.setDisable(true);
-        }
-    }
+    }    
 }

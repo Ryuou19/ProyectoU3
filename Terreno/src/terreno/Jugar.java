@@ -43,7 +43,7 @@ public class Jugar  {
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     
     static{
-        terreno_random =random.nextInt(3);
+        terreno_random =1;//random.nextInt(3);
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();//tienda de este partido
@@ -472,27 +472,46 @@ public class Jugar  {
         if (revisarEstado()) {
             return;
         }
-        int largo=Globales.alto_resolucion - 200;
-        int ancho_segmento = largo / Globales.jugadores_def;
-
-        int aux = -1;  //inicializar con un valor que no se encuentre en el rango
-
-        for (int i = 0; i < Globales.jugadores_def; i++) {
-            int min = ancho_segmento * i;
-            int max = ancho_segmento * (i + 1);
-            System.out.println(min+"-"+max);
-            //ajustamos el maximo y el minimo
-            min=min+10;
-            max=max-10;
-            //definir la posición inicial
-            double factorDispersión = 1.5;
-            int nuevaPosicion = generarPosicionUnica(min, max, aux, factorDispersión);
-            listJugador.getLista().get(i).posicionInicalX = nuevaPosicion;
-            System.out.println("posicion geenerada -> x" + nuevaPosicion);
-
-            //actualizar aux con la nueva posición
-            aux = nuevaPosicion;
+        if(Globales.jugadores_def==2){
+            int largo = Globales.alto_resolucion-200;
+            int ancho_segmento=largo/Globales.jugadores_def;
+            System.out.println("jugadores def es -> cantidad de jugadores"+Globales.jugadores_def);
+            for(int i=0;i<Globales.jugadores_def;i++){
+                int min=ancho_segmento*i;
+                int max=ancho_segmento*(i+1);
+                int posicion_inicial=random.nextInt(max-min)+min;
+                listJugador.getLista().get(i).posicionInicalX=posicion_inicial;
+            }
         }
+        
+        else{
+            int largo=Globales.alto_resolucion - 200;
+            int ancho_segmento = largo / Globales.jugadores_def;
+
+            int aux = -1;  //inicializar con un valor que no se encuentre en el rango
+
+            for (int i = 0; i < Globales.jugadores_def; i++) {
+                int min = ancho_segmento * i;
+                int max = ancho_segmento * (i + 1);
+                System.out.println(min+"-"+max);
+                //ajustamos el maximo y el minimo
+                min=min+10;
+
+                //definir la posición inicial
+                double factorDispersión = 1.5;
+                int nuevaPosicion = generarPosicionUnica(min, max, aux, factorDispersión);
+                if(nuevaPosicion>largo)
+                {
+                    nuevaPosicion-=200;
+                }
+                listJugador.getLista().get(i).posicionInicalX = nuevaPosicion;
+                System.out.println("posicion geenerada -> x" + nuevaPosicion);
+
+                //actualizar aux con la nueva posición
+                aux = nuevaPosicion;
+            }
+        }
+       
     }
     
     //genera posiciones que no varian para evitar casos en los que se juntan los tanques

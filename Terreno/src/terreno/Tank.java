@@ -135,17 +135,17 @@ public class Tank{
     {
         //creamos las dimenciones que tendra la imagen dependiendo de la resolucion
 
-        if(Globales.alto_resolucion>699 && Globales.alto_resolucion<=799)
+        if(Globales.resolucion_def==0)
         {
             largo_imagen=70;
             ancho_imagen=70;
         }
-        if(Globales.alto_resolucion>799 && Globales.alto_resolucion<=899)
+        if(Globales.resolucion_def==1)
         {
             largo_imagen=80;
             ancho_imagen=80;
         }
-        if(Globales.alto_resolucion>899 && Globales.alto_resolucion<=1919)
+        if(Globales.resolucion_def==2)
         {
            ancho_imagen=90;
            largo_imagen=90;

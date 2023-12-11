@@ -17,7 +17,7 @@ public class Musica {
     }
 
     public static void sonido_compra() {
-        reproducirSonido("src/terreno/music/dinero.mp3", 1.0);
+        reproducirSonido("src/terreno/music/dinero.mp3", 0.7);
     }
 
     public static void agregar_musica() {

@@ -7,10 +7,10 @@ import javafx.scene.paint.Color;// import usado para dibujar hitbox con el fin d
 
 public class Tank{
     Globales c=new Globales();
-    public int posicionX;
-    int largo_imagen=0;
-    int ancho_imagen=0;
-    public int posicionY=300;
+    public int posicionX; //posicion X del tanque en el canvas
+    int largo_imagen=0; // largo de la imagen del tanque
+    int ancho_imagen=0; // ancho de la imagen del tanque
+    public int posicionY=300;// todos los tanques comienzan con altura 300 que es de donde caen
     public String color;
     public int jugadorTanque;
     private double angulo;
@@ -19,12 +19,8 @@ public class Tank{
     int ancho;
     int alto;   
     int vida=100;
-//cambio----------------------------------------------------    
-    int gravedad=9;
-    int dañoAltura=10;//si cae a mas de 5 pies de altura se hace daño
+    int dañoAltura=10;//se refiere a la altura en donde se comenzara a hacer el daño
 
-//----------------------------------------------------
-    ListaJugadores listaJugador = ListaJugadores.getInstance();
     public Tank(String color, int jugador){
         this.color=color;
         this.jugadorTanque = jugador;
@@ -40,38 +36,11 @@ public class Tank{
     public int getCañonY() {
         return cañonY;
     }
-    
-    public double getAngulo() {
-        return angulo;
-    }
-
-    public int getVida() {
-        return vida;
-    }
-
-    public int getPosicionX() {
-        return posicionX;
-    }
 
     public int getPosicionY() {
         return posicionY;
     }
-    
-//cambio--------------------------------------------------------------------------------------------------------    
-    public void setPosicion1(int valor){
-    posicionY=valor;
-    }
-        public void setPosicion0(int valor){
-    posicionX=valor;
-    }
-    public void setCañonX(int cañonX) {
-        this.cañonX = cañonX;
-    }
 
-    public void setCañonY(int cañonY) {
-        this.cañonY = cañonY;
-    }
-//-------------------------------------------------------------------------------------------------------- 
     public void modificarCañon(GraphicsContext gc, double angulo){
         this.angulo = angulo;
         int x = posicionX;
@@ -94,8 +63,8 @@ public class Tank{
       this.posicionX= posicionX;
       this.posicionY = posicionY;
     }
-    //cambio--------------------------------------------------------------------------------------------------------    
     public void crearHitbox( GraphicsContext gc, Terreno terreno,Jugador jugador) {
+        // antes de crear la hitbox del tanque se inician el hancho y el alto de la hitbox que dependera de la resolucion
         int hitboxAncho=0;
         int hitboxLargo=0;
         if(largo_imagen==70)
@@ -113,9 +82,9 @@ public class Tank{
             hitboxAncho=7;
             hitboxLargo=8;
         }
-        int marcar_hitbox = jugador.jugador + 2; // se pone un 2 para tanque 0
+        int marcar_hitbox = jugador.jugador + 2; // marcar_hitbox es el valor que tendra la hitbox del tanque el tanque 0 tendra un valor 2 dentro de la matriz y asi
         System.out.println("marca de la hitbox="+marcar_hitbox);
-        for(int i=0;i<ancho+hitboxAncho;i++){
+        for(int i=0;i<ancho+hitboxAncho;i++){ // se inician los ciclos para hacer la hitbox del tanque en funcion del ancho y el alto que se inicizaron por la resolucion
             for (int j=0;j<alto+hitboxLargo;j++){
 
                //actualizar la colision de la matriz
@@ -123,7 +92,7 @@ public class Tank{
                int posXMatriz = (posicionX / 3 + i);
                int posYMatriz = (posicionY / 3 + j+ajustar_posicion);
 
-                if (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){
+                if (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){ // revisamos los bordes antes de colcar la hitbox
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
                         gc.setFill(Color.GREEN);
                         gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
@@ -131,18 +100,18 @@ public class Tank{
             }
         }
     }
-    public boolean esta_dentro_de_terreno(Terreno terreno) {
+    public boolean esta_dentro_de_terreno(Terreno terreno) { //funcion para comprobar que el tanque este dentro del terreno
         int limiteDerecho = terreno.matriz.length * 3; // Límite derecho de la matriz
         int limiteInferior = terreno.matriz[0].length * 3; // Límite inferior de la matriz
 
         if (posicionX >= 0 && posicionY >= 0) {
             if (posicionX + ancho <= limiteDerecho && posicionY + alto <= limiteInferior) {
-                return true;
+                return true; // retornamos true si es verdad
             }
         }
         return false;
     }
-    public boolean estaSobreDuna(Terreno terreno) {
+    public boolean estaSobreDuna(Terreno terreno) { // funcion para preguntar si el tanque esta sobre las dunas del terrno
         int hitboxAncho = 1;
         int contadorDunas = 0;
         for(int i = 0; i < ancho + hitboxAncho; i++) {

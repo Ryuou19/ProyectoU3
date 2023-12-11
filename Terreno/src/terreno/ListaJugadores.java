@@ -7,6 +7,7 @@
     public class ListaJugadores {
         private static ListaJugadores instance;
         private Terreno terreno;
+        public int ultimo_indice_lista=0;
         public ArrayList<Jugador> lista= new ArrayList<>();
 
         public ArrayList<Integer> turnosDisponibles = new ArrayList<>();
@@ -105,10 +106,25 @@
                             }
                         }
                     }
-                } // se agregan a turnos disponibles
+                }
+                //barajamos las ambas listas
+                Collections.shuffle(indicesNormales);
+                Collections.shuffle(indicesBots);
+
                 turnosDisponibles.addAll(indicesNormales);
                 turnosDisponibles.addAll(indicesBots);
-                Collections.shuffle(turnosDisponibles);
+                if(turnosDisponibles.size()>1)
+                {
+                 while(turnosDisponibles.get(0)==ultimo_indice_lista)
+                 {
+                     Collections.shuffle(turnosDisponibles);
+                 }
+                    ultimo_indice_lista = turnosDisponibles.get(turnosDisponibles.size()-1);
+                }
+                else
+                {
+                    Collections.shuffle(turnosDisponibles);
+                }
 
                 System.out.println("Lista de turnos creada -> " + turnosDisponibles);
             }

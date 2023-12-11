@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 public class  Jugador {
 
     String color = "";
-    public int jugador;
+    public int jugador; // variable para saber el indice del jugador en la lista
     Random r=new Random();
     public boolean activo=true;
     String nombre="";
@@ -22,8 +22,10 @@ public class  Jugador {
     
     //SALDO DE CADA JUGADOR
     int saldo;
+    //posiciones del tanque
     int posicionInicalX=0;
     int posicionInicialY=100;
+    //kda del tanque
     public int asesinatos;
     public int suicidios;
     public int asesinatosTotales;
@@ -70,7 +72,7 @@ public class  Jugador {
         return tanque;
     }
   
-    public Jugador(int jugador,String nombre,String tipo){
+    public Jugador(int jugador,String nombre,String tipo){ // constructor de jugador
         
         this.jugador = jugador;
         this.rand=new Random();
@@ -109,24 +111,23 @@ public class  Jugador {
     
     public void creaTanque(GraphicsContext gc,  int vida, int validar, Terreno terreno){
         if(validar==0){//verifica si se crea desde un terreno completamente nuevo o solo de un cambio de turno
-            this.random=rand.nextInt(4);  
-            validar=1;
+            this.random=rand.nextInt(4);
         }
         Tank tanque = new Tank(color, jugador);
         tanque.agregarTanque(gc,this.random,vida,terreno,posicionInicalX,posicionInicialY);
         this.tanque=tanque;
     }
-    public void descativar()
+    public void descativar()  // metodo para marcar al tanque como desactivado
     {
         this.activo=false;
     }
     public void eliminar() {
         this.eliminado = true;
-    }
+    } // metodo para marcar al tanque como eliminado
 
     public boolean estaEliminado() {
         return eliminado;
-    }
+    } //metodo para preguntar si el jugador esta eliminado
     public void agregar_saldo(int cantidad){
         this.saldo+=cantidad;
         System.out.println("Saldo disponible= "+this.saldo);

@@ -317,17 +317,17 @@ public class Jugar  {
 
     public void animacionCaida() {
 
-        if(revisarEstado()){
+        if(revisarEstado()){ //revismaos el estadod e los jugadores
             return;
         }
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (!disparo_en_curso) {
+                if (!disparo_en_curso) { //marcamos el disparo como en curso
                     disparo_en_curso = true;
                 }
-                terrain.borrarHitboxAnterior();
-                boolean todosEnSuelo = true;
+                terrain.borrarHitboxAnterior(); //eliminamos las hitbos anteriores de los tanques (se le creara a todos una nueva)
+                boolean todosEnSuelo = true; // marcador para saber si estan todos los tanques en el suelo
                 if (terreno_random == 0) {
                     terrain.terreno_nieve(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
                 } else if (terreno_random == 1) {
@@ -335,19 +335,20 @@ public class Jugar  {
                 } else if (terreno_random == 2) {
                     terrain.terreno_aram(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
                 }
-                for (Jugador jugador : listJugador.getLista()) {
-                    if(!jugador.estaEliminado())
+                for (Jugador jugador : listJugador.getLista()) { // iteramos sobre jugador en la lista
+                    if(!jugador.estaEliminado()) // si el jugador no esta marcado como eliminado procedemos a dibujarlo mientras cae
                     {
                         Tank tanque = jugador.getTanque();
                         int posicionInicialY = tanque.getPosicionY(); //posicion de donde cae
 
-                        if (!tanque.estaSobreDuna(terrain)) {
+                        if (!tanque.estaSobreDuna(terrain)) { // si el tanque esta sobre dunas marcamos todos en el suelo como false ademas de ir sumando al eje y del tanque para que caiga
                             tanque.posicionY += Math.abs(Globales.gravedad);
                             todosEnSuelo = false;
                         }
                         //revisamos si esta en fuera de terreno
                         if(!tanque.esta_dentro_de_terreno(terrain))
                         {
+                            // en caso de estar fuera del terrno paramos el animation y matamos al tanque
                             stop();
                             disparo_en_curso=false;
                             HBox muerte=VentanaEmergente.aparecer("Jugador "+jugador.nombre+" muerto...", 3);
@@ -355,15 +356,15 @@ public class Jugar  {
                             muerte.setLayoutX(Globales.alto_resolucion-300);
                             muerte.setLayoutY(0);
                             listJugador.getJugadorActual().suicidios++;// le agregamos un suicidio
-                            listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
-                            Boolean terminar=revisarJugadores();
-                            if(terminar){
+                            listJugador.eliminarJugador(listJugador.getJugadorActual().jugador); //marcamos al jugador comoe liminado
+                            Boolean terminar=revisarJugadores(); // revisamos el estado de las balas de los jugadores
+                            if(terminar){ // si ninguno tiene balas terinamos el juego y retornamos de la funcion
                                 return;
                             }
-                            listJugador.generarTurnoAleatorio();
+                            listJugador.generarTurnoAleatorio(); // generamos elnuevo turno del jugador y lo mostramos
                             interfaz.mostrarJugador(listJugador.getJugadorActual());
 
-                            if (listJugador.getJugadorActual().tipo.equals("bot")) {
+                            if (listJugador.getJugadorActual().tipo.equals("bot")) { // preguntamos si es un bot
                                 iniciar_bot();
                             }
                             if(listJugador.quedaUnoVivo()) // si queda uno vivo terminamos la ronda
@@ -391,12 +392,12 @@ public class Jugar  {
                                     interfaz.canvasPane.getChildren().add(muerte);
                                     muerte.setLayoutX(Globales.alto_resolucion-300);
                                     muerte.setLayoutY(0);
-                                    listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);
-                                    Boolean terminar=revisarJugadores();
+                                    listJugador.eliminarJugador(listJugador.getJugadorActual().jugador);// marcamos al tanque como eliminado
+                                    Boolean terminar=revisarJugadores(); // revisamos si los jugadores tienen balas
                                     if(terminar){
                                         return;
                                     }
-                                    listJugador.generarTurnoAleatorio();
+                                    listJugador.generarTurnoAleatorio(); // generamos el turno aleatorio para el nuevo jugador
                                     interfaz.mostrarJugador(listJugador.getJugadorActual());
                                     if (listJugador.getJugadorActual().tipo.equals("bot")) {
                                         iniciar_bot();
@@ -411,17 +412,16 @@ public class Jugar  {
                                 }
                             }
                         }
-                        tanque.dibuarTanque(interfaz.gc);
-                        tanque.modificarCañon(interfaz.gc, 0);
+                        tanque.dibuarTanque(interfaz.gc); // si paso por todo el tanque lo dibujamos
+                        tanque.modificarCañon(interfaz.gc, 0);// modificamos su cañon para que este en la posicion donde este cayendo
 
-                        if (todosEnSuelo) {
-                             // eliminamos hitboxes anteriores
+                        if (todosEnSuelo) { // una vez que todos los tanques esten en el suelo les creamos sus hitbox
                             tanque.crearHitbox(interfaz.gc, terrain,jugador);
 
                         }
                     }
                 }
-                if (todosEnSuelo) {
+                if (todosEnSuelo) {// ya que se marco anterior mente sis hitbox y se colocaron todos en el suelo
                     disparo_en_curso=false;
                     stop();
                     Boolean terminar=revisarJugadores();// marcamos a los jugadores que no podran jugar
@@ -570,13 +570,10 @@ public class Jugar  {
     }
 
     public void animacionBala(Bala nuevaBala) {
-        if(revisarEstado()){
+        if(revisarEstado()){ // revisamos el estado de los jugadores
             return;
         }
-        
-        
-        
-        new AnimationTimer() {
+        new AnimationTimer() { //iniciamos el animation timer
 
             long lastWindChangeTime = 0; // Variable para almacenar la última vez que cambió la dirección del viento
             int windChangeInterval = 50_000_000; // Cambiar la dirección del viento cada 1/20 de segundo
@@ -587,11 +584,11 @@ public class Jugar  {
                 if (now - Globales.lastFrameTime >= Globales.timePerFrame) {
                     Globales.lastFrameTime = now;
 
-                    if (!disparo_en_curso) {
+                    if (!disparo_en_curso) { //marcamos el disparo como en curso
                         disparo_en_curso = true;
                     }
 
-                    nuevaBala.dibujo(interfaz.gc, nuevaBala.getDanio());
+                    nuevaBala.dibujo(interfaz.gc, nuevaBala.getDanio()); //dibujamos la bala
                     //actualizar la posición de la bala
                     nuevaBala.actualizarPosicion(deltaTiempo, nuevaBala, distancia, altura, interfaz.boxdistancia, interfaz.boxaltura, listJugador.getJugadorActual().getTanque().getCañonY(), listJugador.getJugadorActual().getTanque().getCañonX());
 
@@ -602,17 +599,17 @@ public class Jugar  {
                     }
                     impacto = terrain.colision_terreno(interfaz.gc, nuevaBala, terrain.dunas, terrain.matriz, tipo);
 
-                    if (impacto != 0) {
+                    if (impacto != 0) { //si impacto es distinto de 0 a impactado a un jugador la bala
                         System.out.println("Victoria = " + impacto);
-                        impacto_jugador(impacto, nuevaBala.getDanio());
+                        impacto_jugador(impacto, nuevaBala.getDanio()); // le aplciamos el daño correspondiente
                     }
 
-                    if (nuevaBala.eliminar()) {
+                    if (nuevaBala.eliminar()) { // si la bala choco con el terreno eliminamos la bala
 
                         System.out.println("Victoria = " + impacto);
                         
-                        stop();
-                        colision_bala();
+                        stop(); //paramos el animation
+                        colision_bala(); // revisamos daño de la bala si es que a impactado a algun jugador
                         Globales.congelar(1);
                         disparo_en_curso = false;
                         viento=Globales.cambiarViento(interfaz);//cambiamos la dirección del viento
@@ -625,15 +622,15 @@ public class Jugar  {
     }
 
     public void iniciar_bot() {
-        if(revisarEstado()){
+        if(revisarEstado()){ // revisamos el estado de los jugadores
             return;
         }
-        if (!disparo_en_curso) {
+        if (!disparo_en_curso) { // si animacion bala termino
 
-            List<Integer> tiposDisponibles = new ArrayList<>();
+            List<Integer> tiposDisponibles = new ArrayList<>(); //creamos una lista de tipos de balas disponibles y la llenamos con 1 2 3
             tiposDisponibles.add(1);tiposDisponibles.add(2);tiposDisponibles.add(3);
 
-            boolean balaEncontrada = false;
+            boolean balaEncontrada = false; // inicializamos un marcador
 
             //verifica cada tipo de bala hasta encontrar una con municiones o agotar todas las opciones
             while (!tiposDisponibles.isEmpty() && !balaEncontrada) {
@@ -646,9 +643,8 @@ public class Jugar  {
                     // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
                     tiposDisponibles.remove(indiceAleatorio);
                     tipo=0;
-                }
+                } //no hace falta una condicion si el jugador no tiene balas ya que se hizo la verificacion anteriormente
             }
-            
             revisarJugadores();
 
             // Configuración del disparo de la bala para el bot

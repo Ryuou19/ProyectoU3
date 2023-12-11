@@ -7,17 +7,16 @@
     public class ListaJugadores {
         private static ListaJugadores instance;
         private Terreno terreno;
+        public int ultimo_indice_lista=0;
         public ArrayList<Jugador> lista= new ArrayList<>();
 
         public ArrayList<Integer> turnosDisponibles = new ArrayList<>();
-        public int indiceActual;
-        public int ultimo_indice=0;
-        public int ultimo_indice_lista=0;
-        public int contador_lista_turnos=0;
+        public int indiceActual; // se usa para acceder a jugador que esta en juego
+
         private ListaJugadores()
         {}
 
-
+        // metodo singleton para la lista
         public static ListaJugadores getInstance() {
             if (instance == null) {
                 instance = new ListaJugadores();
@@ -32,11 +31,11 @@
         public void setTerreno(Terreno terreno) {
             this.terreno = terreno;
         }
-        ArrayList<Integer> turnosDisponiblesAux = new ArrayList<>();
 
         public ArrayList<Jugador> getLista(){
             return lista;
         }
+        //Metodo para iniciar los jugadore y los bots y agregarlos a la lista
         public void instanciarJugadores(int cantidadJugadores, int cantidadBots)
         {
             int cantidadNormales= cantidadJugadores-cantidadBots; //le quitamos la cantidad de bots a los jugadores
@@ -92,9 +91,9 @@
             }
         }
 
-
+        //funcion para mezclar la lista de turnos y crear una nueva cada turno
         public void generarTurnoAleatorio() {
-            if (turnosDisponibles.isEmpty()) {
+            if (turnosDisponibles.isEmpty()) { // se revisa si la lista esta bacia, de ser asi se cren 2 sub listas donde se añaden los jugadores normales y los bots
                 ArrayList<Integer> indicesNormales = new ArrayList<>();
                 ArrayList<Integer> indicesBots = new ArrayList<>();
                 for (Jugador jugador : lista) {
@@ -108,25 +107,28 @@
                         }
                     }
                 }
-
+                //barajamos las ambas listas
                 Collections.shuffle(indicesNormales);
                 Collections.shuffle(indicesBots);
 
                 turnosDisponibles.addAll(indicesNormales);
                 turnosDisponibles.addAll(indicesBots);
-                if(turnosDisponibles.size()>1){
-                    while (turnosDisponibles.get(0) == ultimo_indice_lista) {
-                        Collections.shuffle(turnosDisponibles);
-                    }
-
-                    // Actualizar el último índice después de la mezcla
-                    ultimo_indice_lista = turnosDisponibles.get(turnosDisponibles.size() - 1);
-
-                }else {Collections.shuffle(turnosDisponibles);}
+                if(turnosDisponibles.size()>1)
+                {
+                 while(turnosDisponibles.get(0)==ultimo_indice_lista)
+                 {
+                     Collections.shuffle(turnosDisponibles);
+                 }
+                    ultimo_indice_lista = turnosDisponibles.get(turnosDisponibles.size()-1);
+                }
+                else
+                {
+                    Collections.shuffle(turnosDisponibles);
+                }
 
                 System.out.println("Lista de turnos creada -> " + turnosDisponibles);
             }
-            if (!turnosDisponibles.isEmpty()) {
+            if (!turnosDisponibles.isEmpty()) { // si la lista aun no esta vacia sacamos el primer elemento de  ella que representa el indice del jugador que esta jugando
                 indiceActual = turnosDisponibles.remove(0);
                 System.out.println("lista de turnos una vez actualizada ->"+turnosDisponibles);
                 for(Jugador jugar : lista)

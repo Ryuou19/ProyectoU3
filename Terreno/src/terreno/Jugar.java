@@ -5,7 +5,6 @@ import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

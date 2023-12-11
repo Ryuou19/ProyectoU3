@@ -22,7 +22,7 @@ public class Victoria {
     Image titulo=new Image(getClass().getResourceAsStream("./img/ganadorFinal.png"));          
     ImageView victoria=new ImageView(titulo);
     ImageView ganador;
-    Image draw=new Image(getClass().getResourceAsStream("./img/draw.png"));
+    Image draw=new Image(getClass().getResourceAsStream("./img/pruebadraw.png"));
     ImageView empate=new ImageView(draw);
     
     Image crown=new Image(getClass().getResourceAsStream("./img/corona.png"));
@@ -89,8 +89,8 @@ public class Victoria {
                 victoria.setFitHeight(350*heightRatio);
             }
            
-            empate.setLayoutY(120*heightRatio);
-            empate.setFitHeight(500*heightRatio);
+            empate.setLayoutY(350*heightRatio);
+            empate.setFitHeight(100*heightRatio);
             corona.setLayoutY(110*heightRatio);           
             corona.setFitHeight(250*heightRatio);
             

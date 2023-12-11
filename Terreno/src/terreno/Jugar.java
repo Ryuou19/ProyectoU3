@@ -649,8 +649,7 @@ public class Jugar  {
                     tipo=0;
                 }
             }
-            
-            revisarJugadores();
+
 
             // Configuración del disparo de la bala para el bot
             velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego

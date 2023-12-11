@@ -679,9 +679,8 @@ public class Jugar  {
                 listJugador.desactivarJugador(jugador.jugador);
             }
         }
-        if(listJugador.quedaUnoActivo())
+        if(listJugador.quedanActivos())
         {   
-            System.out.println("!!QUEDA UNO ACTIVO!!");
             finalizarRonda();
             return true;
         }

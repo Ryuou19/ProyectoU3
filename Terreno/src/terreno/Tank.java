@@ -8,16 +8,16 @@ import javafx.scene.paint.Color;// import usado para dibujar hitbox con el fin d
 public class Tank{
     Globales c=new Globales();
     public int posicionX; //posicion X del tanque en el canvas
-    int largo_imagen=0; // largo de la imagen del tanque
-    int ancho_imagen=0; // ancho de la imagen del tanque
+    int largo_imagen=0; //largo de la imagen del tanque
+    int ancho_imagen=0; //ancho de la imagen del tanque
     public int posicionY=300;// todos los tanques comienzan con altura 300 que es de donde caen
-    public String color;
+    public String color;//color del tanque
     public int jugadorTanque;
     private double angulo;
-    private int cañonX;
-    private int cañonY;
-    int ancho;
-    int alto;   
+    private int canonX;//posicion x del canion
+    private int canonY;//posicion y del canion
+    int ancho;//ancho del tanque
+    int alto;//alto del tanque   
     int vida=100;
     int dañoAltura=10;//se refiere a la altura en donde se comenzara a hacer el daño
 
@@ -30,18 +30,18 @@ public class Tank{
     }
     
     public int getCañonX() {
-        return cañonX;
+        return canonX;
     }
 
     public int getCañonY() {
-        return cañonY;
+        return canonY;
     }
 
     public int getPosicionY() {
         return posicionY;
     }
 
-    public void modificarCañon(GraphicsContext gc, double angulo){
+    public void modificarCañon(GraphicsContext gc, double angulo){//modifica la posicion de donde se dispara la bala
         this.angulo = angulo;
         int x = posicionX;
         int y = posicionY;
@@ -50,11 +50,11 @@ public class Tank{
         int cy = y + 35;
         double anguloRad = Math.toRadians(angulo);
 
-        cañonX = (int) (cx + Math.cos(anguloRad) * 2);
-        cañonY = (int) (cy + Math.sin(anguloRad) * 2);
+        canonX = (int) (cx + Math.cos(anguloRad) * 2);
+        canonY = (int) (cy + Math.sin(anguloRad) * 2);
 
         gc.save();
-        gc.translate(cañonX, cañonY);
+        gc.translate(canonX, canonY);
         gc.rotate(angulo);
         gc.restore();
     }
@@ -63,7 +63,7 @@ public class Tank{
       this.posicionX= posicionX;
       this.posicionY = posicionY;
     }
-    public void crearHitbox( GraphicsContext gc, Terreno terreno,Jugador jugador) {
+    public void crearHitbox( GraphicsContext gc, Terreno terreno,Jugador jugador) {//crea la hitbox que se usa en el juego de cada tanque
         // antes de crear la hitbox del tanque se inician el hancho y el alto de la hitbox que dependera de la resolucion
         int hitboxAncho=0;
         int hitboxLargo=0;
@@ -132,46 +132,8 @@ public class Tank{
         }
         return false;
     }
-    /*public void caidaTanque(GraphicsContext gc, Terreno terrain, int tipoTerreno) {
-        float contador[] = {0};
-        AnimationTimer animation = new AnimationTimer() {
-
-            @Override
-            public void handle(long now) {
-                boolean caidaCompleta = true;
-                if (tipoTerreno == 0) {
-                    terrain.terreno_nieve(gc, 0.0, 100, 1,terrain,alto_resolucion,ancho_resolucion);
-
-                }
-                if (tipoTerreno == 1) {
-                    terrain.terreno_desierto(gc, 0.0, 100, 1,terrain,alto_resolucion,ancho_resolucion);
-
-                }
-                if (tipoTerreno == 2) {
-                    terrain.terreno_aram(gc, 0.0, 100, 1,terrain,alto_resolucion,ancho_resolucion);
-
-                }
-                for (Jugador jugador : listaJugador.getLista()) {
-
-                    Tank tanque = jugador.getTanque();
-                    if (!tanque.estaSobreDuna(terrain)) {
-                        tanque.posicionY += tanque.gravedad;
-                        caidaCompleta = false;
-                    }
-
-                    tanque.dibuarTanque(gc);
-                }
-                if (caidaCompleta) {
-                    this.stop();
-                }
-            }
-        };
-        animation.start();
-    }*/
-
     
-    
-    public void dibuarTanque(GraphicsContext gc)
+    public void dibuarTanque(GraphicsContext gc)//dibuja el tanque con la imagen visual
     {
         //creamos las dimenciones que tendra la imagen dependiendo de la resolucion
 
@@ -194,7 +156,4 @@ public class Tank{
            Image tanque = new Image(getClass().getResourceAsStream(color));
            gc.drawImage(tanque, posicionX-7, posicionY-12, largo_imagen, ancho_imagen);
     }
-
-
-
 }

@@ -139,16 +139,13 @@
 
         }
 
-
-
-
-        public Jugador getJugadorActual() {
+        public Jugador getJugadorActual() {//toma el jugador actual en el flujo
             return lista.get(indiceActual);
         }
 
-        public void eliminarJugador(int indiceJugador) {
+        public void eliminarJugador(int indiceJugador) {//elimina al jugador de la ronda
             if (indiceJugador < 0 || indiceJugador >= lista.size()) {
-                // Índice fuera de rango, no se hace nada
+                //indice fuera de rango, no se hace nada
                 return;
             }
             lista.get(indiceJugador).eliminar();
@@ -160,7 +157,8 @@
             }
 
         }
-        public void desactivarJugador(int indiceJugador)
+        
+        public void desactivarJugador(int indiceJugador)//desactiva al jugador de la ronda
         {
             if (indiceJugador < 0 || indiceJugador >= lista.size()) {
                 //indice fuera de rango, no se hace nada
@@ -169,8 +167,7 @@
             lista.get(indiceJugador).descativar();
 
         }
-        public boolean quedaUnoVivo()
-        {
+        public boolean quedaUnoVivo(){//si queda un jugador vivo para finalizar la ronda
             int cantidadMuetos=0;
             for(Jugador aux: lista)
             {
@@ -186,7 +183,8 @@
             }
             return false;
         }
-        public boolean quedaUnoActivo()
+        
+        public boolean quedanActivos()//si no queda ningun jugador activo(se quedaron todos sin balas) para finalizar la ronda
         {
             int cantidadMaximaDeMuertos=lista.size();
             int cantidad_inactivos=0;
@@ -204,6 +202,9 @@
             }
             return false;
         }
+        
+        //se reviven todos los jugadores que murieron en la ronda y se reinicia todo
+        //para dejarlos listos para el reinicio de partido completo 
         public void revivir_jugadores()
         {
             for (Jugador aux : lista)
@@ -224,7 +225,8 @@
             }
         }
         
-        public void revivir()
+        public void revivir()//similar al metodo anterior, solo que este reinicia los valores de los jugadores
+                             //para una siguiente ronda, no para reiniciar un partido completo
         {
             for (Jugador aux : lista)
             {

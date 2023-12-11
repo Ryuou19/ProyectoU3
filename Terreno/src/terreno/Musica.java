@@ -59,7 +59,6 @@ public class Musica {
             player.stop();
         }
     }
-
    
     //Reproduce un sonido solo una vez
     private static void reproducirSonido(String path, double volume) {

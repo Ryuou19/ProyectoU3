@@ -18,8 +18,7 @@ public class  Jugador {
     int cantidad105=0;
     int cantidad80=0;
     int cantidad60=0;
-    int vida;
-    
+    int vida;   
     //SALDO DE CADA JUGADOR
     int saldo;
     //posiciones del tanque
@@ -41,8 +40,7 @@ public class  Jugador {
     public int getVida() {
         return vida;
     }
-
-    
+   
     public int getCantidad105() {
         return cantidad105;
     }
@@ -72,8 +70,7 @@ public class  Jugador {
         return tanque;
     }
   
-    public Jugador(int jugador,String nombre,String tipo){ // constructor de jugador
-        
+    public Jugador(int jugador,String nombre,String tipo){ // constructor de jugador     
         this.jugador = jugador;
         this.rand=new Random();
         this.random=rand.nextInt(4);
@@ -105,8 +102,7 @@ public class  Jugador {
         if (jugador==5)
         {
             this.color="./img/tanque6.png";
-        }
-        
+        }      
     }
     
     public void creaTanque(GraphicsContext gc,  int vida, int validar, Terreno terreno){
@@ -128,7 +124,8 @@ public class  Jugador {
     public boolean estaEliminado() {
         return eliminado;
     } //metodo para preguntar si el jugador esta eliminado
-    public void agregar_saldo(int cantidad){
+    
+    public void agregar_saldo(int cantidad){//metodo para agregar dinero
         this.saldo+=cantidad;
         System.out.println("Saldo disponible= "+this.saldo);
     }
@@ -152,6 +149,7 @@ public class  Jugador {
         return false;
     }
     
+    //metodo que entrega el dinero correspondiente a cada jugador por su kda
     public static void pagar_ronda(ListaJugadores listJugador){
         for(Jugador jugador: listJugador.lista){
             jugador.saldo+=10000;

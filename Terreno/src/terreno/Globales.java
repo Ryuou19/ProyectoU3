@@ -4,6 +4,8 @@ package terreno;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.Random;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 public class Globales {
@@ -51,5 +53,7 @@ public class Globales {
         System.out.println("viento actual" + viento_actual);
         return viento_actual;
     }
+    
+
 }
 

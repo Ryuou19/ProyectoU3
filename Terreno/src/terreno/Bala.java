@@ -19,7 +19,6 @@ public class Bala {
     public double velocidadX;//velocidad de bala en un instante X
     public double velocidadY;//velocidad de bala en un instante Y
     public boolean eliminar=false;//eliminar bala al chocar
-    public int factorViento;
     public int contador;//variable para comenzar a calcular distancia y altura de bala
  
     

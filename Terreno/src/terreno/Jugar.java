@@ -8,11 +8,15 @@ import javafx.scene.layout.HBox;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 
 
 public class Jugar  {  
+    
     static Random random = new Random();
     public boolean jugando=true;
     double angulo;
@@ -219,6 +223,7 @@ public class Jugar  {
    
     public void colision_bala(){
         Musica.sonido_colision();
+        
         if(revisarEstado()){
             return;
         }

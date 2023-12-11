@@ -221,7 +221,7 @@ public class Tienda  {
         });
         
         revertirCompra.setOnAction(event -> {  
-            Musica.sonido_click();
+            Musica.sonido_compra();
             if (jugador.carrito.size()-1 >= 0) { // Verificar si la lista tiene al menos un elemento
                 ultimaOpcion=jugador.carrito.get(jugador.carrito.size()-1);
             }

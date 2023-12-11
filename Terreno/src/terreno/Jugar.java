@@ -472,19 +472,7 @@ public class Jugar  {
         if (revisarEstado()) {
             return;
         }
-        int largo=0;
-        if(Globales.alto_resolucion>699 && Globales.alto_resolucion<=799)
-        {
-             largo = Globales.alto_resolucion - 200;
-        }
-        if(Globales.alto_resolucion>799 && Globales.alto_resolucion<=899)
-        {
-            largo = Globales.alto_resolucion - 250;
-        }
-        if(Globales.alto_resolucion>899 && Globales.alto_resolucion<=1919)
-        {
-            largo = Globales.alto_resolucion - 1000;
-        }
+        int largo=Globales.alto_resolucion - 200;
         int ancho_segmento = largo / Globales.jugadores_def;
 
         int aux = -1;  //inicializar con un valor que no se encuentre en el rango

@@ -51,7 +51,7 @@ public class Jugar  {
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     
     static{
-        terreno_random =1;//random.nextInt(3);
+        terreno_random =2;//random.nextInt(3);
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();
@@ -65,7 +65,6 @@ public class Jugar  {
             return;
         }
         viento=Globales.cambiarViento(interfaz);//generamos el primer viento
-        System.out.println("global gravedad= "+Globales.gravedad_def);
         Globales.stage.setResizable(true);
         if(Globales.gravedad_def==1){
             Globales.gravedad=-15.81;

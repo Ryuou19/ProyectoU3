@@ -175,16 +175,21 @@ public class Terreno{
     }
 
     public void terreno_aram(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho) {//terreno de bosque
-       
+        
+        double cambio=0;
+        if(Globales.resolucion_def==1){
+            cambio=0.0084;
+        } 
+        if(Globales.resolucion_def==2){
+            cambio=0.045;
+        }
+        
         int escala = this.pixel;
         double nivel_mar = 0.5;
-        double amplitud = 0.07;
-        double frecuencia = 0.1;
+        double amplitud = 0.07+cambio/1.3;
+        double frecuencia = 0.1-cambio/0.8;
         agregarImagenDeFondo(gc);
 
-
-        amplitud = 0.07;
-        frecuencia = 0.1;
         for (int i = 0; i < alto/4; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
@@ -200,8 +205,9 @@ public class Terreno{
             }
         }
 
-        amplitud = 0.21;
-        frecuencia = 0.045;
+        amplitud = 0.21+cambio/1.0;
+        frecuencia = 0.045-cambio/1.7;
+
         for (int i = alto/4; i < alto/2; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
@@ -217,8 +223,8 @@ public class Terreno{
             }
         }
 
-        amplitud = 0.1;
-        frecuencia = 0.045;
+        amplitud = 0.1+cambio/0.9;
+        frecuencia = 0.045-cambio/1.71;
         for (int i = alto/2; i < alto*3/4; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {
@@ -234,8 +240,8 @@ public class Terreno{
             }
         }
 
-        amplitud = 0.07;
-        frecuencia = 0.1;
+        amplitud = 0.07+cambio/1.0;
+        frecuencia = 0.1-cambio/0.97;
         for (int i = alto*3/4; i < alto; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {

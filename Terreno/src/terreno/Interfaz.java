@@ -596,7 +596,7 @@ public class Interfaz {
         }
         imagenes[jugador.jugador].setVisible(true);
         
-        cantidadAsesinatos.setText(Integer.toString(jugador.asesionatos));
+        cantidadAsesinatos.setText(Integer.toString(jugador.asesinatos));
         cantidadSuicidios.setText(Integer.toString(jugador.suicidios));
         
         textcantidad1.setText(Integer.toString(jugador.cantidad60));

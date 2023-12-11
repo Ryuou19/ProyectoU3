@@ -69,11 +69,17 @@ public class Terreno{
     }
 
     public void terreno_nieve(GraphicsContext gc, Double angulo, int vida, int validar, Terreno terreno,int alto, int ancho) {//terreno nevado
-        
+        double cambio=0;
+        if(Globales.resolucion_def==1){
+            cambio=0.01;
+        }
+        if(Globales.resolucion_def==2){
+            cambio=0.055;
+        }
         int escala = this.pixel;
         double nivel_mar = 0.5;
-        double amplitud = 0.08;
-        double frecuencia = 0.087;
+        double amplitud = 0.08+cambio;
+        double frecuencia = 0.087-cambio/1.1;
         agregarImagenDeFondo(gc);
         
         for (int i = 0; i < alto/2; i++) {
@@ -91,8 +97,8 @@ public class Terreno{
             }
         }
         nivel_mar=0.4;
-        amplitud = 0.21;
-        frecuencia = 0.0485;
+        amplitud = 0.21+cambio;
+        frecuencia = 0.0485-cambio/1.9201;
         for (int i = alto/2; i < alto; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {

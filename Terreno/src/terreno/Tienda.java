@@ -285,6 +285,7 @@ public class Tienda  {
                 Globales.alto_resolucion--;
             }
             Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
+            //juego.generarTerrenoNuevo();
             juego.start();              
         });
         

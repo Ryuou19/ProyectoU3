@@ -57,14 +57,14 @@ public class Clasificacion {
         }
         
         for(Jugador jugador:listJugador.lista){
-            Text asesinatos=new Text(jugador.asesionatos+"("+jugador.asesinatosTotales+")");          
+            Text asesinatos=new Text(jugador.asesinatos+"("+jugador.asesinatosTotales+")");          
             Text suicidios=new Text(jugador.suicidios+"("+jugador.suicidiosTotales+")");
             Text saldo;
-            if(jugador.asesionatos-jugador.suicidios>=0){
-                saldo=new Text(jugador.saldo-10000+"(+"+((jugador.asesionatos-jugador.suicidios)*5000)+")");
+            if(jugador.asesinatos-jugador.suicidios>=0){
+                saldo=new Text(jugador.saldo-10000+"(+"+((jugador.asesinatos-jugador.suicidios)*5000)+")");
             }
             else{
-                saldo=new Text(jugador.saldo-10000+"("+((jugador.asesionatos-jugador.suicidios)*5000)+")");
+                saldo=new Text(jugador.saldo-10000+"("+((jugador.asesinatos-jugador.suicidios)*5000)+")");
             }            
             hboxJugadores.get(jugador.jugador).getChildren().addAll(asesinatos,suicidios,saldo);
             panel.getChildren().add(hboxJugadores.get(jugador.jugador));
@@ -74,7 +74,7 @@ public class Clasificacion {
         
         finalizar.setOnAction(event -> {
             for(Jugador jugador:listJugador.lista){
-                jugador.asesionatos=0;
+                jugador.asesinatos=0;
                 jugador.suicidios=0;
             }            
             if(Globales.rondas_def>0 && Globales.rondas_def!=1){        
@@ -155,13 +155,13 @@ public class Clasificacion {
         int mayor=0;
         int indice=-1;
         for(int i=0;i<lista.size();i++){
-            if(lista.get(i).asesionatos==mayor && indice!=-1){
+            if(lista.get(i).asesinatos==mayor && indice!=-1){
                 indice=-1;
                 break;
             }
-            if(mayor<lista.get(i).asesionatos){
+            if(mayor<lista.get(i).asesinatos){
                 
-                mayor=lista.get(i).asesionatos;
+                mayor=lista.get(i).asesinatos;
                 indice=i;
             }        
         }

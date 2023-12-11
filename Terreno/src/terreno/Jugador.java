@@ -17,14 +17,14 @@ public class  Jugador {
     //BALAS INICIALES DE CADA JUGADOR
     int cantidad105=0;
     int cantidad80=0;
-    int cantidad60=0;
+    int cantidad60=1;
     int vida;
     
     //SALDO DE CADA JUGADOR
     int saldo;
     int posicionInicalX=0;
     int posicionInicialY=100;
-    public int asesionatos;
+    public int asesinatos;
     public int suicidios;
     public int asesinatosTotales;
     public int suicidiosTotales;
@@ -154,8 +154,8 @@ public class  Jugador {
     public static void pagar_ronda(ListaJugadores listJugador){
         for(Jugador jugador: listJugador.lista){
             jugador.saldo+=10000;
-            if(jugador.asesionatos!=0){
-                jugador.saldo+=5000*jugador.asesionatos;
+            if(jugador.asesinatos!=0){
+                jugador.saldo+=5000*jugador.asesinatos;
             }
             if(jugador.suicidios!=0){
                 jugador.saldo-=5000*jugador.suicidios;

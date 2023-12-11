@@ -51,7 +51,7 @@ public class Jugar  {
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     
     static{
-        terreno_random =random.nextInt(3);
+        terreno_random =0;//random.nextInt(3);
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
     Tienda escenaTienda = new Tienda();
@@ -190,7 +190,7 @@ public class Jugar  {
         boolean es_el_mismo=false;
         if (listJugador.getJugadorActual() != jugador) {
             if (jugador.vida <= 0) {
-                listJugador.getJugadorActual().asesionatos++;
+                listJugador.getJugadorActual().asesinatos++;
                 listJugador.getJugadorActual().asesinatosTotales++;
             }
         } 
@@ -611,9 +611,10 @@ public class Jugar  {
                     if (nuevaBala.eliminar()) {
 
                         System.out.println("Victoria = " + impacto);
-                        Globales.congelar(1);
+                        
                         stop();
                         colision_bala();
+                        Globales.congelar(1);
                         disparo_en_curso = false;
                         viento=Globales.cambiarViento(interfaz);//cambiamos la dirección del viento
                         interfaz.estadisticas(listJugador);
@@ -671,6 +672,7 @@ public class Jugar  {
             textBot.setLayoutY(0);
             // Crear y disparar la bala
             Bala nuevaBala = crear_bala();
+            Musica.sonido_disparo();
             animacionBala(nuevaBala);
         }
     }

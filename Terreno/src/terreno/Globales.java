@@ -22,7 +22,7 @@ public class Globales {
     public static Stage stage;
     public static final int FPS = 80; 
     public static long lastFrameTime = 0;
-    public static final long timePerFrame = 1000000000 / FPS;
+    public static long timePerFrame = 1000000000 / FPS;
 
     public Globales() {
     }    
@@ -42,17 +42,7 @@ public class Globales {
         }catch (InterruptedException e) {}
     }
     
-    public static int cambiarViento(Interfaz interfaz) {
-        if(Globales.viento_def==0){
-            return 0;
-        }
-        Random random = new Random();
-        int viento_actual = random.nextInt(10) + 1; // Genera un número entre 1 y 10
-        interfaz.cantidadViento.setText(Integer.toString(viento_actual)+" M/S");
-        viento_actual+=19;      
-        System.out.println("viento actual" + viento_actual);
-        return viento_actual;
-    }
+    
     
 
 }

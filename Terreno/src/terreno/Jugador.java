@@ -11,7 +11,7 @@ public class  Jugador {
 
     String color = "";
     public int jugador; // variable para saber el indice del jugador en la lista
-    public boolean activo=true;
+    public boolean activo=true;//si esta funcionando y tiene balas
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR
     int cantidad105=0;
@@ -31,10 +31,10 @@ public class  Jugador {
     public Random rand;
     private Tank tanque;
     int random;
-    String tipo;
-    public ArrayList <Integer> carrito=new ArrayList<>();
-    public ArrayList <Text> datosClasificacion=new ArrayList<>();
-    public boolean eliminado = false;
+    String tipo;//si es jugador o bot
+    public ArrayList <Integer> carrito=new ArrayList<>();//carrito que guarda todas las compras hechas en una tienda
+    public ArrayList <Text> datosClasificacion=new ArrayList<>();//datos registrados en la ronda
+    public boolean eliminado = false;//si esta muerto el jugador
 
     public int getVida() {
         return vida;

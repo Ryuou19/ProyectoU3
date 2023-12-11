@@ -4,7 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
+//
 public class Bala {
     private static final double distancia = 40;
     private int danio;

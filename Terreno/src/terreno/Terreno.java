@@ -16,10 +16,6 @@ public class Terreno{
     Image lol = new Image(getClass().getResourceAsStream("./img/bosque.jpg"));//imagen bosque
     ListaJugadores listJugador=ListaJugadores.getInstance();
 
-
-
-
-
     public Terreno(int alto, int ancho, int pixel,GraphicsContext gc ) {
         this.pixel=pixel;
         this.matriz=new int[alto][ancho];

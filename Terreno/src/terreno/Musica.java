@@ -25,15 +25,17 @@ public class Musica {
     }
 
     public static void agregar_musica_terreno() {
-        reproducirMusica("src/terreno/music/Gow.mp3", 0.1);
+        reproducirMusica("src/terreno/music/music_terreno.mp3", 0.2);
     }
 
     public static void sonido_disparo() {
         reproducirSonido("src/terreno/music/disparo.mp3", 0.5);
     }
+    
+
 
     public static void sonido_colision() {
-        reproducirSonido("src/terreno/music/colision.mp3", 0.6);
+        reproducirSonido("src/terreno/music/colision.mp3", 0.5);
     }
 
     public static void agregar_musica_tienda() {
@@ -41,10 +43,10 @@ public class Musica {
     }
     
         public static void agregar_musica_win() {
-        reproducirMusica("src/terreno/music/win.mp3", 0.7);
+        reproducirMusica("src/terreno/music/win.mp3", 1.0);
     }
        public static void agregar_musica_empate() {
-        reproducirMusica("src/terreno/music/win.mp3", 0.7);
+        reproducirMusica("src/terreno/music/empate.mp3", 0.7);
     }
        public static void agregar_musica_clasificatoria() {
         reproducirMusica("src/terreno/music/clasificatoria.mp3", 0.5);

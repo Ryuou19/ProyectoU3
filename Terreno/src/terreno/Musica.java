@@ -74,6 +74,7 @@ public class Musica {
         Media media = new Media(archivo.toURI().toString());
         player = new MediaPlayer(media);
         player.setVolume(volume);
+        player.setCycleCount(MediaPlayer.INDEFINITE);
         player.play();
     }
 }

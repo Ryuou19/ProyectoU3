@@ -17,13 +17,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
- 
-
 
 public class Interfaz {
     
-    int alto;
-    int ancho;
+    int alto;//largo de la interfaz
+    int ancho;//ancho de la interfaz
 
     public Interfaz(int alto, int ancho) {
         this.alto = alto;
@@ -33,6 +31,7 @@ public class Interfaz {
     public Label textodistancia;//distancia maxima mostrada en la interfaz a traves de la variable distancia
     public Label textoaltura;//altura maxima mostrada en la interfaz a traves de la variable altura
     
+    //IMAGEN HUD
     Image imagenHud= new Image(getClass().getResourceAsStream("./img/hud.jpg"));
     ImageView hud= new ImageView(imagenHud);
     
@@ -114,6 +113,8 @@ public class Interfaz {
     Text textcantidad2= new Text("");
     Text textcantidad3= new Text("");
     
+
+    //NODOS DE ESTADISTICAS
     VBox estadisticas=new VBox(-10);
     HBox num1= new HBox(10);
     HBox num2= new HBox(10);
@@ -151,55 +152,60 @@ public class Interfaz {
     Image disp = new Image(getClass().getResourceAsStream("./img/disparo.jpg"));
     ImageView iconoDisparo = new ImageView(disp);
     
+    //ASESINATOS
     Image asesinatos = new Image(getClass().getResourceAsStream("./img/kills.png"));
     ImageView kills = new ImageView(asesinatos);
     HBox asesinato=new HBox(15);
     Text cantidadAsesinatos=new Text("0");
     
+    //SUICIDIOS
     Image sui = new Image(getClass().getResourceAsStream("./img/suicidio.png"));
     ImageView suicidios = new ImageView(sui);
     HBox suicidio=new HBox(15);
     Text cantidadSuicidios=new Text("0");
     
+    //RONDAS
     Image round = new Image(getClass().getResourceAsStream("./img/ronda.png"));
     ImageView ronda = new ImageView(round);
     HBox rondas=new HBox(15);
     Text cantidadRondas=new Text("0");
     
+    //GRAVEDAD
     Image grav = new Image(getClass().getResourceAsStream("./img/gravedad.png"));
     ImageView gravity = new ImageView(grav);
     HBox gravedad=new HBox(15);
     Text cantidadGravedad=new Text("9.81");
     
+    //VIENTO
     Image wind = new Image(getClass().getResourceAsStream("./img/viento.png"));
     ImageView viento = new ImageView(wind);
     HBox vientos=new HBox(15);
     Text cantidadViento=new Text("0"+" M/S");
+ 
+    GraphicsContext gc;//DIBUJO
+    Pane canvasPane = new Pane();//PANEL
     
-    
-   
-    GraphicsContext gc;
-    Pane canvasPane = new Pane();
+    //VARIABLES DEL LISTENER
     private ChangeListener<Number> widthListener;
     private ChangeListener<Number> heightListener;
     
     
     public void iniciar_interfaz(){//inicia todo lo visual e interactivo de la interfaz de juego         
-        Globales.cambiarResolucion(Globales.alto_resolucion-1, Globales.ancho_resolucion-1);
-        canvasPane.setPrefSize(alto, ancho);       
+        canvasPane.setPrefSize(alto, ancho);//definir dimensiones del panel     
         
         
-        Canvas canvas = new Canvas(alto, ancho);
-        GraphicsContext newgc = canvas.getGraphicsContext2D();
+        Canvas canvas = new Canvas(alto, ancho);//canvas para dibujo
+        GraphicsContext newgc = canvas.getGraphicsContext2D();//dibujo graficos
         gc=newgc;
         
-        Globales.escena.setRoot(canvasPane);
-        canvasPane.getChildren().add(canvas);
-        Globales.stage.setScene(Globales.escena);
+        Globales.escena.setRoot(canvasPane);//se define el panel en la escena
+        canvasPane.getChildren().add(canvas);//agrega canvas
+        Globales.stage.setScene(Globales.escena);//se cambia la escena a la interfasz
         
         //FONDO HUD
         hud.setPreserveRatio(false);      
         canvasPane.getChildren().add(hud);
+        
         //ANGULO
         boxangulo.setSpacing(10);    
         boxangulo.getChildren().addAll(angulo, entradaangulo);
@@ -212,19 +218,16 @@ public class Interfaz {
         for (ImageView imagen : imagenes) {              
             canvasPane.getChildren().add(imagen); //agrega cada imagen al pane
         }
-        
-            
+                
         //DISPARO
         iconoDisparo.setPreserveRatio(false);
         disparar.setGraphic(iconoDisparo);
-        disparar.setStyle(
+        disparar.setStyle(//estilo
             "-fx-background-color: transparent; " +
             "-fx-border-color: transparent; " +
             "-fx-padding: 0;" // Ajustar el relleno del botón a 0 para eliminar cualquier espacio adicional
         );
-        
-       
-                       
+                             
         //DISTANCIA   
         textodistancia = new Label(0 + " Metros");
         textodistancia.setTextFill(Color.RED);      
@@ -234,18 +237,14 @@ public class Interfaz {
         textoaltura = new Label(0 + " Metros");                           
         textoaltura.setTextFill(Color.RED); 
         boxaltura.getChildren().addAll(altura,textoaltura);
-       
-               
-        
-        
+                    
         //VIDA       
         barraDeVida.setStyle("-fx-control-inner-background: black; " +
                              "-fx-accent: #00FF00; " +
                              "-fx-background-color: black, black; " +
                              "-fx-background-insets: 0, 2; " +
                              "-fx-background-radius: 0.5em;");
-         
-        
+               
         //ESTADISTICAS
         cajaEstadisticas.add(num1);
         cajaEstadisticas.add(num2);
@@ -271,7 +270,8 @@ public class Interfaz {
         listaBalas.add(cantidadBalas4);
         listaBalas.add(cantidadBalas5);
         listaBalas.add(cantidadBalas6);
-      
+        
+        //agregar nodos a la caja de estadisticas
         for (int i=0;i<Globales.jugadores_def;i++){  
             cajaEstadisticas.get(i).getChildren().add(listaTanques.get(i));
             cajaEstadisticas.get(i).getChildren().add(listaBarras.get(i));    
@@ -282,6 +282,8 @@ public class Interfaz {
                              "-fx-background-insets: 0, 2; " +
                              "-fx-background-radius: 0.5em;");
         }
+        
+        estadisticas.getChildren().addAll(num1,num2,num3,num4,num5,num6);
         
         //ASESINATOS
         asesinato.getChildren().addAll(kills,cantidadAsesinatos);
@@ -314,15 +316,7 @@ public class Interfaz {
             "-fx-background-color: transparent; " +
             "-fx-border-color: transparent;"
         );
-        
-        
-        
-        estadisticas.getChildren().addAll(num1,num2,num3,num4,num5,num6);
-        estadisticas.setLayoutX(50);
-        estadisticas.setLayoutY(100);
-        
-        
-        
+         
         //BOTON BALAS
         tipos.setStyle("-fx-background-color: #C0C0C0;");
         bala1.setStyle("-fx-background-color: " + "Green" + "; -fx-min-width: 25px; -fx-min-height: 30px; -fx-text-fill: white;");
@@ -336,7 +330,7 @@ public class Interfaz {
         textcantidad3.setFill(Color.RED);
         cantidad.getChildren().addAll(textcantidad1,textcantidad2,textcantidad3);
         
-        
+        //Metodo listener para ajustar los nodos de la interfaz (ignorar, es puro "fxml")
         widthListener= (obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800;
             hud.setFitWidth(800*widthRatio);       
@@ -368,8 +362,7 @@ public class Interfaz {
                 balas.setFont(Font.font("Arial", 16*widthRatio));
             }
             estadisticas.setLayoutX(15*widthRatio);
-        
-            
+                   
             iconoDisparo.setFitWidth(70*widthRatio);
             disparar.setLayoutX(545*widthRatio); 
             
@@ -424,13 +417,10 @@ public class Interfaz {
             cantidad.setLayoutX(660*widthRatio);
             textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
             textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
-            textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));
-            
-            
-            
-            
+            textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*widthRatio));          
         };
          
+        //Metodo listener para ajustar los nodos de la interfaz (ignorar, es puro "fxml")
         heightListener=(obs, oldHeight, newHeight) -> {
             double heightRatio = newHeight.doubleValue() / 800; 
             hud.setFitHeight(800/2*heightRatio);
@@ -439,8 +429,7 @@ public class Interfaz {
             angulo.setFitHeight(30*heightRatio);
             entradaangulo.setPrefHeight(30*heightRatio);
             boxangulo.setLayoutY(730*heightRatio);
-            
-            
+                      
             velocidad.setFitHeight(30*heightRatio);
             entradavelocidad.setPrefHeight(30*heightRatio);
             boxvelocidad.setLayoutY(730*heightRatio);
@@ -520,8 +509,7 @@ public class Interfaz {
             else{
                 cantidadViento.setTranslateY(6);
             }
-            
-            
+                       
             imagenBotonReiniciar.setFitHeight(50*heightRatio);
             reiniciar.setLayoutY(650*heightRatio);
             
@@ -536,14 +524,10 @@ public class Interfaz {
             cantidad.setLayoutY(740*heightRatio);
             textcantidad1.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
             textcantidad2.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));            
-            textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));
-            
-            
-            
-            
+            textcantidad3.setFont(Font.font("Arial", FontWeight.BOLD, 20*heightRatio));           
         };
         
-        
+        //Se reinician los valores del listener
         widthListener.changed(null, null, canvasPane.getWidth());
         heightListener.changed(null, null, canvasPane.getHeight()); 
         canvasPane.widthProperty().addListener(widthListener);
@@ -557,11 +541,13 @@ public class Interfaz {
                
     }
     
+    //Muestra y actualiza los valores del miniHud de vida y balas de los tanques en el juego
     public void estadisticas(ListaJugadores listJugador){
         int i=0;
-        int balastotales;
+        int balastotales;//balas totales del jugador en ese instante
         for (Jugador jugador:listJugador.lista){           
             listaBarras.get(i).setProgress(jugador.getVida()/100.0);
+            //Cambiar color de barra de vida dependiendo de su cantidad restante
             if(jugador.getVida()>=60){
                 listaBarras.get(i).setStyle("-fx-control-inner-background: black; " +
                                  "-fx-accent: #00FF00; " +
@@ -584,27 +570,30 @@ public class Interfaz {
                                  "-fx-background-radius: 0.5em;");
             } 
             balastotales=jugador.cantidad60+jugador.cantidad80+jugador.cantidad105;
-            listaBalas.get(i).setText(Integer.toString(balastotales));
-            
+            listaBalas.get(i).setText(Integer.toString(balastotales));         
             i++;
-        }
-        
+        }   
     }
+    //Metodo que hace el cambio de jugador y sus valores en la interfaz
     public void mostrarJugador(Jugador jugador){
         for (ImageView imagen : imagenes) {
             imagen.setVisible(false);
         }
-        imagenes[jugador.jugador].setVisible(true);
+        imagenes[jugador.jugador].setVisible(true);//imagen
         
+        //asesinatos y suicidios
         cantidadAsesinatos.setText(Integer.toString(jugador.asesinatosTotales));
         cantidadSuicidios.setText(Integer.toString(jugador.suicidiosTotales));
         
+        //cantidad de balas
         textcantidad1.setText(Integer.toString(jugador.cantidad60));
         textcantidad2.setText(Integer.toString(jugador.cantidad80));
         textcantidad3.setText(Integer.toString(jugador.cantidad105));
         
+        //barra vida
         barraDeVida.setProgress(jugador.getVida()/100.0);
         
+        //cambia color dependiendo de su cantidad de vida
         if(jugador.getVida()>=60){
             barraDeVida.setStyle("-fx-control-inner-background: black; " +
                              "-fx-accent: #00FF00; " +
@@ -628,12 +617,12 @@ public class Interfaz {
         }             
     }  
     
+    //ingresa el disparo que se escribio en los textfield
     public void ingresar_disparo(){
         disparar.setDisable(true);
         Label distanciaLabel = (Label) boxdistancia.getChildren().get(1);
         distanciaLabel.setText(" ");                               
         Label alturaLabel = (Label) boxaltura.getChildren().get(1);
         alturaLabel.setText(" ");           
-    }
-    
+    }    
 }

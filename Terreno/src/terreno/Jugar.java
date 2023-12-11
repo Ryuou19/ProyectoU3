@@ -64,7 +64,7 @@ public class Jugar  {
         if(revisarEstado()){
             return;
         }
-        viento=Globales.cambiarViento(interfaz);//generamos el primer viento
+        viento=Bala.cambiarViento(interfaz);//generamos el primer viento
         Globales.stage.setResizable(true);
         if(Globales.gravedad_def==1){
             Globales.gravedad=-15.81;
@@ -612,7 +612,7 @@ public class Jugar  {
                         colision_bala(); // revisamos daño de la bala si es que a impactado a algun jugador
                         Globales.congelar(1);
                         disparo_en_curso = false;
-                        viento=Globales.cambiarViento(interfaz);//cambiamos la dirección del viento
+                        viento=Bala.cambiarViento(interfaz);//cambiamos la dirección del viento
                         interfaz.estadisticas(listJugador);
                         animacionCaida();
                     }

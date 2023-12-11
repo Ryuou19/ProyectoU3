@@ -3,57 +3,39 @@ package terreno;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.util.Random;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 
 public class Globales {
-    public static int alto_resolucion=800;
-    public static int ancho_resolucion=800;
-    public static int resolucion_def=0;
-    public static int jugadores_def=4;
-    public static int rondas_def=2;
-    public static int cantidad_def=0;// cantidad de bots
-    public static int gravedad_def=0;
-    public static double gravedad=-9.81;
-    public static int viento_def=0;
+    public static int alto_resolucion=800;//largo de la escena
+    public static int ancho_resolucion=800;//ancho de la escena
+    public static int resolucion_def=0;//opcion de resolucion
+    public static int jugadores_def=2;//cantidad de jugadores
+    public static int rondas_def=1;//cantidad de rondas
+    public static int cantidad_def=0;//cantidad de bots
+    public static int gravedad_def=0;//opcion de gravedad
+    public static double gravedad=-9.81;//gravedad de juego
+    public static int viento_def=0;//opcion de viento
     public static Scene escena;
     public static Stage stage;
-    public static final int FPS = 80; 
-    public static long lastFrameTime = 0;
-    public static final long timePerFrame = 1000000000 / FPS;
+    public static final int FPS = 80;//fps de disparo
+    public static long lastFrameTime = 0;//calculo de frame
+    public static long timePerFrame = 1000000000 / FPS;//calculo de frame
 
     public Globales() {
     }    
-    
+    //Metodo para cambiar de escena
     public static void cambiarEscena(Scene scene){
         stage.setScene(scene);
     }
-    
+    //Metodo  para cambiar resolucion
     public static void cambiarResolucion(int alto, int ancho){
         stage.setWidth(alto);
         stage.setHeight(ancho);
     }
-    
+    //Metodo para congelar ejecucion al impacto de una bala
     public static void congelar(int segundos){
         try{
             Thread.sleep(1000*segundos); 
         }catch (InterruptedException e) {}
-    }
-    
-    public static int cambiarViento(Interfaz interfaz) {
-        if(Globales.viento_def==0){
-            return 0;
-        }
-        Random random = new Random();
-        int viento_actual = random.nextInt(10) + 1; // Genera un número entre 1 y 10
-        interfaz.cantidadViento.setText(Integer.toString(viento_actual)+" M/S");
-        viento_actual+=19;      
-        System.out.println("viento actual" + viento_actual);
-        return viento_actual;
-    }
-    
-
+    }  
 }
 

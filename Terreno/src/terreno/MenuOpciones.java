@@ -12,88 +12,102 @@ import javafx.stage.Stage;
 
 public class MenuOpciones {
    
-    private final String[] resolucion = {"800x800", "900x900", "1920x1080"};
-    private final String[] jugadores = {"2", "3","4","5","6"}; 
+    private final String[] resolucion = {"800x800", "900x900", "1920x1080"};//opciones de resolucion
+    private final String[] jugadores = {"2", "3","4","5","6"}; //opciones de jugadores
     private final String[] rondas = {"1","2","3","4","5","6","7","8",
     "9","10","11","12","13","14",
-    "15","16","17","18","19","20"};
-    private final String[] gravedad={"Normal","15,81","5,81"};
-    private final String[] cantidad = {"0","1", "2","3","4","5","6"};
-    private final String[] viento={"-NO-","-SI-"};
-    private int opcionActualResolucion = 0;
-    private int opcionActualJugadores = 0;
-    private int opcionActualRondas = 0;
-    private int opcionActualGravedad = 0;
-    private int opcionActualCantidad = 0;
-    private int opcionActualViento = 0;
-    private Button opcion_resolucion;
-    private Button opcion_jugadores;
-    private Button opcion_rondas;
-    private Button opcion_gravedad;
-    private Button opcion_cantidad;
-    private Button opcion_viento;
-    String estilo_botones = 
+    "15","16","17","18","19","20"};//opciones de rondas
+    private final String[] gravedad={"Normal","15,81","5,81"};//opciones de gravedad
+    private final String[] cantidad = {"0","1", "2","3","4","5","6"};//opciones de bots
+    private final String[] viento={"-NO-","-SI-"};//opciones de viento
+    private int opcionActualResolucion = 0;//indice actual de resolucion
+    private int opcionActualJugadores = 0;//indice actual de jugadores
+    private int opcionActualRondas = 0;//indice actual de rondas
+    private int opcionActualGravedad = 0;//indice actual de gravedad
+    private int opcionActualCantidad = 0;//indice actual de bots
+    private int opcionActualViento = 0;//indice actual de viento
+    private Button opcion_resolucion = new Button(resolucion[opcionActualResolucion]);//boton que muestra el valor de resolucion 
+    private Button opcion_jugadores = new Button(jugadores[opcionActualJugadores]);//boton que muestra el valor de jugadores
+    private Button opcion_rondas = new Button(rondas[opcionActualRondas]);//boton que muestra el valor de rondas
+    private Button opcion_gravedad = new Button(gravedad[opcionActualGravedad]);//boton que muestra el valor de gravedad
+    private Button opcion_cantidad = new Button(cantidad[opcionActualCantidad]);//boton que muestra el valor de bots
+    private Button opcion_viento = new Button(viento[opcionActualViento]);//boton que muestra el valor de viento
+    String estilo_botones = //estilo para todos los botones
     "-fx-background-color: #000000; " + 
     "-fx-text-fill: #FFFFFF;" + 
     "-fx-border-color: #FF0000;" + 
     "-fx-border-width: 3px;" +  
     "-fx-background-radius: 0;";
-    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg")); 
-    ImageView imageView = new ImageView(fondo); 
-    Button volver = new Button("Menu Principal");
-    Button flecha_derecha1 = new Button(">");
-    Button flecha_izquierda1 = new Button("<");
-    HBox menu_resoluciones = new HBox();
-    Label labelResolucion = new Label("Resolución");
-    HBox texto_resoluciones= new HBox();
-    Button flecha_derecha2 = new Button(">");
-    Button flecha_izquierda2 = new Button("<");
-    Label labelRondas = new Label("Rondas");
-    HBox texto_rondas= new HBox();
-    HBox menu_rondas = new HBox();
-    Button flecha_derecha3 = new Button(">");
-    Button flecha_izquierda3 = new Button("<");
-    HBox menu_jugadores = new HBox();
-    Label labelJugadores = new Label("Jugadores");
-    HBox texto_jugadores= new HBox();
-    Button flecha_derecha5 = new Button(">");
-    Button flecha_izquierda5 = new Button("<");
-    HBox menu_cantidad = new HBox();
-    Label labelIA = new Label("Jug. Artificiales");
-    HBox texto_IA= new HBox();
     
-    Label labelEntorno = new Label("Efectos de Entorno");
+    Image fondo = new Image(getClass().getResourceAsStream("./img/fondo opciones.jpg"));//imagen de fondo 
+    ImageView imageView = new ImageView(fondo);//view de fondo
+    Button volver = new Button("Menu Principal");//boton para volver
     
-    Label labelGravedad = new Label("Gravedad");  
-    HBox menu_gravedad = new HBox();
-    HBox texto_gravedad= new HBox(); 
-    Button flecha_derecha4 = new Button(">");
-    Button flecha_izquierda4 = new Button("<");
+    Button flecha_derecha1 = new Button(">");//flecha derecha de resolucion
+    Button flecha_izquierda1 = new Button("<");//flecha izquierda de resolucion
+    HBox menu_resoluciones = new HBox();//box de resolucion
+    Label labelResolucion = new Label("Resolución");//texto 
+    HBox texto_resoluciones= new HBox();//box para texto
     
-    Label labelViento = new Label("Viento");  
-    HBox menu_viento = new HBox();
-    HBox texto_viento= new HBox(); 
-    Button flecha_derecha6 = new Button(">");
-    Button flecha_izquierda6 = new Button("<");
-    Pane paneOpciones;
-    Button volverMenu;    
+    Button flecha_derecha2 = new Button(">");//flecha derecha de rondas
+    Button flecha_izquierda2 = new Button("<");//flecha izquierda de rondas
+    Label labelRondas = new Label("Rondas");//texto
+    HBox texto_rondas= new HBox();//box para texto
+    HBox menu_rondas = new HBox();//box de rondas
     
+    Button flecha_derecha3 = new Button(">");//flecha derecha de jugadores
+    Button flecha_izquierda3 = new Button("<");//flecha izquierda de jugadores
+    HBox menu_jugadores = new HBox();//box de jugadores
+    Label labelJugadores = new Label("Jugadores");//texto
+    HBox texto_jugadores= new HBox();//box para texto
+    
+    Button flecha_derecha5 = new Button(">");//flecha derecha de bots
+    Button flecha_izquierda5 = new Button("<");//flecha izquierda de bots
+    HBox menu_cantidad = new HBox();//box de bots
+    Label labelIA = new Label("Jug. Artificiales");//texto
+    HBox texto_IA= new HBox();//box para texto
+     
+    Label labelGravedad = new Label("Gravedad");//texto
+    HBox menu_gravedad = new HBox();//box de gravedad
+    HBox texto_gravedad= new HBox(); //box para texto
+    Button flecha_derecha4 = new Button(">");//flecha derecha de gravedad
+    Button flecha_izquierda4 = new Button("<");//flecha izquierda de gravedad
+    
+    Label labelViento = new Label("Viento");//texto
+    HBox menu_viento = new HBox();//box de viento
+    HBox texto_viento= new HBox();//box para texto
+    Button flecha_derecha6 = new Button(">");//flecha derecha de viento
+    Button flecha_izquierda6 = new Button("<");//flecha izquierda de gravedad
+    
+    Pane paneOpciones;//panel
+    Button volverMenu;//boton para volver
+    
+    //lista para botones
     Button[] botonesFlecha = { flecha_derecha1, flecha_izquierda1, flecha_derecha2, flecha_izquierda2,
         flecha_derecha3, flecha_izquierda3, flecha_derecha4, flecha_izquierda4,
         flecha_derecha5, flecha_izquierda5, flecha_derecha6, flecha_izquierda6 };
-
+   
+    //lista para las opciones
+    Button[] botonesOpciones={opcion_resolucion,opcion_jugadores,opcion_rondas,
+        opcion_gravedad,opcion_cantidad,opcion_viento};
+    
+    //lista para label
+    Label[] textos={labelResolucion,labelRondas,labelJugadores,labelIA,labelGravedad,labelViento};
+    
     public MenuOpciones() {
         
     }  
     
     public void start(Stage stage, ListaJugadores list,Pane panel){
         
-        paneOpciones=escenaOpciones();
-        Globales.escena.setRoot(paneOpciones);
-        paneOpciones.setPrefSize(Globales.alto_resolucion,Globales.ancho_resolucion);
-   
+        paneOpciones=escenaOpciones();//guardar panel creado en el metodo
+        Globales.escena.setRoot(paneOpciones);//definir panel actual
+        paneOpciones.setPrefSize(Globales.alto_resolucion,Globales.ancho_resolucion);//definir dimension del panel
+        
+        //si se decide salir del menu de opciones
         volverMenu.setOnAction(e -> {
-            Musica.sonido_click();
+            Musica.sonido_click();//sonido
+            //se vuelve al menu principal
             Globales.escena.setRoot(panel);
             Globales.cambiarEscena(Globales.escena);         
         }); 
@@ -101,15 +115,16 @@ public class MenuOpciones {
     }
     
     public Pane escenaOpciones(){
-        Pane panel = new Pane();
-        //Image icono = new Image(getClass().getResourceAsStream("./img/icono opciones.jpg"));                 
-     
+        Pane panel = new Pane();                
+        
+        //IMAGEN DE FONDO
         imageView.setPreserveRatio(false); 
         panel.getChildren().add(imageView);    
               
         //VOLVER MENU PRINCIPAAL    
         volver.setStyle(estilo_botones);
          
+        //BLOQUEAR TODAS LAS FLECHAS DE LA IZQUIERDA
         flecha_izquierda1.setDisable(true);
         flecha_izquierda2.setDisable(true);
         flecha_izquierda3.setDisable(true);
@@ -117,12 +132,22 @@ public class MenuOpciones {
         flecha_izquierda5.setDisable(true);
         flecha_izquierda6.setDisable(true);
         
+        //DEFINIR ESTILO DE TODAS LAS FLECHAS
+        for (Button flecha : botonesFlecha) {
+            flecha.setStyle(estilo_botones);
+        }
+        //DEFINIR ESTILO DE TODAS LAS OPCIONES
+        for (Button opcion : botonesOpciones) {
+            opcion.setStyle(estilo_botones);
+        }
+        //DEFINIR ESTILO DE TODOS LOS LABEL
+        for (Label text : textos) {
+            text.setStyle("-fx-text-fill: white;");
+        }
+        
         //////////////////////////////////////////////////////////////////7
         //RESOLUCION     
-        opcion_resolucion = new Button(resolucion[opcionActualResolucion]);   
-        opcion_resolucion.setStyle(estilo_botones);        
-        flecha_derecha1.setStyle(estilo_botones);
-        flecha_izquierda1.setStyle(estilo_botones);
+              
                       
         flecha_derecha1.setOnAction(e -> {
             Musica.sonido_click();
@@ -173,18 +198,15 @@ public class MenuOpciones {
             
         });
                
-        menu_resoluciones.getChildren().addAll(flecha_izquierda1,opcion_resolucion, flecha_derecha1);    
-        labelResolucion.setStyle("-fx-text-fill: white;");    
+        menu_resoluciones.getChildren().addAll(flecha_izquierda1,opcion_resolucion, flecha_derecha1);      
         texto_resoluciones.getChildren().add(labelResolucion);            
         /////////////////////////////////////////////////
         ///RESOLUCION
        
         /////////////////////////////////////////////////////
         //RONDAS
-        opcion_rondas = new Button(rondas[opcionActualRondas]);       
-        opcion_rondas.setStyle(estilo_botones);
+           
         
-        flecha_derecha2.setStyle(estilo_botones);
         flecha_derecha2.setOnAction(e -> {
             flecha_izquierda2.setDisable(false);
             Musica.sonido_click();
@@ -195,7 +217,7 @@ public class MenuOpciones {
             }
         });
 
-        flecha_izquierda2.setStyle(estilo_botones);
+       
         flecha_izquierda2.setOnAction(e -> {
             flecha_derecha2.setDisable(false);
             Musica.sonido_click();
@@ -206,8 +228,7 @@ public class MenuOpciones {
             }
         });
                
-        menu_rondas.getChildren().addAll(flecha_izquierda2,opcion_rondas, flecha_derecha2);
-        labelRondas.setStyle("-fx-text-fill: white;");     
+        menu_rondas.getChildren().addAll(flecha_izquierda2,opcion_rondas, flecha_derecha2);    
         texto_rondas.getChildren().add(labelRondas);
            
         /////////////////////////////////////////////////////
@@ -216,10 +237,10 @@ public class MenuOpciones {
         
         /////////////////////////////////////////////////////
         //JUGADORES
-        opcion_jugadores = new Button(jugadores[opcionActualJugadores]);       
-        opcion_jugadores.setStyle(estilo_botones);
+              
+       
 
-        flecha_derecha3.setStyle(estilo_botones);
+        
         flecha_derecha3.setOnAction(e -> {
             flecha_izquierda3.setDisable(false);
             Musica.sonido_click();
@@ -231,7 +252,7 @@ public class MenuOpciones {
             }
         });
 
-        flecha_izquierda3.setStyle(estilo_botones);
+        
         flecha_izquierda3.setOnAction(e -> {
             flecha_derecha3.setDisable(false);
             Musica.sonido_click();
@@ -245,8 +266,7 @@ public class MenuOpciones {
             }
         });
                 
-        menu_jugadores.getChildren().addAll(flecha_izquierda3,opcion_jugadores, flecha_derecha3);
-        labelJugadores.setStyle("-fx-text-fill: white;");          
+        menu_jugadores.getChildren().addAll(flecha_izquierda3,opcion_jugadores, flecha_derecha3);         
         texto_jugadores.getChildren().add(labelJugadores);        
         /////////////////////////////////////////////////////
         //JUGADORES
@@ -254,10 +274,10 @@ public class MenuOpciones {
         
         ////////////////////////////////////////////
         //CANTIDAD IA´S
-        opcion_cantidad = new Button(cantidad[opcionActualCantidad]);        
-        opcion_cantidad.setStyle(estilo_botones);
+              
+        
       
-        flecha_derecha4.setStyle(estilo_botones);
+        
         flecha_derecha4.setOnAction(e -> { 
             flecha_izquierda4.setDisable(false);
             Musica.sonido_click();
@@ -276,7 +296,7 @@ public class MenuOpciones {
             
         });
         
-        flecha_izquierda4.setStyle(estilo_botones);
+        
         flecha_izquierda4.setOnAction(e -> {   
             flecha_derecha4.setDisable(false);
             Musica.sonido_click();
@@ -291,18 +311,16 @@ public class MenuOpciones {
             }
         });
                     
-        menu_cantidad.getChildren().addAll(flecha_izquierda4,opcion_cantidad, flecha_derecha4);        
-        labelIA.setStyle("-fx-text-fill: white;");       
+        menu_cantidad.getChildren().addAll(flecha_izquierda4,opcion_cantidad, flecha_derecha4);         
         texto_IA.getChildren().add(labelIA);
         
         
-        labelEntorno.setStyle("-fx-text-fill: white;"); 
         /////////////////////////////////////////
         //GRAVEDAD
-        opcion_gravedad = new Button(gravedad[opcionActualGravedad]);      
-        opcion_gravedad.setStyle(estilo_botones);
+        
+ 
                  
-        flecha_derecha5.setStyle(estilo_botones);
+        
         flecha_derecha5.setOnAction(e -> {
             flecha_izquierda5.setDisable(false);
             Musica.sonido_click();
@@ -313,7 +331,7 @@ public class MenuOpciones {
             }
         });
               
-        flecha_izquierda5.setStyle(estilo_botones);
+        
         flecha_izquierda5.setOnAction(e -> {
             flecha_derecha5.setDisable(false);
             Musica.sonido_click();
@@ -324,7 +342,6 @@ public class MenuOpciones {
             }
         });
         
-        labelGravedad.setStyle("-fx-text-fill: white;");
         menu_gravedad.getChildren().addAll(flecha_izquierda5,opcion_gravedad, flecha_derecha5);                   
         texto_gravedad.getChildren().add(labelGravedad);     
         ///////////////////////////////////////////////
@@ -333,10 +350,10 @@ public class MenuOpciones {
         
         
         //VIENTO
-        opcion_viento = new Button(viento[opcionActualViento]);      
-        opcion_viento.setStyle(estilo_botones);
+           
+        
                  
-        flecha_derecha6.setStyle(estilo_botones);
+        
         flecha_derecha6.setOnAction(e -> {
             flecha_izquierda6.setDisable(false);
             Musica.sonido_click();
@@ -347,7 +364,7 @@ public class MenuOpciones {
             }
         });
               
-        flecha_izquierda6.setStyle(estilo_botones);
+        
         flecha_izquierda6.setOnAction(e -> {
             flecha_derecha6.setDisable(false);
             Musica.sonido_click();
@@ -358,7 +375,7 @@ public class MenuOpciones {
             }
         });
         
-        labelViento.setStyle("-fx-text-fill: white;");
+        
         menu_viento.getChildren().addAll(flecha_izquierda6,opcion_viento, flecha_derecha6);                   
         texto_viento.getChildren().add(labelViento);     
         ///////////////////////////////////////////////
@@ -372,44 +389,44 @@ public class MenuOpciones {
         
         panel.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double widthRatio = newWidth.doubleValue() / 800; 
+          
+            for (Button flecha : botonesFlecha) {
+                flecha.setPrefWidth(52*widthRatio);
+            }
+            
             imageView.setFitWidth(800*widthRatio);
             volver.setPrefWidth(245*widthRatio);
             volver.setLayoutX(275*widthRatio);
             opcion_resolucion.setPrefWidth(140*widthRatio);
             menu_resoluciones.setLayoutX(275*widthRatio);
             texto_resoluciones.setLayoutX(352*widthRatio);
-            flecha_izquierda1.setPrefWidth(52*widthRatio);
-            flecha_derecha1.setPrefWidth(52*widthRatio);
             
+            
+                   
             opcion_rondas.setPrefWidth(140*widthRatio);
             menu_rondas.setLayoutX(275*widthRatio);
             texto_rondas.setLayoutX(366*widthRatio);
-            flecha_izquierda2.setPrefWidth(52*widthRatio);
-            flecha_derecha2.setPrefWidth(52*widthRatio);
+            
             
             opcion_jugadores.setPrefWidth(140*widthRatio);
             menu_jugadores.setLayoutX(275*widthRatio);
             texto_jugadores.setLayoutX(357*widthRatio);
-            flecha_izquierda3.setPrefWidth(52*widthRatio);
-            flecha_derecha3.setPrefWidth(52*widthRatio);
+            
            
             opcion_cantidad.setPrefWidth(140*widthRatio);
             menu_cantidad.setLayoutX(275*widthRatio);
             texto_IA.setLayoutX(338*widthRatio);
-            flecha_izquierda4.setPrefWidth(52*widthRatio);
-            flecha_derecha4.setPrefWidth(52*widthRatio);
+            
             
             opcion_gravedad.setPrefWidth(140*widthRatio);
             menu_gravedad.setLayoutX(275*widthRatio);
             texto_gravedad.setLayoutX(355*widthRatio);
-            flecha_izquierda5.setPrefWidth(52*widthRatio);
-            flecha_derecha5.setPrefWidth(52*widthRatio);
+            
             
             opcion_viento.setPrefWidth(140*widthRatio);
             menu_viento.setLayoutX(275*widthRatio);
             texto_viento.setLayoutX(370*widthRatio);
-            flecha_izquierda6.setPrefWidth(52*widthRatio);
-            flecha_derecha6.setPrefWidth(52*widthRatio);
+            
             
             Font font = Font.font("Serif", FontWeight.NORMAL, 20*widthRatio);
             
@@ -423,7 +440,6 @@ public class MenuOpciones {
             labelJugadores.setFont(font);
             opcion_cantidad.setFont(font);
             labelIA.setFont(font);
-            labelEntorno.setFont(font);
             opcion_gravedad.setFont(font);
             labelGravedad.setFont(font);
             opcion_viento.setFont(font);
@@ -435,6 +451,10 @@ public class MenuOpciones {
         panel.heightProperty().addListener((obs, oldHeight, newHeight) -> {
             double heightRatio = newHeight.doubleValue() / 800; 
             
+            for (Button flecha : botonesFlecha) {
+                flecha.setPrefHeight(52*heightRatio);
+            }
+            
             imageView.setFitHeight(800* heightRatio);
             volver.setPrefHeight(50*heightRatio);
             volver.setLayoutY(700*heightRatio);
@@ -442,38 +462,31 @@ public class MenuOpciones {
             opcion_resolucion.setPrefHeight(52*heightRatio);
             menu_resoluciones.setLayoutY(70*heightRatio);
             texto_resoluciones.setLayoutY(30*heightRatio);
-            flecha_izquierda1.setPrefHeight(52*heightRatio);
-            flecha_derecha1.setPrefHeight(52*heightRatio);
+            
             
             opcion_rondas.setPrefHeight(52*heightRatio);
             menu_rondas.setLayoutY(180*heightRatio);
             texto_rondas.setLayoutY(140*heightRatio);
-            flecha_izquierda2.setPrefHeight(52*heightRatio);
-            flecha_derecha2.setPrefHeight(52*heightRatio);
+            
             
             opcion_jugadores.setPrefHeight(52*heightRatio);
             menu_jugadores.setLayoutY(290*heightRatio);
             texto_jugadores.setLayoutY(250*heightRatio);
-            flecha_izquierda3.setPrefHeight(52*heightRatio);
-            flecha_derecha3.setPrefHeight(52*heightRatio);
+            
             
             opcion_cantidad.setPrefHeight(52*heightRatio);
             menu_cantidad.setLayoutY(400*heightRatio);
             texto_IA.setLayoutY(360*heightRatio);
-            flecha_izquierda4.setPrefHeight(52*heightRatio);
-            flecha_derecha4.setPrefHeight(52*heightRatio);
+            
             
             opcion_gravedad.setPrefHeight(52*heightRatio);
             menu_gravedad.setLayoutY(510*heightRatio);
             texto_gravedad.setLayoutY(470*heightRatio);
-            flecha_izquierda5.setPrefHeight(52*heightRatio);
-            flecha_derecha5.setPrefHeight(52*heightRatio);
             
             opcion_viento.setPrefHeight(52*heightRatio);
             menu_viento.setLayoutY(620*heightRatio);
             texto_viento.setLayoutY(580*heightRatio);
-            flecha_izquierda6.setPrefHeight(52*heightRatio);
-            flecha_derecha6.setPrefHeight(52*heightRatio);
+            
             
            
             

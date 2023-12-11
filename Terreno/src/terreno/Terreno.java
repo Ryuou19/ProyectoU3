@@ -123,12 +123,15 @@ public class Terreno{
      
         int escala = this.pixel;
         double cambio=0;
+        if(Globales.resolucion_def==1){
+            cambio=0.008;
+        } 
         if(Globales.resolucion_def==2){
             cambio=0.045;
         }     
         double nivel_mar = 0.55-cambio*2;
-        double frecuencia = 0.095-cambio;
-        double amplitud = 0.08+cambio;
+        double frecuencia = 0.095-cambio/0.81;
+        double amplitud = 0.08+cambio/1.3;
         
 
         agregarImagenDeFondo(gc);
@@ -149,9 +152,9 @@ public class Terreno{
                 }
             }
         }
-        amplitud = 0.05+cambio*2;
-        frecuencia = 0.06-cambio;
-        nivel_mar = 0.50-cambio*2;
+        amplitud = 0.05+cambio/1.2;
+        frecuencia = 0.06-cambio/1.3;
+        nivel_mar = 0.50-cambio*2.7;
         for (int i = alto/2; i < alto; i++) {
             for (int j = 0; j < ancho-reduccionHud; j++) {
                 if (dunas[i][j] != -1) {

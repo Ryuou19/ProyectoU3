@@ -94,8 +94,6 @@ public class Tank{
 
                 if (posXMatriz >= 0 && posXMatriz < terreno.matriz.length && posYMatriz >= 0 && posYMatriz < terreno.matriz[0].length){ // revisamos los bordes antes de colcar la hitbox
                         terreno.matriz[posXMatriz][posYMatriz] = marcar_hitbox;
-                        gc.setFill(Color.GREEN);
-                        gc.fillOval(posXMatriz*3 ,posYMatriz*3, 3 , 3 );
                 }
             }
         }

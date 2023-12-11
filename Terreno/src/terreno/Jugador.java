@@ -11,7 +11,6 @@ public class  Jugador {
 
     String color = "";
     public int jugador; // variable para saber el indice del jugador en la lista
-    Random r=new Random();
     public boolean activo=true;
     String nombre="";
     //BALAS INICIALES DE CADA JUGADOR

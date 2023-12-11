@@ -8,41 +8,33 @@ import javafx.scene.layout.HBox;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
-
-
-public class Jugar  {  
-    
-    static Random random = new Random();
-    public boolean jugando=true;
-    double angulo;
-    double velocidad;
+public class Jugar  {     
+    static Random random = new Random();//random para el terreno
+    public boolean jugando=true;//estado actual del juego, si es false se finaliza todo
+    double angulo;//angulo del disparo
+    double velocidad;//velocidad del disparo
     double cañonX;//posicion del angulo del cañon X
     double cañonY;//posicion del angulo del cañon Y
     int impacto;//colision con un tanque
-    int distancia=0;
-    int altura=0;
-    final int pixel = 3;
+    int distancia=0;//distancia alcanzada de bala
+    int altura=0;//altura alcanzada de bala
+    final int pixel = 3;//dimension del pixel de cada elemento que lo usa
     int validar=0;//usada para diferenciar si el terreno se reinicia manualmente o por proceso de cambio de turno(boton reiniciar)   
     int tipo=0;//tipo de bala seleccionada
-    double deltaTiempo = 0.09;
-    int viento;
+    double deltaTiempo = 0.09;//tiempo de fluidez del disparo
+    int viento;//cantidad de viento si es que esta habilitado
     
-    ListaJugadores listJugador;
-    int alto = (Globales.alto_resolucion/pixel);
-    int ancho=(Globales.ancho_resolucion/pixel);
+    ListaJugadores listJugador;//lista que contiene a todos los jugadores del partido y toda su informacion
+    int alto = (Globales.alto_resolucion/pixel);//largo de terreno e interfaz
+    int ancho=(Globales.ancho_resolucion/pixel);//ancho de terreno e interfaz
     Interfaz interfaz=new Interfaz(Globales.alto_resolucion,Globales.ancho_resolucion);
+      
+    int contador_inicio=0;//revisa si es la caida inicial de los tanques, ya que en esta no se deben hacer damage
+    int vidatanque=100;//vida que se va actualizando y enviando al reinstanciar los tanques al impacto
+    private boolean disparo_en_curso = false;//revisa si no hay una bala en curso
     
-    
-    int contador_inicio=0;
-    int vidatanque1=100;
-    private boolean disparo_en_curso = false;
-    
-
     public Jugar(ListaJugadores listJugador) {
         this.listJugador = listJugador;
         
@@ -51,21 +43,22 @@ public class Jugar  {
     private static int terreno_random;//variable que guarda la seleccion random del terreno
     
     static{
-        terreno_random =2;//random.nextInt(3);
+        terreno_random =random.nextInt(3);
     }
     Terreno terrain = new Terreno(Globales.alto_resolucion/pixel,Globales.ancho_resolucion/pixel, pixel,interfaz.gc);
-    Tienda escenaTienda = new Tienda();
-    Clasificacion resultados= new Clasificacion();
+    Tienda escenaTienda = new Tienda();//tienda de este partido
+    Clasificacion resultados= new Clasificacion();//tabla de este partido
     
 
    
     public void start() {
-        Musica.agregar_musica_terreno();
-        if(revisarEstado()){
+        Musica.agregar_musica_terreno();//musica
+        if(revisarEstado()){//revisa si se sigue jugando
             return;
         }
         viento=Bala.cambiarViento(interfaz);//generamos el primer viento
         Globales.stage.setResizable(true);
+        //define la gravedad
         if(Globales.gravedad_def==1){
             Globales.gravedad=-15.81;
         }
@@ -76,18 +69,17 @@ public class Jugar  {
         if(Globales.rondas_def==0){
             Globales.stage.close();
         }
-        //deberia de tomar la variable con lo que hay en configuracion
         interfaz.iniciar_interfaz();
+        //muestra los valores en la interfaz
         interfaz.cantidadRondas.setText(Integer.toString(Globales.rondas_def));
         interfaz.cantidadGravedad.setText(Double.toString(Globales.gravedad*-1));
         if(Globales.viento_def==0){
             interfaz.cantidadViento.setText("Nulo");
         }
         
-        
-        definirPosicion();
-        iniciar_terreno();
-
+        definirPosicion();//define posicion inicial
+        iniciar_terreno();//inicia matriz
+        //muestra al primer jugador
         interfaz.mostrarJugador(listJugador.getJugadorActual());     
 
         interfaz.finalizar.setOnAction(event -> {//se apreta finalizar y se termina la ejecucion                
@@ -104,10 +96,12 @@ public class Jugar  {
         interfaz.disparar.setOnAction(event ->{
             Musica.sonido_click();
             if (Jugador.comprobarMunicion(tipo,listJugador)) {//verifica si quedan balas del tipo seleccionado
+                //muestra una ventana emergente
                 HBox aviso=VentanaEmergente.aparecer("¡No quedan balas  \n     de este tipo!",3);
                 interfaz.canvasPane.getChildren().add(aviso);
                 aviso.setLayoutX(Globales.alto_resolucion/2-70);
                 aviso.setLayoutY(Globales.ancho_resolucion/2);
+                //revisa si le quedan balas al intentar disparar
                 if(Jugador.comprobarMunicion(1,listJugador)&&Jugador.comprobarMunicion(2,listJugador)&&Jugador.comprobarMunicion(3,listJugador)){
                     aviso=VentanaEmergente.aparecer("Jugador se quedo sin balas....",3);
                     interfaz.canvasPane.getChildren().add(aviso);
@@ -118,7 +112,7 @@ public class Jugar  {
                     return;
                 }
                 tipo=0;                   
-                if(Jugador.revisarBalasDisponibles(listJugador)){
+                if(Jugador.revisarBalasDisponibles(listJugador)){//si se acaban las balas de todos, se finaliza la ronda
                     aviso=VentanaEmergente.aparecer("Finalizando Ronda...",3);
                     interfaz.canvasPane.getChildren().add(aviso);
                     aviso.setLayoutX(Globales.alto_resolucion/2-80);
@@ -139,18 +133,12 @@ public class Jugar  {
             }
             angulo = -Double.parseDouble(anguloTexto);
             velocidad = Double.parseDouble(velocidadTexto);
-            System.out.println("la velocidad es->"+velocidad);
-            Bala nuevaBala = crear_bala();//creamos nueva bala con el tipo seleciconado
-            //comprobamos si la bala esta vacia
-            if(nuevaBala==null){
-                System.out.println("no quedan mas balas ");
-            }
-            else{
-                Musica.sonido_disparo();
-                System.out.println("disparo en curso->"+disparo_en_curso);
-                disparo_en_curso = false;
-                animacionBala(nuevaBala);
-            }     
+            Bala nuevaBala = crear_bala();//creamos nueva bala con el tipo seleciconado       
+            Musica.sonido_disparo();//sonido
+            disparo_en_curso = false;
+            animacionBala(nuevaBala);//trayectoria bala
+         
+        //reiniciamos los valores de los textfield
         interfaz.entradaangulo.setText("");
         interfaz.entradavelocidad.setText("");
         }           
@@ -178,6 +166,8 @@ public class Jugar  {
         Globales.stage.show();       
     }   
     
+    //METODO QUE REALIZA TODOS LOS IMPACTOS A UN JUGADOR, SEA POR EXPLOSIN, CAIDA, O DISPARO DIRECTO
+    //Y DEFINE SI FUE ASESINATO O SUICIDIO
     public void impacto_jugador(int jugadorImpactado, int danio) {
         if(revisarEstado()){
             return;
@@ -220,26 +210,25 @@ public class Jugar  {
         }       
     }
    
-    public void colision_bala(){
-        Musica.sonido_colision();
-        
+    public void colision_bala(){//METODO LLAMADO CUANDO LA BALA COLISIONA CON CUALQUIER COSA
+        Musica.sonido_colision();       
         if(revisarEstado()){
             return;
         }
         calcular_explosion();
         if(terreno_random == 0) {
-            terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
+            terrain.terreno_nieve(interfaz.gc, 0.0, vidatanque,validar,terrain,alto,ancho);
         }
         if(terreno_random == 1) {
-            terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
+            terrain.terreno_desierto(interfaz.gc, 0.0, vidatanque,validar,terrain,alto,ancho);
         }
         if(terreno_random == 2) {
-            terrain.terreno_aram(interfaz.gc, 0.0, vidatanque1,validar,terrain,alto,ancho);
+            terrain.terreno_aram(interfaz.gc, 0.0, vidatanque,validar,terrain,alto,ancho);
         }   
         tipo=0;
     } 
     
-    public Bala crear_bala(){
+    public Bala crear_bala(){//CREA BALA DEPENDIENDO DEL TIPO ACTUAL
         if(revisarEstado()){
             return null;
         }
@@ -314,7 +303,8 @@ public class Jugar  {
         }
         terrain.reiniciar_matriz(terrain.explosion);//reinicia la matriz de explosion para que asi no guarde valores de explosiones anteriores     
     }
-
+    
+    //METODO QUE SE ENCARGA DE TODO EL PROCESO MIENTRAS LA BALA TIENE TRAYECTORIA, HASTA QUE ESTA FINALIZA
     public void animacionCaida() {
 
         if(revisarEstado()){ //revismaos el estadod e los jugadores
@@ -327,7 +317,8 @@ public class Jugar  {
                     disparo_en_curso = true;
                 }
                 terrain.borrarHitboxAnterior(); //eliminamos las hitbos anteriores de los tanques (se le creara a todos una nueva)
-                boolean todosEnSuelo = true; // marcador para saber si estan todos los tanques en el suelo
+                boolean todosEnSuelo = true; //marcador para saber si estan todos los tanques en el suelo
+                //SE VERIFICA EN QUE TERRENO SE ESTA REALIZANDO EL DISPARO
                 if (terreno_random == 0) {
                     terrain.terreno_nieve(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
                 } else if (terreno_random == 1) {
@@ -335,8 +326,8 @@ public class Jugar  {
                 } else if (terreno_random == 2) {
                     terrain.terreno_aram(interfaz.gc, 0.0, 100, 1, terrain, alto, ancho);
                 }
-                for (Jugador jugador : listJugador.getLista()) { // iteramos sobre jugador en la lista
-                    if(!jugador.estaEliminado()) // si el jugador no esta marcado como eliminado procedemos a dibujarlo mientras cae
+                for (Jugador jugador : listJugador.getLista()) { //iteramos sobre jugador en la lista
+                    if(!jugador.estaEliminado()) //si el jugador no esta marcado como eliminado procedemos a dibujarlo mientras cae
                     {
                         Tank tanque = jugador.getTanque();
                         int posicionInicialY = tanque.getPosicionY(); //posicion de donde cae
@@ -379,10 +370,8 @@ public class Jugar  {
                             // revisamos de donde esta cayendo
                             int alturaCaida = tanque.getPosicionY() - posicionInicialY; // Calcular la altura de la caída
                             if (alturaCaida > tanque.dañoAltura) { // daño altura es de 10, tiene que caer de 10 de altura para hacer el daño
-                                int dañoPorCaida = calcularDañoPorAltura(alturaCaida);
-                                System.out.println("daño inlfijido->"+dañoPorCaida);
+                                int dañoPorCaida = calcularDañoPorAltura(alturaCaida);                               
                                 jugador.ajustar_vida(jugador.getVida(), dañoPorCaida);
-                                System.out.println("vida del jugador->"+jugador.vida);
                                 if(jugador.vida<=0) // si el daño de la caida mato al tanque
                                 {
                                     stop();
@@ -421,14 +410,13 @@ public class Jugar  {
                         }
                     }
                 }
-                if (todosEnSuelo) {// ya que se marco anterior mente sis hitbox y se colocaron todos en el suelo
+                if (todosEnSuelo) {// ya que se marco anteriormente sis hitbox y se colocaron todos en el suelo
                     disparo_en_curso=false;
                     stop();
                     Boolean terminar=revisarJugadores();// marcamos a los jugadores que no podran jugar
                     if(terminar) {
                         return;
                     }
-                    System.out.println("animacion bala ->");
                     listJugador.generarTurnoAleatorio();//cambiamo turno
                     contador_inicio++;
                     interfaz.mostrarJugador(listJugador.getJugadorActual());
@@ -441,7 +429,7 @@ public class Jugar  {
     }
 
 
-    public void elegir_bala(){
+    public void elegir_bala(){//METODO QUE CONTIENE LOS BOTONES PARA ESCOGER UNA BALA Y SUS ACCIONES
         interfaz.disparar.setDisable(true);//no podemos disparar mientras escogemos la bala
         
         interfaz.bala1.setOnAction(event -> {//escoge bala 1
@@ -469,24 +457,22 @@ public class Jugar  {
         });                      
     }
     
-    public void reiniciar_partida(){
-        jugando=false;
-        listJugador.revivir_jugadores();
-        generarTerrenoNuevo();       
-        escenaTienda.inicializarInterfaz(listJugador);
-        System.out.println("hola soy el boton reiniciar");
-        //metodos y codigo para reiniciar todos los valores de progreso de los jugadores          
+    public void reiniciar_partida(){//PROCESO PARA REINICIAR TODO UN PARTIDO DESDE CERO
+        jugando=false;//definimos el estado como falso
+        listJugador.revivir_jugadores();//revivimos y reiniciamos todo de los jugadores
+        generarTerrenoNuevo();//un terreno diferente
+        escenaTienda.inicializarInterfaz(listJugador);//abrimos tienda
+                
     }
     public static int getRandom(){
         return terreno_random;
     }
 
-    void definirPosicion() {
+    void definirPosicion() {//define la posicion en la que inician y caen los tanques
         if (revisarEstado()) {
             return;
         }
         int largo=0;
-        System.out.println("el largo de la resolucion es->"+Globales.alto_resolucion);
         if(Globales.alto_resolucion>699 && Globales.alto_resolucion<=799)
         {
              largo = Globales.alto_resolucion - 200;
@@ -501,26 +487,27 @@ public class Jugar  {
         }
         int ancho_segmento = largo / Globales.jugadores_def;
 
-        int aux = -1;  // Inicializar con un valor que no se encuentre en el rango
+        int aux = -1;  //inicializar con un valor que no se encuentre en el rango
 
         for (int i = 0; i < Globales.jugadores_def; i++) {
             int min = ancho_segmento * i;
             int max = ancho_segmento * (i + 1);
             System.out.println(min+"-"+max);
-            // ajustamos el maximo y el minimo
+            //ajustamos el maximo y el minimo
             min=min+10;
             max=max-10;
-            // Definir la posición inicial
+            //definir la posición inicial
             double factorDispersión = 1.5;
             int nuevaPosicion = generarPosicionUnica(min, max, aux, factorDispersión);
             listJugador.getLista().get(i).posicionInicalX = nuevaPosicion;
             System.out.println("posicion geenerada -> x" + nuevaPosicion);
 
-            // Actualizar aux con la nueva posición
+            //actualizar aux con la nueva posición
             aux = nuevaPosicion;
         }
     }
-
+    
+    //genera posiciones que no varian para evitar casos en los que se juntan los tanques
     private int generarPosicionUnica(int min, int max, int posicionAnterior, double factorDispersión) {
         Random random = new Random();
         int distanciaMinima = 75;
@@ -532,36 +519,27 @@ public class Jugar  {
         return nuevaPosicion;
     }
 
-    public int calcularDañoPorAltura(int altura) {
+    public int calcularDañoPorAltura(int altura) {//calcula el damage por altura
         return (int) (altura * Math.abs(Globales.gravedad)/ 100);
     }
-    
-    public void imprimirVidaJugadores() {
-        System.out.println("Estado actual de la vida de los jugadores:");
-        for (int i = 0; i < listJugador.lista.size(); i++) {
-            Jugador jugadorActual = listJugador.lista.get(i);
-            int vidaActual = jugadorActual.getVida();
-            System.out.println("Jugador " + (i + 1) + ": " + vidaActual + " de vida");
-        }
-    }
-    
-    public void finalizarRonda(){
-        
+       
+    public void finalizarRonda(){//se finaliza una ronda una vez que se cumplan las condiciones       
         listJugador.revivir(); //marcamos todos los jugadores como vivos
         terrain.borrarHitboxAnterior();//eliminamos las hitbox anteriores
-        jugando=false;
-        Jugador.pagar_ronda(listJugador);      
-        resultados.mostrarTabla(escenaTienda,listJugador);
+        jugando=false;//ya no se esta jugando
+        Jugador.pagar_ronda(listJugador);//se entrega el dinero correspondiente a cada jugador  
+        resultados.mostrarTabla(escenaTienda,listJugador);//muestra la clasificacion
              
     } 
-    public void generarTerrenoNuevo(){
+       
+    public void generarTerrenoNuevo(){//Genera un terreno diferente al anterior
         int terrenoAnterior=terreno_random;
         do{
             terreno_random=random.nextInt(3);
         }while (terreno_random == terrenoAnterior);
     }
     
-    public void finalizarJuego(){
+    public void finalizarJuego(){//se cierra la ejecucion
         Platform.exit();
     }
     
@@ -570,14 +548,14 @@ public class Jugar  {
     }
 
     public void animacionBala(Bala nuevaBala) {
-        if(revisarEstado()){ // revisamos el estado de los jugadores
+        if(revisarEstado()){ //revisamos el estado de los jugadores
             return;
         }
         new AnimationTimer() { //iniciamos el animation timer
 
-            long lastWindChangeTime = 0; // Variable para almacenar la última vez que cambió la dirección del viento
-            int windChangeInterval = 50_000_000; // Cambiar la dirección del viento cada 1/20 de segundo
-            double vientoIncremento = viento/ 20.0; // Reducir la cantidad que se suma al eje x a 1/20
+            long lastWindChangeTime = 0; //variable para almacenar la última vez que cambió la dirección del viento
+            int windChangeInterval = 50_000_000; //cambiar la dirección del viento cada 1/20 de segundo
+            double vientoIncremento = viento/ 20.0; //reducir la cantidad que se suma al eje x a 1/20
 
             @Override
             public void handle(long now) {
@@ -595,21 +573,19 @@ public class Jugar  {
                     //cambiar la dirección del viento cada 1/20 de segundo
                     if (now - lastWindChangeTime >= windChangeInterval) {
                         lastWindChangeTime = now;
-                        nuevaBala.ejeX = nuevaBala.ejeX + vientoIncremento; // Sumar 1/20 al eje x para simular el viento
+                        nuevaBala.ejeX = nuevaBala.ejeX + vientoIncremento; //sumar 1/20 al eje x para simular el viento
                     }
+                    //se guarda el valor en donde se colisiono la bala                    
                     impacto = terrain.colision_terreno(interfaz.gc, nuevaBala, terrain.dunas, terrain.matriz, tipo);
 
                     if (impacto != 0) { //si impacto es distinto de 0 a impactado a un jugador la bala
-                        System.out.println("Victoria = " + impacto);
-                        impacto_jugador(impacto, nuevaBala.getDanio()); // le aplciamos el daño correspondiente
+                        impacto_jugador(impacto, nuevaBala.getDanio()); //le aplciamos el daño correspondiente
                     }
 
                     if (nuevaBala.eliminar()) { // si la bala choco con el terreno eliminamos la bala
-
-                        System.out.println("Victoria = " + impacto);
                         
                         stop(); //paramos el animation
-                        colision_bala(); // revisamos daño de la bala si es que a impactado a algun jugador
+                        colision_bala(); //revisamos daño de la bala si es que a impactado a algun jugador
                         Globales.congelar(1);
                         disparo_en_curso = false;
                         viento=Bala.cambiarViento(interfaz);//cambiamos la dirección del viento
@@ -622,15 +598,15 @@ public class Jugar  {
     }
 
     public void iniciar_bot() {
-        if(revisarEstado()){ // revisamos el estado de los jugadores
+        if(revisarEstado()){ //revisamos el estado de los jugadores
             return;
         }
-        if (!disparo_en_curso) { // si animacion bala termino
+        if (!disparo_en_curso) { //si animacion bala termino
 
-            List<Integer> tiposDisponibles = new ArrayList<>(); //creamos una lista de tipos de balas disponibles y la llenamos con 1 2 3
+            List<Integer> tiposDisponibles = new ArrayList<>();//creamos una lista de tipos de balas disponibles y la llenamos con 1 2 3
             tiposDisponibles.add(1);tiposDisponibles.add(2);tiposDisponibles.add(3);
 
-            boolean balaEncontrada = false; // inicializamos un marcador
+            boolean balaEncontrada = false; //inicializamos un marcador
 
             //verifica cada tipo de bala hasta encontrar una con municiones o agotar todas las opciones
             while (!tiposDisponibles.isEmpty() && !balaEncontrada) {
@@ -640,17 +616,17 @@ public class Jugar  {
                 balaEncontrada = !Jugador.comprobarMunicion(tipo,listJugador);
 
                 if (!balaEncontrada) {
-                    // Si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
+                    //si no hay municiones para este tipo de balas, se elimina de la lista y se prueba el siguiente
                     tiposDisponibles.remove(indiceAleatorio);
                     tipo=0;
                 } //no hace falta una condicion si el jugador no tiene balas ya que se hizo la verificacion anteriormente
             }
             revisarJugadores();
 
-            // Configuración del disparo de la bala para el bot
-            velocidad = random.nextDouble() * 35 + 30; // Ajusta estos valores según tu juego
-            angulo = 60 + random.nextDouble() * 60; // angulos entre 60 y 120
-            angulo=(-1)*angulo;// ajuste pq estan invertidos los angulos
+            //configuración del disparo de la bala para el bot
+            velocidad = random.nextDouble() * 35 + 30; 
+            angulo = 60 + random.nextDouble() * 60; //angulos entre 60 y 120
+            angulo=(-1)*angulo;//ajuste pq estan invertidos los angulos
 
             if(tipo==1){
                 interfaz.textcantidad1.setText(Integer.toString(listJugador.getJugadorActual().getCantidad60()));
@@ -661,18 +637,19 @@ public class Jugar  {
             if(tipo==3){
                 interfaz.textcantidad3.setText(Integer.toString(listJugador.getJugadorActual().getCantidad105()));
             }
+            //Indica que esta jugando un bot actualmente
             HBox textBot=VentanaEmergente.aparecer("Jugando un bot...",2);
             interfaz.canvasPane.getChildren().add(textBot);
             textBot.setLayoutX(Globales.alto_resolucion/2-70);
             textBot.setLayoutY(0);
-            // Crear y disparar la bala
+            //crear y disparar la bala
             Bala nuevaBala = crear_bala();
             Musica.sonido_disparo();
             animacionBala(nuevaBala);
         }
     }
   
-    public Boolean revisarJugadores(){
+    public Boolean revisarJugadores(){//revisa el estado general de los jugadores para ver si se debe seguir jugando
         for(Jugador jugador : listJugador.lista){
             if((jugador.cantidad105+jugador.cantidad80+jugador.cantidad60)<=0||jugador.eliminado==true){
                 System.out.println(" se desactivo ->"+(jugador.jugador+1));
@@ -686,8 +663,8 @@ public class Jugar  {
         }
         return false;
     }
-   
-    public boolean revisarEstado(){
+  
+    public boolean revisarEstado(){//metodo que controla si todas las funciones deberian seguir ejecutandose(osea que el juego sigue o no)
         return jugando == false;
     }
 

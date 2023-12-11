@@ -171,16 +171,6 @@ public class Tienda  {
             "-fx-background-radius: 0;"  
         );
         
-        //BOTON DEVOLVER COMPRA
-        revertirCompra = new Button("DEVOLVER");       
-        revertirCompra.setStyle(
-            "-fx-background-color: #000000; " +
-            "-fx-text-fill: #FFFFFF;" +  
-            "-fx-border-color: #FFFFFF;" + 
-            "-fx-border-width: 3px;" +  
-            "-fx-background-radius: 0;"  
-        );
-        
         //CAMBIAR AL JUGADOR DE LA DERECHA
         cambiarJugadorDerecha = new Button(">");       
         cambiarJugadorDerecha.setStyle(
@@ -313,7 +303,7 @@ public class Tienda  {
             Globales.rondas_def--;  
             
             Jugar juego = new Jugar(listJugadores);//inicia el proceso de jugar
-            juego.generarTerrenoNuevo();
+            juego.generarTerrenoNuevo();//generar un terreno diferente si la tienda viene de reinicio
             juego.start();              
         });
         

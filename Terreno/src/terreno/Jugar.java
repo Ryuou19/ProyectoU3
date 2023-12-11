@@ -460,7 +460,6 @@ public class Jugar  {
     public void reiniciar_partida(){//PROCESO PARA REINICIAR TODO UN PARTIDO DESDE CERO
         jugando=false;//definimos el estado como falso
         listJugador.revivir_jugadores();//revivimos y reiniciamos todo de los jugadores
-        generarTerrenoNuevo();//un terreno diferente
         escenaTienda.inicializarInterfaz(listJugador);//abrimos tienda
                 
     }
@@ -474,14 +473,17 @@ public class Jugar  {
         }
         if(Globales.jugadores_def==2){
             int largo = Globales.alto_resolucion-200;
-            int ancho_segmento=largo/Globales.jugadores_def;
-            System.out.println("jugadores def es -> cantidad de jugadores"+Globales.jugadores_def);
-            for(int i=0;i<Globales.jugadores_def;i++){
-                int min=ancho_segmento*i;
-                int max=ancho_segmento*(i+1);
-                int posicion_inicial=random.nextInt(max-min)+min;
-                listJugador.getLista().get(i).posicionInicalX=posicion_inicial;
-            }
+            //jugador 1
+            int min=50;
+            int max=largo/2+50;
+            int posicion_inicial=random.nextInt(max-min)+min;
+            listJugador.getLista().get(0).posicionInicalX=posicion_inicial;
+            //jugador 2
+            min=max;
+            max=largo-50;
+            posicion_inicial=random.nextInt(max-min)+min;
+            listJugador.getLista().get(1).posicionInicalX=posicion_inicial;
+            
         }
         
         else{
